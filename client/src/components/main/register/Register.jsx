@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "./api/axios";
+import axios from "../../../api/axios";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-A0-9-_]{3,24}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,24})/;
@@ -110,12 +110,14 @@ const Register = () => {
           <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
             {errMsg}
           </p>
-          <h1>Register</h1>
+          <div class="loginFormTitle">
+            <h1>Connexion</h1>
+          </div>
           <form onSubmit={handleSubmit}>
 
             <div className="username-container">
               <label htmlFor="username">
-                Username:
+                Username
                 <span className={validUsername ? "valid" : "hide"}>
                   <FontAwesomeIcon icon={faCheck} />
                 </span>
@@ -147,7 +149,7 @@ const Register = () => {
 
             <div className="email-container">
               <label htmlFor="email">
-                Email:
+                Email
                 <span className={validEmail ? "valid" : "hide"}>
                   <FontAwesomeIcon icon={faCheck} />
                 </span>
@@ -174,7 +176,7 @@ const Register = () => {
 
             <div className="company-container">
               <label htmlFor="company">
-                Company:
+                Entreprise
               </label>
               <input
                 type="text"
@@ -187,7 +189,7 @@ const Register = () => {
 
             <div className="password-container">
               <label htmlFor="password">
-                Password:
+                Mot de passe
                 <span className={validPassword ? "valid" : "hide"}>
                   <FontAwesomeIcon icon={faCheck} />
                 </span>
@@ -220,7 +222,7 @@ const Register = () => {
 
             <div className="confirm-password-container">
               <label htmlFor="confirm-password">
-                Confirm password:
+                Confirmer le mot de passe
                 <span className={validMatch && matchPassword ? "valid" : "hide"}>
                   <FontAwesomeIcon icon={faCheck} />
                 </span>

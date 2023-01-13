@@ -1,10 +1,14 @@
-import Register from "./Register";
+import Register from "./components/main/register/Register";
+import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
 
 function App() {
   return (
-    <main className="App">
+    <div className="App">
+      <Header />
       <Register />
-    </main>
+      <Footer />
+    </div>
   );
 }
 
