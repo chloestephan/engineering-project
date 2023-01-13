@@ -3,7 +3,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../../../api/axios";
 
-const USER_REGEX = /^[a-zA-Z][a-zA-A0-9-_]{3,24}$/;
+const USER_REGEX = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,24})/;
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGISTER_URL = "/register";
@@ -139,11 +139,9 @@ const Register = () => {
               />
               <p id="username-note" className={usernameFocus && username && !validUsername ? "instructions" : "offscreen"}>
                 <FontAwesomeIcon icon={faInfoCircle} />
-                4 to 24 characters.
-                <br />
                 Must start with a letter.
                 <br />
-                Letters, numbers, hyphens, and underscores only.
+                Letters, numbers, and hyphens only.
               </p>
             </div>
 
