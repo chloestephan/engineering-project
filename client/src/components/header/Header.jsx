@@ -1,9 +1,11 @@
 const Header = () => {
     return (
         <div class="header">
-            <a href="#default" class="logoAWS">AwsLogo</a>
+            <a href="">
+                <img src="logo.png" alt="Powered By AWS" />
+            </a>
             <div class="header-right">
-                <a href="#connexion">Connexion</a>
+                <a href="#connexion">Mon compte</a>
             </div>
         </div>
     );
