@@ -4,6 +4,13 @@ const jsonParser = bodyParser.json()
 const app = express();
 const port = 5000;
 const cors = require('cors');
+const {Client} = require("pg");
+
+const client = new Client({
+  password : "root",
+  user : "root",
+  host : "postgres"
+});
 
 app.use(cors());
 
