@@ -28,3 +28,13 @@ app.post('/register', jsonParser,(req, res) => {
 });
 
 app.listen(port, () => console.log('Server running on port 5000'));
+
+/* Added code to link backend to docker container
+
+(async () => {
+  await client.connect();
+
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
+})();*/
