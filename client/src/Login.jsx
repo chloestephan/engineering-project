@@ -29,8 +29,8 @@ const Login = () => {
         headers: { "Content-Type": "application/json" },
       });
       const accesToken = response?.data?.accessToken;
-      console.log(accesToken);
-      setAuth({ email, password, accesToken });
+      const role = response?.data?.role;
+      setAuth({ email, password, accesToken, role });
       setPassword("");
       setEmail("");
       setSuccess(true);
