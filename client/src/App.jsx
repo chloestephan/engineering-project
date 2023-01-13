@@ -1,6 +1,6 @@
-import Register from "./Register";
+import Register from "./components/main/register/Register";
 import { Routes, Route } from "react-router-dom";
-import Layout from "./Layout";
+import Layout from "./components/main/layout/Layout";
 
 function App() {
   return (
