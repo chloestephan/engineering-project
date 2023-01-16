@@ -4,7 +4,11 @@ const Footer = () => {
             <div class="footer-left">
                 <a href="#connexion">Connexion</a>
             </div>
-            <a href="#default" class="logoEfrei">Efrei</a>
+            <div class="footer-center">
+                <img src="LOGO_EFREI-WEB_blanc.png"/>
+            </div>
+            <div class="footer-right">
+            </div>
         </footer>
     );
 }
