@@ -251,7 +251,7 @@ const Register = () => {
                 <label for="show-password">Montrer le mot de passe</label>
             </div>
 
-            <button disabled={!validUsername || !validPassword || !validMatch} type="submit">
+            <button class="btnValider" disabled={!validUsername || !validPassword || !validMatch} type="submit">
               Enregistrer
             </button>
           </form>
