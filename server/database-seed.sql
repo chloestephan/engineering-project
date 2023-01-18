@@ -1,59 +1,73 @@
-CREATE TABLE employees
-(
-    id SERIAL,
-    name text,
-    title text,
-    CONSTRAINT employees_pkey PRIMARY KEY (id)
-);
+DROP TYPE IF EXISTS Type CASCADE;
+DROP TABLE IF EXISTS customers CASCADE;
+DROP TABLE IF EXISTS admins CASCADE;
+DROP TABLE IF EXISTS formBuilder CASCADE;
+DROP TABLE IF EXISTS formAnswers CASCADE;
+DROP TABLE IF EXISTS formCompleted CASCADE;
+DROP EXTENSION IF EXISTS "uuid-ossp";
+
+CREATE TYPE Type AS ENUM ('User input long', 'User input court', 'Dropdown','Checkbox','Toggle','Selection Radio');
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE customers
 (
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    username text,
+    mail text,
+    password text,
+    entreprise text,
+    CONSTRAINT customer_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE admins
+(
     id SERIAL,
     username text,
-    firstname text,
-    lastname text,
     email text,
-    CONSTRAINT users_pkey PRIMARY KEY (id)
+    password text,
+    CONSTRAINT admins_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE carCatalog
-(
-    licensePlate text,
-    brand text,
-    model text,
-    CONSTRAINT catalogue_pkey PRIMARY KEY (licensePlate)
-);
-
-CREATE TABLE reservation
+CREATE TABLE formBuilder
 (
     id SERIAL,
-    licensePlate text,
-    startDate Date,
-    endDate Date,
-    CONSTRAINT FK_LicensePlate FOREIGN KEY (licensePlate) REFERENCES carCatalog(licensePlate),
-    CONSTRAINT reservation_pkey PRIMARY KEY (id)
+    ordre INT,
+    questionType Type,
+    answer text, 
+    CONSTRAINT form_builder_pkey PRIMARY KEY (id)
 );
 
-/*CREATE TABLE cart
+CREATE TABLE formAnswers
 (
-    
-)*/
-INSERT INTO employees (name, title) VALUES
-('John Smith', 'Manager'),
-('Jane Doe', 'Assistant Manager'),
-('Bob Johnson', 'Employee');
+    customerId uuid NOT NULL DEFAULT uuid_generate_v4(),
+    questionId SERIAL,
+    answer text,
+    CONSTRAINT FK_Customer_ID FOREIGN KEY (customerId) REFERENCES customers(id),
+    CONSTRAINT FK_Question_ID FOREIGN KEY (questionId) REFERENCES formBuilder(id),
+    CONSTRAINT form_answers_pkey PRIMARY KEY (customerId, questionId)
+);
 
-INSERT INTO customers (username, firstname, lastname, email) VALUES
-('jsmith', 'John', 'Smith', 'jsmith@gmail.com'),
-('jdoe', 'Jane', 'Doe', 'jdoe@gmail.com'),
-('bjohnson', 'Bob', 'Johnson', 'bjohnson@gmail.com');
+CREATE TABLE formCompleted
+(
+    customerId uuid NOT NULL DEFAULT uuid_generate_v4(),
+    urlPDF text,
+    CONSTRAINT FK_Customer_ID FOREIGN KEY (customerId) REFERENCES customers(id),
+    CONSTRAINT form_completed_pkey PRIMARY KEY (customerId)
+);
 
-INSERT INTO carCatalog (licensePlate, brand, model) VALUES
-('ABC123', 'Ford', 'Mustang'),
-('DEF456', 'Toyota', 'Camry'),
-('GHI789', 'Honda', 'Accord');
+INSERT INTO customers (username, mail, password, entreprise) VALUES
+('jsmith', 'jsmith@gmail.com', 'adcd', 'Chaos Corp.');
 
-INSERT INTO reservation (licensePlate, startDate, endDate) VALUES
-('ABC123', '2022-01-01', '2022-01-07'),
-('DEF456', '2022-01-08', '2022-01-14'),
-('GHI789', '2022-01-15', '2022-01-21');
+INSERT INTO admins (username, email, password) VALUES
+('jsmith','jsmith@gmail.com', '123');
+
+INSERT INTO formBuilder (ordre, questionType, answer) VALUES
+('1', 'User input long', 'Ceci est un input utilisateur long');
+
+
+INSERT INTO formAnswers (customerID, questionId, answer) VALUES
+((SELECT id from customers where username='jsmith'), (SELECT id from formBuilder where ordre=1), 'Ceci est une réponse');
+
+INSERT INTO formCompleted (customerID, urlPDF) VALUES
+((SELECT id from customers where username='jsmith'),'https://aws');

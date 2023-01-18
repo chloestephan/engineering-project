@@ -10,9 +10,19 @@ const bcrypt = require("bcrypt");
 require('dotenv').config()
 
 const client = new Client({
-  password: "root",
-  user: "root",
-  host: "postgres",
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DB,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  port: process.env.POSTGRES_PORT,
+});
+
+client.connect((err) => {
+  if (err) {
+    console.error('connection error', err.stack)
+  } else {
+    console.log('connected')
+  }
 });
 
 app.use(cors());
