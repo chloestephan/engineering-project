@@ -27,54 +27,95 @@ client.connect((err) => {
 
 app.use(cors());
 
+// UTILS
+
+async function getCustomerByEmail(email) {
+  const query = {
+    text: "SELECT * FROM customers WHERE email = $1",
+    values: [email],
+  };
+  return await client.query(query);
+}
+
+async function getCustomerByCompany(company) {
+  const query = {
+    text: "SELECT * FROM customers WHERE company = $1",
+    values: [company],
+  };
+  return await client.query(query);
+}
+
+async function isCustomerRegisteredWith(infomation, type) {
+  const row = type === "email" ? await getCustomerByEmail(infomation) : await getCustomerByCompany(infomation);
+  return row.rowCount > 0;
+}
+
+async function isPasswordCorrect(password, hash) {
+  return await bcrypt.compare(password, hash);
+}
+
+function generateToken(user, tokenType) {
+  return jwt.sign(
+    {
+      email: user.email,
+      username: user.username,
+      company: user.company,
+    },
+    tokenType === "access" ? process.env.ACCESS_TOKEN_SECRET : process.env.REFRESH_TOKEN_SECRET,
+    {
+      expiresIn: tokenType === "access" ? "1h" : "24h",
+    }
+  );
+}
+
 // Register a user
-app.post("/register", jsonParser, (req, res) => {
-  // TODO Check if email already exists
-  // If exists
-  // res.status(409).send('User already exists');
-  // TODO Check if company already exists ?
-  // If exists
-  // res.status(409).send('Company already exists');
-  // TODO Hash password
-  // TODO Store user in database
-  // If success
+app.post("/register", jsonParser, async (req, res) => {
+  const { username, email, password, company } = req.body;
+
+  if (!username || !email || !password || !company) {
+    res.status(400).send("Missing information");
+    return;
+  }
+
+  const isCustomerRegistered = await isCustomerRegisteredWith(email, "email") || await isCustomerRegisteredWith(company, "company");
+  if (isCustomerRegistered) {
+    res.status(409).send("User already exists");
+    return;
+  }
+  
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const query = {
+    text: "INSERT INTO customers (username, email, password, company) VALUES ($1, $2, $3, $4)",
+    values: [username, email, hashedPassword, company],
+  }
+  await client.query(query);
   res.status(200).send("User registered");
 });
 
 // Login a user
-app.post("/login", jsonParser, (req, res) => {
+app.post("/login", jsonParser, async (req, res) => {
   const { email, password } = req.body;
+
   if (!email || !password) {
     res.status(400).send("Missing information");
+    return;
   }
 
-  // TODO Check if user exists with email
-  // If not exists or wrong password
-  // res.status(404).send('Wrong information');
-  // If exists check bcrypt password
-  // If wrong password
-  // res.status(404).send('Wrong information');
-  // If success
-  const accessToken = jwt.sign(
-    {
-      email: email,
-      // TODO add more information from database (company, username, etc.)
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: "1h",
-    }
-  );
-  const refreshToken = jwt.sign(
-    {
-      email: email,
-      // TODO add more information from database (company, username, etc.)
-    },
-    process.env.REFRESH_TOKEN_SECRET,
-    {
-      expiresIn: "24h",
-    }
-  );
+  if (!await isCustomerRegisteredWith(email, "email")) {
+    res.status(400).send("Wrong information");
+    return;
+  }
+  
+  const resultRequest = await getCustomerByEmail(email);
+  const user = resultRequest.rows[0];
+  if(!await isPasswordCorrect(password, user.password)) {
+    res.status(400).send("Wrong information");
+    return;
+  }
+  
+  const accessToken = generateToken(user, "access")
+  const refreshToken = generateToken(user, "refresh")
+
   // TODO Store refresh token in database
   
   res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "none" });

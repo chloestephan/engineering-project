@@ -14,9 +14,9 @@ CREATE TABLE customers
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     username text,
-    mail text,
+    email text,
     password text,
-    entreprise text,
+    company text,
     CONSTRAINT customer_pkey PRIMARY KEY (id)
 );
 
@@ -56,7 +56,7 @@ CREATE TABLE formCompleted
     CONSTRAINT form_completed_pkey PRIMARY KEY (customerId)
 );
 
-INSERT INTO customers (username, mail, password, entreprise) VALUES
+INSERT INTO customers (username, email, password, company) VALUES
 ('jsmith', 'jsmith@gmail.com', 'adcd', 'Chaos Corp.');
 
 INSERT INTO admins (username, email, password) VALUES

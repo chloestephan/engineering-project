@@ -71,7 +71,6 @@ const Register = () => {
       const response = await axios.post(REGISTER_URL, JSON.stringify({ username, email, company, password }), {
         headers: { "Content-Type": "application/json" },
       });
-      console.log(response);
       if (response.status === 200) {
         setSuccess(true);
         setUsername("");
