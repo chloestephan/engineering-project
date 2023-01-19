@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../../../api/axios";
-import useAuth from "../../../hooks/useAuth";
 
 const USER_REGEX = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,24})/;
@@ -111,12 +110,15 @@ const Register = () => {
           <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
             {errMsg}
           </p>
-          <h1>Register</h1>
+          <div class="loginFormTitle">
+            <h1>Connectez-vous</h1>
+            <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
+          </div>
           <form onSubmit={handleSubmit}>
 
             <div className="username-container">
               <label htmlFor="username">
-                Username:
+                Nom d'utilisateur
                 <span className={validUsername ? "valid" : "hide"}>
                   <FontAwesomeIcon icon={faCheck} />
                 </span>
@@ -138,15 +140,15 @@ const Register = () => {
               />
               <p id="username-note" className={usernameFocus && username && !validUsername ? "instructions" : "offscreen"}>
                 <FontAwesomeIcon icon={faInfoCircle} />
-                Must start with a letter.
+                Doit commencer par une lettre.
                 <br />
-                Letters, numbers, and hyphens only.
+                Lettres, nombres, et tirets seulement.
               </p>
             </div>
 
             <div className="email-container">
               <label htmlFor="email">
-                Email:
+                Email
                 <span className={validEmail ? "valid" : "hide"}>
                   <FontAwesomeIcon icon={faCheck} />
                 </span>
@@ -167,13 +169,13 @@ const Register = () => {
               />
               <p id="email-note" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
                 <FontAwesomeIcon icon={faInfoCircle} />
-                Must be a valid email address.
+                Merci d'indiquer une addresse mail valide.
               </p>
             </div>
 
             <div className="company-container">
               <label htmlFor="company">
-                Company:
+                Entreprise
               </label>
               <input
                 type="text"
@@ -186,7 +188,7 @@ const Register = () => {
 
             <div className="password-container">
               <label htmlFor="password">
-                Password:
+                Mot de passe
                 <span className={validPassword ? "valid" : "hide"}>
                   <FontAwesomeIcon icon={faCheck} />
                 </span>
@@ -207,11 +209,11 @@ const Register = () => {
               />
               <p id="password-note" className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
                 <FontAwesomeIcon icon={faInfoCircle} />
-                10 to 24 characters.
+                Merci de n'indiquer que 10 à 24 charactères.
                 <br />
-                Must include uppercase and lowercase letters, a number and a special character.
+                Doit inclure des lettres majuscules et minuscules, un nombre et un charactère spécial.
                 <br />
-                Allowed special characters: <span aria-label="exclamation mark">!</span>{" "}
+                Charactères spéciaux autorisés: <span aria-label="exclamation mark">!</span>{" "}
                 <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span>{" "}
                 <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
               </p>
@@ -219,7 +221,7 @@ const Register = () => {
 
             <div className="confirm-password-container">
               <label htmlFor="confirm-password">
-                Confirm password:
+                Confirmer le mot de passe
                 <span className={validMatch && matchPassword ? "valid" : "hide"}>
                   <FontAwesomeIcon icon={faCheck} />
                 </span>
@@ -240,27 +242,25 @@ const Register = () => {
               />
               <p id="confirm-password-note" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
                 <FontAwesomeIcon icon={faInfoCircle} />
-                Must match the first password input field.
+                Merci d'indique le même mot de passe que le premier.
               </p>
             </div>
 
             <div className="show-password-container">
-              <label htmlFor="show-password">
                 <input type="checkbox" id="show-password" onChange={() => setShowPassword(!showPassword)} />
-                Show password
-              </label>
+                <label for="show-password">Montrer le mot de passe</label>
             </div>
 
-            <button disabled={!validUsername || !validPassword || !validMatch} type="submit">
-              Sign Up
+            <button class="btnValider" disabled={!validUsername || !validPassword || !validMatch} type="submit">
+              Enregistrer
             </button>
           </form>
           <p>
-            Already registered?
+            Déjà inscrit ?
             <br />
             <span className="line">
               {/*put router link here*/}
-              <a href="/">Sign In</a>
+              <a href="/">Enregistrer</a>
             </span>
           </p>
         </section>
