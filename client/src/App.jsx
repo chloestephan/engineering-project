@@ -1,11 +1,11 @@
-import Login from "./components/main/login/Login";
-import Register from "./components/main/register/Register";
-import ForgotPassword from "./components/main/forgotPassword/ForgotPassword";
+import LoginForm from "./components/main/login/LoginForm";
+import RegisterForm from "./components/main/register/RegisterForm";
+import ForgotPasswordForm from "./components/main/forgotPassword/ForgotPasswordForm";
 
 function App() {
   return (
     <main className="App">
-      <Register />
+      <LoginForm />
     </main>
   );
 }
