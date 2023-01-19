@@ -8,12 +8,12 @@ const handleNewPassword = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    res.status(400).send("Missing information");
+    res.status(401).send("Missing information");
     return;
   }
 
   if (!await isCustomerRegisteredWith(email, "email")) {
-    res.status(400).send("Wrong information");
+    res.status(401).send("Wrong information");
     return;
   }
 

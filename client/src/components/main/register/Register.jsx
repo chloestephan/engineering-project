@@ -84,9 +84,8 @@ const Register = () => {
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        // TODO handle according to error message
-        setErrMsg("Username already exists");
+      } else if (err.response?.status) {
+        setErrMsg(err.response.data);
       } else {
         setErrMsg("Registration Failed");
       }

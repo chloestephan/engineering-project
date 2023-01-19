@@ -8,7 +8,7 @@ const handleNewCustomer = async (req, res) => {
   const { username, email, password, company } = req.body;
 
   if (!username || !email || !password || !company) {
-    res.status(400).send("Missing information");
+    res.status(401).send("Missing information");
     return;
   }
 

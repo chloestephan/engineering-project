@@ -37,8 +37,8 @@ const Login = () => {
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
-      } else if (err.response.status === 401) {
-        setErrMsg("Invalid Credentials");
+      } else if (err.response?.status) {
+        setErrMsg(err.response.data);
       } else {
         setErrMsg("Login Failed");
       }

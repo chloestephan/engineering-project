@@ -6,7 +6,7 @@ import axios from "../../../api/axios";
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const FORGOT_PASSWORD_URL = "/forgot-password";
 
-const ForgottenPassword = () => {
+const ForgotPassword = () => {
   const emailRef = useRef();
   const errRef = useRef();
 
@@ -37,7 +37,13 @@ const ForgottenPassword = () => {
         await axios.post(FORGOT_PASSWORD_URL, { email });
         setSuccess(true);
       } catch (err) {
-        setErrMsg(err.response.data);
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status) {
+          setErrMsg(err.response.data);
+        } else {
+          setErrMsg("Login Failed");
+        }
       }
     } else {
       errRef.current.focus();
@@ -62,8 +68,7 @@ const ForgottenPassword = () => {
           </p>
           <h1>Forgotten password</h1>
           <form onSubmit={handleSubmit}>
-            
-          <div className="email-container">
+            <div className="email-container">
               <label htmlFor="email">
                 Email:
                 <span className={validEmail ? "valid" : "hide"}>
@@ -85,7 +90,10 @@ const ForgottenPassword = () => {
                 onFocus={() => setEmailFocus(true)}
                 onBlur={() => setEmailFocus(false)}
               />
-              <p id="email-note" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
+              <p
+                id="email-note"
+                className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}
+              >
                 <FontAwesomeIcon icon={faInfoCircle} />
                 Must be a valid email address.
               </p>
@@ -96,7 +104,7 @@ const ForgottenPassword = () => {
         </section>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ForgottenPassword
+export default ForgotPassword;
