@@ -1,5 +1,6 @@
-import Login from "./Login";
-import Register from "./Register";
+import Login from "./components/main/login/Login";
+// import Register from "./components/main/register/Register";
+// import ForgottenPassword from "./components/main/forgottenPassword/ForgottenPassword";
 
 function App() {
   return (

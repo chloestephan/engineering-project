@@ -14,5 +14,6 @@ app.use(express.json());
 
 app.use("/register", require("./routes/register"));
 app.use("/login", require("./routes/login"));
+app.use("/forgot-password", require("./routes/forgotPassword"));
 
 app.listen(port, () => console.log("Server running on port 5000"));

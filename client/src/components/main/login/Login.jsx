@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useContext } from "react";
-import AuthContext from "./context/AuthProvider";
+import AuthContext from "../../../context/AuthProvider";
 
-import axios from "./api/axios";
+import axios from "../../../api/axios";
 const LOGIN_URL = "/login";
 
 const Login = () => {
@@ -76,7 +76,7 @@ const Login = () => {
               />
             </div>
 
-            <div className="email-container">
+            <div className="password-container">
               <label htmlFor="password">Password:</label>
               <input
                 type="password"
