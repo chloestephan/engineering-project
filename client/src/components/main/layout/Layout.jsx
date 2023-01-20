@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
+import Header from "../../header/Header";
+import Footer from "../../footer/Footer";
 
 const Layout = () => {
     return (
         <main className="App">
-            <div>
-                <h1>AWS App</h1>
-                    <Outlet />
-            </div>
+            <Header />
+            <Outlet />
+            <Footer />
         </main>
     )
 }
