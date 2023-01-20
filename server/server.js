@@ -1,40 +1,19 @@
-const express = require('express');
-const bodyParser = require('body-parser')
-const jsonParser = bodyParser.json()
+const express = require("express");
+const bodyParser = require("body-parser");
+const jsonParser = bodyParser.json();
 const app = express();
 const port = 5000;
-const cors = require('cors');
-const {Client} = require("pg");
+const cors = require("cors");
+const db = require("./config/dbConn");
+require("dotenv").config();
 
-const client = new Client({
-  password : "root",
-  user : "root",
-  host : "postgres"
-});
+const client = db.connectDB();
 
 app.use(cors());
+app.use(express.json());
 
-app.post('/register', jsonParser,(req, res) => {
-  // TODO Check if email already exists
-  // If exists
-  // res.status(409).send('User already exists');
-  // TODO Check if company already exists ?
-  // If exists
-  // res.status(409).send('Company already exists');
-  // TODO Hash password
-  // TODO Store user in database
-  // If success
-  res.status(200).send('User registered');
-});
+app.use("/register", require("./routes/register"));
+app.use("/login", require("./routes/login"));
+app.use("/forgot-password", require("./routes/forgotPassword"));
 
-app.listen(port, () => console.log('Server running on port 5000'));
-
-/* Added code to link backend to docker container
-
-(async () => {
-  await client.connect();
-
-  app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-  });
-})();*/
+app.listen(port, () => console.log("Server running on port 5000"));
