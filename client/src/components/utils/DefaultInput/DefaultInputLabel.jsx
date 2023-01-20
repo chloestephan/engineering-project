@@ -4,7 +4,7 @@ import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 const DefaultInputLabel = ({ inputName, inputLabel, validInput, inputValue }) => {
   return (
     <label htmlFor={inputName}>
-      {inputLabel}:
+      {inputLabel} :
       <span className={validInput ? "valid" : "hide"}>
         <FontAwesomeIcon icon={faCheck} />
       </span>
