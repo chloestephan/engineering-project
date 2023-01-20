@@ -87,7 +87,7 @@ const Login = () => {
         Need an Account?
         <br />
         <span className="line">
-        <Link to="/register">S'inscrire</Link>
+        <Link to="/register"><p style={{color:"red"}}>S'inscrire</p></Link>
         </span>
       </p>
     </section>
