@@ -1,10 +1,10 @@
-const { isCustomerRegisteredWith, generatePassword } = require("../utils/customersUtils");
-const { sendEmail } = require("../utils/nodemailerUtils");
+const { isCustomerRegisteredWith } = require("../../utils/customersUtils");
+const { sendEmail, generatePassword } = require("../../utils/sendEmailUtils");
 const bcrypt = require("bcrypt");
-const db = require("../config/dbConn");
+const db = require("../../config/dbConn");
 const client = db.getClient();
 
-const handleNewPassword = async (req, res) => {
+const handleForgotPasswordCustomer = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
@@ -12,7 +12,7 @@ const handleNewPassword = async (req, res) => {
     return;
   }
 
-  if (!await isCustomerRegisteredWith(email, "email")) {
+  if (!(await isCustomerRegisteredWith(email, "email"))) {
     res.status(401).send("Wrong information");
     return;
   }
@@ -36,4 +36,4 @@ const handleNewPassword = async (req, res) => {
   res.status(200).send({ message: "Password updated" });
 };
 
-module.exports = { handleNewPassword };
+module.exports = { handleForgotPasswordCustomer };

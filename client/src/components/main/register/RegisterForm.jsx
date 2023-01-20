@@ -9,7 +9,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,24}
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGISTER_URL = "/register";
 
-const RegisterForm = () => {
+const RegisterForm = ({ userType = "customer" }) => {
   const usernameRef = useRef();
   const errRef = useRef();
 
@@ -77,8 +77,8 @@ const RegisterForm = () => {
     }
     try {
       const response = await axios.post(
-        REGISTER_URL,
-        JSON.stringify({ username, email, company, password }),
+        REGISTER_URL + "-" + userType,
+        JSON.stringify({ username, email, company, password, userType }),
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -137,12 +137,14 @@ const RegisterForm = () => {
               noteValidInput="Doit être au format email."
             />
 
-            <DefaultInputContainer
-              inputName="company"
-              inputLabel="Entreprise"
-              inputValue={company}
-              setInputValue={setCompany}
-            />
+            {userType === "customer" && (
+              <DefaultInputContainer
+                inputName="company"
+                inputLabel="Entreprise"
+                inputValue={company}
+                setInputValue={setCompany}
+              />
+            )}
 
             <DefaultInputContainer
               inputName="password"
@@ -175,7 +177,10 @@ const RegisterForm = () => {
               </label>
             </div>
 
-            <button disabled={!validUsername || !validPassword || !validMatchPassword || !validEmail} type="submit">
+            <button
+              disabled={!validUsername || !validPassword || !validMatchPassword || !validEmail}
+              type="submit"
+            >
               Créer un compte
             </button>
           </form>

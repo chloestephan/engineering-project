@@ -7,7 +7,7 @@ import axios from "../../../api/axios";
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const FORGOT_PASSWORD_URL = "/forgot-password";
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm = ({ userType = "customer" }) => {
   const emailRef = useRef();
   const errRef = useRef();
 
@@ -36,8 +36,8 @@ const ForgotPasswordForm = () => {
     if (validEmail) {
       try {
         await axios.post(
-          FORGOT_PASSWORD_URL,
-          { email },
+          FORGOT_PASSWORD_URL + "-" + userType,
+          { email, userType },
           {
             headers: { "Content-Type": "application/json" },
           }
@@ -62,7 +62,11 @@ const ForgotPasswordForm = () => {
     <>
       {success ? (
         // TODO ADD REDIRECT TO LOGIN
-        <SuccessMessageForm title="Votre nouveau mot de passe a été envoyé" link="/" linkTitle="Retour à la connexion" />
+        <SuccessMessageForm
+          title="Votre nouveau mot de passe a été envoyé"
+          link="/"
+          linkTitle="Retour à la connexion"
+        />
       ) : (
         <section>
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />

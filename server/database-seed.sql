@@ -57,10 +57,10 @@ CREATE TABLE formCompleted
 );
 
 INSERT INTO customers (username, email, password, company) VALUES
-('jsmith', 'jsmith@gmail.com', 'adcd', 'Chaos Corp.');
+('jsmith', 'vnjzrbvjizbei@gmail.com', 'adcd', 'Chaos Corp.');
 
 INSERT INTO admins (username, email, password) VALUES
-('jsmith','jsmith@gmail.com', '123');
+('jsmith','vnjzrbvjizbei.admin@gmail.com', '123');
 
 INSERT INTO formBuilder (ordre, questionType, answer) VALUES
 ('1', 'User input long', 'Ceci est un input utilisateur long');

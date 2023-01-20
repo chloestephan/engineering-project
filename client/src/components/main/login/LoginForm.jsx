@@ -7,7 +7,7 @@ import axios from "../../../api/axios";
 
 const LOGIN_URL = "/login";
 
-const LoginForm = () => {
+const LoginForm = ({ userType = "customer" }) => {
   const { setAuth } = useContext(AuthContext);
   const emailRef = useRef();
   const errRef = useRef();
@@ -29,9 +29,13 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(LOGIN_URL, JSON.stringify({ email, password }), {
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.post(
+        LOGIN_URL + "-" + userType,
+        JSON.stringify({ email, password, userType }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       const accesToken = response?.data?.accessToken;
       const role = response?.data?.role;
       setAuth({ email, password, accesToken, role });

@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt");
-const db = require("../config/dbConn");
-const { isCustomerRegisteredWith } = require("../utils/customersUtils");
+const db = require("../../config/dbConn");
+const { isCustomerRegisteredWith } = require("../../utils/customersUtils");
 
 const client = db.getClient();
 
-const handleNewCustomer = async (req, res) => {
+const handleRegisterCustomer = async (req, res) => {
   const { username, email, password, company } = req.body;
 
   if (!username || !email || !password || !company) {
@@ -28,4 +28,4 @@ const handleNewCustomer = async (req, res) => {
   res.status(200).send("User registered");
 };
 
-module.exports = { handleNewCustomer };
+module.exports = { handleRegisterCustomer };
