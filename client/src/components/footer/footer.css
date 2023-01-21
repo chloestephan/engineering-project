@@ -1,0 +1,47 @@
+.footer {
+    overflow: hidden;
+    background-color: #232F3E;
+    padding: 20px 30px;
+}
+
+.footer-left {
+    float: left;
+}
+
+.footer-right {
+    float: right;
+}
+
+.footer-center {
+    padding: auto;
+    text-align: center;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+.footer a {
+    text-decoration: none;
+  }
+  
+    .footer-left a {
+        float: left;
+        color: #FFFFFF;
+        text-align: center;
+        padding: 12px;
+        text-decoration: none;
+        font-size: 19px; 
+        line-height: 25px;
+        border-radius: 4px;  
+        border-color:#FFFFFF;
+        border: 1px solid;
+        color: #FFFFFF;
+        border-radius: 5px;
+    }
+  
+  .footer-left a:hover {
+    background-color: #FFFFFF;
+    color: #232F3E;
+  }

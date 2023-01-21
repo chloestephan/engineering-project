@@ -7,7 +7,7 @@ import axios from "../../../api/axios";
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const FORGOT_PASSWORD_URL = "/forgot-password";
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm = ({ userType = "customer" }) => {
   const emailRef = useRef();
   const errRef = useRef();
 
@@ -36,8 +36,8 @@ const ForgotPasswordForm = () => {
     if (validEmail) {
       try {
         await axios.post(
-          FORGOT_PASSWORD_URL,
-          { email },
+          FORGOT_PASSWORD_URL + "-" + userType,
+          { email, userType },
           {
             headers: { "Content-Type": "application/json" },
           }
@@ -45,16 +45,16 @@ const ForgotPasswordForm = () => {
         setSuccess(true);
       } catch (err) {
         if (!err?.response) {
-          setErrMsg("No Server Response");
+          setErrMsg("Aucune réponse du serveur");
         } else if (err.response?.status === 401) {
           setErrMsg(err.response.data);
         } else {
-          setErrMsg("Login Failed");
+          setErrMsg("Une erreur est survenue");
         }
       }
     } else {
       errRef.current.focus();
-      setErrMsg("Please enter a valid email address.");
+      setErrMsg("Merci de remplir correctement tous les champs");
     }
   };
 
@@ -62,7 +62,11 @@ const ForgotPasswordForm = () => {
     <>
       {success ? (
         // TODO ADD REDIRECT TO LOGIN
-        <SuccessMessageForm title="Your new password has been sent" link="/" linkTitle="Return to login" />
+        <SuccessMessageForm
+          title="Votre nouveau mot de passe a été envoyé"
+          link="/"
+          linkTitle="Retour à la connexion"
+        />
       ) : (
         <section>
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
@@ -78,9 +82,9 @@ const ForgotPasswordForm = () => {
               setInputValue={setEmail}
               setInputFocus={setEmailFocus}
               validInput={validEmail}
-              noteValidInput="Please enter a valid email address."
+              noteValidInput="Doit être au format email."
             />
-            <button>Send new password</button>
+            <button>Envoyer un nouveau mot de passe</button>
           </form>
         </section>
       )}

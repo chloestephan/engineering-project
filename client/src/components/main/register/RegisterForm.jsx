@@ -9,7 +9,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,24}
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGISTER_URL = "/register";
 
-const RegisterForm = () => {
+const RegisterForm = ({ userType = "customer" }) => {
   const usernameRef = useRef();
   const errRef = useRef();
 
@@ -72,13 +72,13 @@ const RegisterForm = () => {
         password === matchPassword
       )
     ) {
-      setErrMsg("Please check your entries.");
+      setErrMsg("Merci de remplir correctement tous les champs");
       return;
     }
     try {
       const response = await axios.post(
-        REGISTER_URL,
-        JSON.stringify({ username, email, company, password }),
+        REGISTER_URL + "-" + userType,
+        JSON.stringify({ username, email, company, password, userType }),
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -93,11 +93,11 @@ const RegisterForm = () => {
       }
     } catch (err) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
+        setErrMsg("Aucune réponse du serveur");
       } else if (err.response?.status === 409 || err.response?.status === 401) {
         setErrMsg(err.response.data);
       } else {
-        setErrMsg("Registration Failed");
+        setErrMsg("Une erreur est survenue");
       }
       errRef.current.focus();
     }
@@ -107,23 +107,23 @@ const RegisterForm = () => {
     <>
       {success ? (
         // TODO ADD REDIRECT TO LOGIN
-        <SuccessMessageForm title="Your account has been created" link="/" linkTitle="Return to login" />
+        <SuccessMessageForm title="Votre compte a bien été créé" link="/" linkTitle="Retour à la connexion" />
       ) : (
         <section>
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
 
-          <h1>Register</h1>
+          <h1>Créer un compte</h1>
           <form onSubmit={handleSubmit}>
             <DefaultInputContainer
               inputName="username"
-              inputLabel="Username"
+              inputLabel="Nom d'utilisateur"
               inputRef={usernameRef}
               inputValue={username}
               inputFocus={usernameFocus}
               setInputValue={setUsername}
               setInputFocus={setUsernameFocus}
               validInput={validUsername}
-              noteValidInput="Must start with a capital letter. Letters, numbers, and hyphens only."
+              noteValidInput="Doit contenir au moins 2 caractères et commencer par une majuscule."
             />
 
             <DefaultInputContainer
@@ -134,57 +134,62 @@ const RegisterForm = () => {
               setInputValue={setEmail}
               setInputFocus={setEmailFocus}
               validInput={validEmail}
-              noteValidInput="Must be a valid email address."
+              noteValidInput="Doit être au format email."
             />
 
-            <DefaultInputContainer
-              inputName="company"
-              inputLabel="Company"
-              inputValue={company}
-              setInputValue={setCompany}
-            />
+            {userType === "customer" && (
+              <DefaultInputContainer
+                inputName="company"
+                inputLabel="Entreprise"
+                inputValue={company}
+                setInputValue={setCompany}
+              />
+            )}
 
             <DefaultInputContainer
               inputName="password"
-              inputLabel="Password"
+              inputLabel="Mot de passe"
               inputValue={password}
               inputFocus={passwordFocus}
               setInputValue={setPassword}
               setInputFocus={setPasswordFocus}
               validInput={validPassword}
               inputType={showPassword ? "text" : "password"}
-              noteValidInput="10 to 24 characters. At least one uppercase letter, one lowercase letter, one number, and one special character."
+              noteValidInput="Doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
             />
 
             <DefaultInputContainer
               inputName="confirm-password"
-              inputLabel="Confirm password"
+              inputLabel="Confirmation du mot de passe"
               inputValue={matchPassword}
               inputFocus={matchPasswordFocus}
               setInputValue={setMatchPassword}
               setInputFocus={setMatchPasswordFocus}
               validInput={validMatchPassword}
               inputType={showPassword ? "text" : "password"}
-              noteValidInput="Must be the same as password."
+              noteValidInput="Doit correspondre au mot de passe."
             />
 
             <div className="show-password-container">
               <label htmlFor="show-password">
                 <input type="checkbox" id="show-password" onChange={() => setShowPassword(!showPassword)} />
-                Show password
+                Afficher le mot de passe
               </label>
             </div>
 
-            <button disabled={!validUsername || !validPassword || !validMatchPassword || !validEmail} type="submit">
-              Sign Up
+            <button
+              disabled={!validUsername || !validPassword || !validMatchPassword || !validEmail}
+              type="submit"
+            >
+              Créer un compte
             </button>
           </form>
           <p>
-            Already registered?
+            Vous avez déjà un compte ?
             <br />
             <span className="line">
               {/*put router link here*/}
-              <a href="/">Sign In</a>
+              <a href="/">Connexion</a>
             </span>
           </p>
         </section>

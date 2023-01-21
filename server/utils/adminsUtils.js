@@ -3,26 +3,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const client = db.getClient();
 
-async function getCustomerByEmail(email) {
+async function getAdminByEmail(email) {
   const query = {
-    text: "SELECT * FROM customers WHERE email = $1",
+    text: "SELECT * FROM admins WHERE email = $1",
     values: [email],
   };
   return await client.query(query);
-}
-
-async function getCustomerByCompany(company) {
-  const query = {
-    text: "SELECT * FROM customers WHERE company = $1",
-    values: [company],
-  };
-  return await client.query(query);
-}
-
-async function isCustomerRegisteredWith(infomation, type) {
-  const row =
-    type === "email" ? await getCustomerByEmail(infomation) : await getCustomerByCompany(infomation);
-  return row.rowCount > 0;
 }
 
 async function isPasswordCorrect(password, hash) {
@@ -34,7 +20,6 @@ function generateToken(user, tokenType) {
     {
       email: user.email,
       username: user.username,
-      company: user.company,
     },
     tokenType === "access" ? process.env.ACCESS_TOKEN_SECRET : process.env.REFRESH_TOKEN_SECRET,
     {
@@ -42,10 +27,9 @@ function generateToken(user, tokenType) {
     }
   );
 }
+
 module.exports = {
-  isCustomerRegisteredWith,
-  getCustomerByEmail,
-  getCustomerByCompany,
+  getAdminByEmail,
   isPasswordCorrect,
   generateToken,
 };

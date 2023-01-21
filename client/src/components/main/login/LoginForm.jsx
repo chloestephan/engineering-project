@@ -7,7 +7,7 @@ import axios from "../../../api/axios";
 
 const LOGIN_URL = "/login";
 
-const LoginForm = () => {
+const LoginForm = ({ userType = "customer" }) => {
   const { setAuth } = useContext(AuthContext);
   const emailRef = useRef();
   const errRef = useRef();
@@ -29,9 +29,13 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(LOGIN_URL, JSON.stringify({ email, password }), {
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.post(
+        LOGIN_URL + "-" + userType,
+        JSON.stringify({ email, password, userType }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       const accesToken = response?.data?.accessToken;
       const role = response?.data?.role;
       setAuth({ email, password, accesToken, role });
@@ -40,11 +44,11 @@ const LoginForm = () => {
       setSuccess(true);
     } catch (err) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
+        setErrMsg("Aucune réponse du serveur");
       } else if (err.response.status === 401) {
         setErrMsg(err.response.data);
       } else {
-        setErrMsg("Login Failed");
+        setErrMsg("Une erreur est survenue");
       }
       errRef.current.focus();
     }
@@ -54,11 +58,11 @@ const LoginForm = () => {
     <>
       {success ? (
         // TODO ADD REDIRECT TO HOME
-        <SuccessMessageForm title="You are logged in!" link="/" linkTitle="Go to home" />
+        <SuccessMessageForm title="Vous êtes connectés" link="/" linkTitle="Aller à l'accueil" />
       ) : (
         <section>
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
-          <h1>Sign In</h1>
+          <h1>Connexion</h1>
           <form onSubmit={handleSubmit}>
             <DefaultInputContainer
               inputName="email"
@@ -70,20 +74,20 @@ const LoginForm = () => {
 
             <DefaultInputContainer
               inputName="password"
-              inputLabel="Password"
+              inputLabel="Mot de passe"
               inputType="password"
               inputValue={password}
               setInputValue={setPassword}
             />
 
-            <button>Sign In</button>
+            <button>Connexion</button>
           </form>
           <p>
-            Need an Account?
+            Besoin d'un compte ?
             <br />
             <span className="line">
               {/*put router link here*/}
-              <a href="/">Sign Up</a>
+              <a href="/">Créer un compte</a>
             </span>
           </p>
         </section>

@@ -3,7 +3,7 @@ const {
   getCustomerByEmail,
   isPasswordCorrect,
   generateToken,
-} = require("../utils/customersUtils");
+} = require("../../utils/customersUtils");
 
 const handleLoginCustomer = async (req, res) => {
   const { email, password } = req.body;

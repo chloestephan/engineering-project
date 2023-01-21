@@ -1,0 +1,138 @@
+
+section {
+    width: 100%;
+    max-width: 500px;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 2rem;
+    background-color: white;
+    color: #666666;
+    box-shadow: lightgrey 0px 0px 5px 0px;
+    border-radius: 8px;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+  
+  section h1 {
+    color: #FF9900;
+    text-align: center;
+    font-size: 30px;
+  }
+
+  #sousTitre {
+    color: #474749;
+    text-align: center;
+    font-size: 14px;
+    margin: 5px 20%;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    padding-bottom: 1rem;
+  }
+  
+  input, label {
+    display: block;
+  }
+  
+  a, a:visited {
+    color: #fff;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  button,
+  textarea {
+  font-size: 22px;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid #666666;
+  width: 100%;
+  }
+  
+  label,
+  button {
+  margin-top: 1rem;
+  }
+  
+  button {
+  padding: 0.5rem;
+  }
+  
+  .instructions {
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+    background: #000;
+    color: #fff;
+    padding: 0.25rem;
+    position: relative;
+    bottom: -10px;
+  }
+  
+  .instructions > svg {
+    margin-right: 0.25rem;
+  }
+  
+  .offscreen {
+    position: absolute;
+    left: -9999px;
+  }
+  
+  .hide {
+    display: none;
+  }
+  
+  .valid {
+    color: limegreen;
+    margin-left: 0.25rem;
+  }
+  
+  .invalid {
+    color: red;
+    margin-left: 0.25rem;
+  }
+  
+  .errmsg {
+    background-color: lightpink;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .line {
+    display: inline-block;
+  }
+
+  .show-password-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+  }
+
+  .show-password-container > label {
+    margin-top: 0;
+    margin-left: 10px;
+  }
+
+  .btnValider {
+    background-color: #146EB4;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+  }
