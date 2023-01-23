@@ -1,5 +1,5 @@
-const { getAdminByEmail } = require("../../utils/adminsUtils");
-const { sendEmail, generatePassword } = require("../../utils/sendEmailUtils");
+const { getAdminByEmail, generatePassword } = require("../../utils/adminsUtils");
+const { sendEmail } = require("../../utils/sendEmailUtils");
 const bcrypt = require("bcrypt");
 const db = require("../../config/dbConn");
 const client = db.getClient();

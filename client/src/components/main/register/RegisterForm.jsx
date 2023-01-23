@@ -36,6 +36,10 @@ const RegisterForm = ({ userType = "customer" }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const validFormForCustomer = validUsername && validEmail && company !== "" && userType === "customer";
+  const validFormForAdmin =
+    validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
+
   useEffect(() => {
     usernameRef.current.focus();
   }, []);
@@ -64,14 +68,7 @@ const RegisterForm = ({ userType = "customer" }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Valid user input
-    if (
-      !(
-        USER_REGEX.test(username) &&
-        EMAIL_REGEX.test(email) &&
-        PWD_REGEX.test(password) &&
-        password === matchPassword
-      )
-    ) {
+    if (!(validFormForCustomer || validFormForAdmin)) {
       setErrMsg("Merci de remplir correctement tous les champs");
       return;
     }
@@ -146,42 +143,46 @@ const RegisterForm = ({ userType = "customer" }) => {
               />
             )}
 
-            <DefaultInputContainer
-              inputName="password"
-              inputLabel="Mot de passe"
-              inputValue={password}
-              inputFocus={passwordFocus}
-              setInputValue={setPassword}
-              setInputFocus={setPasswordFocus}
-              validInput={validPassword}
-              inputType={showPassword ? "text" : "password"}
-              noteValidInput="Doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
-            />
+            {userType !== "customer" && (
+              <>
+                <DefaultInputContainer
+                  inputName="password"
+                  inputLabel="Mot de passe"
+                  inputValue={password}
+                  inputFocus={passwordFocus}
+                  setInputValue={setPassword}
+                  setInputFocus={setPasswordFocus}
+                  validInput={validPassword}
+                  inputType={showPassword ? "text" : "password"}
+                  noteValidInput="Doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
+                />
 
-            <DefaultInputContainer
-              inputName="confirm-password"
-              inputLabel="Confirmation du mot de passe"
-              inputValue={matchPassword}
-              inputFocus={matchPasswordFocus}
-              setInputValue={setMatchPassword}
-              setInputFocus={setMatchPasswordFocus}
-              validInput={validMatchPassword}
-              inputType={showPassword ? "text" : "password"}
-              noteValidInput="Doit correspondre au mot de passe."
-            />
+                <DefaultInputContainer
+                  inputName="confirm-password"
+                  inputLabel="Confirmation du mot de passe"
+                  inputValue={matchPassword}
+                  inputFocus={matchPasswordFocus}
+                  setInputValue={setMatchPassword}
+                  setInputFocus={setMatchPasswordFocus}
+                  validInput={validMatchPassword}
+                  inputType={showPassword ? "text" : "password"}
+                  noteValidInput="Doit correspondre au mot de passe."
+                />
 
-            <div className="show-password-container">
-              <label htmlFor="show-password">
-                <input type="checkbox" id="show-password" onChange={() => setShowPassword(!showPassword)} />
-                Afficher le mot de passe
-              </label>
-            </div>
-
-            <button
-              disabled={!validUsername || !validPassword || !validMatchPassword || !validEmail}
-              type="submit"
-            >
-              Créer un compte
+                <div className="show-password-container">
+                  <label htmlFor="show-password">
+                    <input
+                      type="checkbox"
+                      id="show-password"
+                      onChange={() => setShowPassword(!showPassword)}
+                    />
+                    Afficher le mot de passe
+                  </label>
+                </div>
+              </>
+            )}
+            <button disabled={!(validFormForCustomer || validFormForAdmin)} type="submit">
+              {userType === "customer" ? "Créer un compte" : "Créer un compte administrateur"}
             </button>
           </form>
           <p>

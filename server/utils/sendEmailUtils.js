@@ -25,18 +25,6 @@ function sendEmail(receiver, subject, body) {
   });
 }
 
-function generatePassword() {
-  let password = "";
-  const str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-  const length = 15 + Math.floor(Math.random() * 10);
-  for (i = 1; i <= length; i++) {
-    const char = Math.floor(Math.random() * str.length + 1);
-    password += str.charAt(char);
-  }
-  return password;
-}
-
 module.exports = {
   sendEmail,
-  generatePassword,
 };

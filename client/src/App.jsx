@@ -8,9 +8,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <RegisterForm userType="admin" />
-      <LoginForm userType="admin" />
-      <ForgotPasswordForm userType="admin" />
+      <RegisterForm />
       <Footer />
     </div>
   );
