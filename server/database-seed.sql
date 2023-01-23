@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS admins CASCADE;
 DROP TABLE IF EXISTS formBuilder CASCADE;
 DROP TABLE IF EXISTS formAnswers CASCADE;
 DROP TABLE IF EXISTS formCompleted CASCADE;
+DROP TABLE IF EXISTS linksForm CASCADE;
 DROP EXTENSION IF EXISTS "uuid-ossp";
 
 CREATE TYPE Type AS ENUM ('User input long', 'User input court', 'Dropdown','Checkbox','Toggle','Selection Radio');
@@ -22,7 +23,7 @@ CREATE TABLE customers
 
 CREATE TABLE admins
 (
-    id SERIAL,
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
     username text,
     email text,
     password text,
@@ -56,11 +57,20 @@ CREATE TABLE formCompleted
     CONSTRAINT form_completed_pkey PRIMARY KEY (customerId)
 );
 
+CREATE TABLE linksForm
+(
+    id SERIAL,
+    url text,
+    customerId uuid NOT NULL DEFAULT uuid_generate_v4(),
+    CONSTRAINT FK_Customer_ID FOREIGN KEY (customerId) REFERENCES customers(id),
+    CONSTRAINT links_pkey PRIMARY KEY (id)
+);
+
 INSERT INTO customers (username, email, password, company) VALUES
-('jsmith', 'jsmith@gmail.com', 'adcd', 'Chaos Corp.');
+('jsmith', 'vnjzrbvjizbei@gmail.com', 'adcd', 'Chaos Corp.');
 
 INSERT INTO admins (username, email, password) VALUES
-('jsmith','jsmith@gmail.com', '123');
+('jsmith','vnjzrbvjizbei.admin@gmail.com', '123');
 
 INSERT INTO formBuilder (ordre, questionType, answer) VALUES
 ('1', 'User input long', 'Ceci est un input utilisateur long');

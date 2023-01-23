@@ -2,6 +2,7 @@ const db = require("../config/dbConn");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const client = db.getClient();
+const { v4: uuidv4 } = require('uuid');
 
 async function getCustomerByEmail(email) {
   const query = {
@@ -54,6 +55,10 @@ function generatePassword() {
   return password;
 }
 
+function generateLinkToForm() {
+  return process.env.BASE_URL + "/fill-form/" + uuidv4();
+}
+
 module.exports = {
   isCustomerRegisteredWith,
   getCustomerByEmail,
@@ -61,4 +66,5 @@ module.exports = {
   isPasswordCorrect,
   generateToken,
   generatePassword,
+  generateLinkToForm
 };

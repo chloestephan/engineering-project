@@ -1,10 +1,10 @@
 const Header = () => {
     return (
-        <div class="header">
+        <div className="header">
             <a href="">
                 <img src="logo.png" alt="Powered By AWS" />
             </a>
-            <div class="header-right">
+            <div className="header-right">
                 <a href="#connexion">Mon compte</a>
             </div>
         </div>
