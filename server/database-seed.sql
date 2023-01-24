@@ -66,18 +66,18 @@ CREATE TABLE linksForm
     CONSTRAINT links_pkey PRIMARY KEY (id)
 );
 
-INSERT INTO customers (username, email, password, company) VALUES
-('jsmith', 'vnjzrbvjizbei@gmail.com', 'adcd', 'Chaos Corp.');
+-- INSERT INTO customers (username, email, password, company) VALUES
+-- ('jsmith', 'vnjzrbvjizbei@gmail.com', 'adcd', 'Chaos Corp.');
 
-INSERT INTO admins (username, email, password) VALUES
-('jsmith','vnjzrbvjizbei.admin@gmail.com', '123');
+-- INSERT INTO admins (username, email, password) VALUES
+-- ('jsmith','vnjzrbvjizbei.admin@gmail.com', '123');
 
-INSERT INTO formBuilder (ordre, questionType, answer) VALUES
-('1', 'User input long', 'Ceci est un input utilisateur long');
+-- INSERT INTO formBuilder (ordre, questionType, answer) VALUES
+-- ('1', 'User input long', 'Ceci est un input utilisateur long');
 
 
-INSERT INTO formAnswers (customerID, questionId, answer) VALUES
-((SELECT id from customers where username='jsmith'), (SELECT id from formBuilder where ordre=1), 'Ceci est une réponse');
+-- INSERT INTO formAnswers (customerID, questionId, answer) VALUES
+-- ((SELECT id from customers where username='jsmith'), (SELECT id from formBuilder where ordre=1), 'Ceci est une réponse');
 
-INSERT INTO formCompleted (customerID, urlPDF) VALUES
-((SELECT id from customers where username='jsmith'),'https://aws');
+-- INSERT INTO formCompleted (customerID, urlPDF) VALUES
+-- ((SELECT id from customers where username='jsmith'),'https://aws');

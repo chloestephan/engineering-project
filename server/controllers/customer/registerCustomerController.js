@@ -14,14 +14,14 @@ const handleRegisterCustomer = async (req, res) => {
   const { username, email, company } = req.body;
 
   if (!username || !email || !company) {
-    res.status(401).send("Informations manquantes");
+    res.status(401).send({ message: "Informations manquantes" });
     return;
   }
 
   const isCustomerRegistered =
     (await isCustomerRegisteredWith(email, "email")) || (await isCustomerRegisteredWith(company, "company"));
   if (isCustomerRegistered) {
-    res.status(409).send("Utilisateur déjà enregistré");
+    res.status(409).send({ message: "Utilisateur déjà enregistré" });
     return;
   }
 
@@ -52,7 +52,7 @@ const handleRegisterCustomer = async (req, res) => {
 
   sendEmail(email, title, body);
 
-  res.status(200).send("Utilisateur enregistré");
+  res.status(200).send({ message: "Utilisateur enregistré" });
 };
 
 module.exports = { handleRegisterCustomer };
