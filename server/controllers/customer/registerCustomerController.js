@@ -12,7 +12,7 @@ const client = db.getClient();
 
 const handleRegisterCustomer = async (req, res) => {
   const { username, email, company } = req.body;
-  
+
   if (!username || !email || !company) {
     res.status(401).send("Informations manquantes");
     return;
