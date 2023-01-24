@@ -1,6 +1,6 @@
 const superTest = require("supertest");
 const { app, server } = require("../server");
-const { isCustomerRegisteredWith } = require("../utils/customersUtils");
+const { isCustomerRegisteredWith, getCustomerByEmail } = require("../utils/customersUtils");
 const request = superTest(app);
 const { cleanUpDatabase } = require("./utils/database");
 const { createRandomCustomer, createCustomersWithSame } = require("./utils/fakerUser");
@@ -78,6 +78,8 @@ describe("Customer Registration", () => {
   });
 
   it("should register email in lower case", async () => {
-
+    const customer = createRandomCustomer();
+    await request.post("/register-customer").send({ ...customer, email: customer.email.toUpperCase() });
+    expect(isCustomerRegisteredWith(customer.email.toLowerCase(), "email")).toBeTruthy();
   });
 });

@@ -9,12 +9,13 @@ const { sendLinkToNewCustomer } = require("../../utils/sendEmailUtils");
 
 const handleRegisterCustomer = async (req, res) => {
   const { username, company } = req.body;
-  const email = req.body.email.toLowerCase();
+  let email = req.body.email;
 
   if (!username || !email || !company) {
     res.status(401).send({ message: "Informations manquantes" });
     return;
   }
+  email = email.toLowerCase();
 
   const isCustomerRegistered =
     (await isCustomerRegisteredWith(email, "email")) || (await isCustomerRegisteredWith(company, "company"));

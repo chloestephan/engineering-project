@@ -3,12 +3,13 @@ const { generatePassword } = require("../../utils/usersUtils");
 const { sendNewPassword } = require("../../utils/sendEmailUtils");
 
 const handleForgotPasswordAdmin = async (req, res) => {
-  const email = req.body.email.toLowerCase();
+  let email = req.body.email;
 
   if (!email) {
     res.status(401).send({ message: "Informations manquantes" });
     return;
   }
+  email = email.toLowerCase();
 
   const admin = await getAdminByEmail(email);
   if (!admin) {

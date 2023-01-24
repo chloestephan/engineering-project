@@ -3,12 +3,13 @@ const { isPasswordCorrect, generateToken } = require("../../utils/usersUtils");
 
 const handleLoginCustomer = async (req, res) => {
   const { password } = req.body;
-  const email = req.body.email.toLowerCase();
+  let email = req.body.email;
 
   if (!email || !password) {
     res.status(401).send({ message: "Informations manquantes" });
     return;
   }
+  email = email.toLowerCase();
 
   if (!(await isCustomerRegisteredWith(email, "email"))) {
     res.status(401).send({ message: "Informations incorrectes" });
