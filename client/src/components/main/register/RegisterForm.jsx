@@ -37,10 +37,6 @@ const RegisterForm = ({ userType = "customer"}) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const validFormForCustomer = validUsername && validEmail && company !== "" && userType === "customer";
-  const validFormForAdmin =
-    validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
-
   useEffect(() => {
     usernameRef.current.focus();
   }, []);
