@@ -11,7 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />} >
         <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/login" element={<LoginForm userType="admin"/>} />
         <Route path="/register" element={<RegisterForm />} />
 
         <Route element={<RequireAuth />}>

@@ -6,11 +6,11 @@ const Home = () => {
         <section>
             <h1>Links</h1>
             <br />
-            <Link to="/login">Go to Login page</Link>
+            <Link to="/login"><p>Go to Login page</p></Link>
             <br />
-            <Link to="/register">Go to Registration page</Link>
+            <Link to="/register"><p>Go to Registration page</p></Link>
             <br />
-            <Link to="/private">Go to Private page</Link>     
+            <Link to="/private"><p>Go to Private page</p></Link>     
         </section>
     )
 }

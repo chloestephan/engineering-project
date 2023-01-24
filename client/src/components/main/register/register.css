@@ -136,3 +136,7 @@ section {
     margin: auto;
     margin-top: 20px;
   }
+
+span p{
+  color:rgb(255, 0, 0);
+}
