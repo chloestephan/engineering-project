@@ -1,5 +1,5 @@
-const { getAdminByEmail } = require("../../utils/adminsUtils");
-const { sendEmail, generatePassword } = require("../../utils/sendEmailUtils");
+const { getAdminByEmail, generatePassword } = require("../../utils/adminsUtils");
+const { sendEmail } = require("../../utils/sendEmailUtils");
 const bcrypt = require("bcrypt");
 const db = require("../../config/dbConn");
 const client = db.getClient();
@@ -8,13 +8,13 @@ const handleForgotPasswordAdmin = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    res.status(401).send("Missing information");
+    res.status(401).send("Informations manquantes");
     return;
   }
 
   const resultRequest = await getAdminByEmail(email);
   if (resultRequest.rows.length === 0) {
-    res.status(401).send("Wrong information");
+    res.status(401).send("Informations incorrectes");
     return;
   }
 
@@ -28,13 +28,13 @@ const handleForgotPasswordAdmin = async (req, res) => {
   await client.query(query);
 
   const body =
-    "Hello Mrs./Ms.,\n\n" +
-    `Following your request for a forgotten password, we have generated this new password for your account: ${newPassword}\n\n` +
-    "Sincerely, the entire engineering project team.";
+    `Bonjour Mme/M,\n\n` +
+    `Suite à votre demande de mot de passe oublié, nous avons généré ce nouveau mot de passe pour votre compte : ${newPassword}\n\n` +
+    "Sincèrement, toute l'équipe de l'engineering project.";
 
-  sendEmail(email, "New password generated", body);
+  sendEmail(email, "Nouveau mot de passe généré", body);
 
-  res.status(200).send({ message: "Password updated" });
+  res.status(200).send({ message: "Mot de passe mis à jour" });
 };
 
 module.exports = { handleForgotPasswordAdmin };

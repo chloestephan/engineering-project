@@ -2,6 +2,7 @@ const db = require("../config/dbConn");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const client = db.getClient();
+const { v4: uuidv4 } = require('uuid');
 
 async function getCustomerByEmail(email) {
   const query = {
@@ -42,10 +43,28 @@ function generateToken(user, tokenType) {
     }
   );
 }
+
+function generatePassword() {
+  let password = "";
+  const str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+  const length = 15 + Math.floor(Math.random() * 10);
+  for (i = 1; i <= length; i++) {
+    const char = Math.floor(Math.random() * str.length + 1);
+    password += str.charAt(char);
+  }
+  return password;
+}
+
+function generateLinkToForm() {
+  return process.env.BASE_URL + "/fill-form/" + uuidv4();
+}
+
 module.exports = {
   isCustomerRegisteredWith,
   getCustomerByEmail,
   getCustomerByCompany,
   isPasswordCorrect,
   generateToken,
+  generatePassword,
+  generateLinkToForm
 };
