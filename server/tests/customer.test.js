@@ -76,6 +76,18 @@ describe("Customer Registration", () => {
 });
 
 describe("Customer Login", () => {
+  it("should login a customer", async () => {
+    const customer = createRandomCustomer();
+    await request.post("/register-customer").send(customer);
+    await request
+      .post("/login-customer")
+      .send({ email: customer.email, password: process.env.TEST_PASSWORD })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.message).toEqual("Utilisateur connecté");
+      });
+  });
+
   it("should not login a customer with missing informations", async () => {
     const customer = createRandomCustomer();
     await request
@@ -123,6 +135,19 @@ describe("Customer Forgot Password", () => {
       .expect(200)
       .then((response) => {
         expect(response.body.message).toEqual("Mot de passe mis à jour");
+      });
+  });
+
+  it("should allow to connect with the new password", async () => {
+    const customer = createRandomCustomer();
+    await request.post("/register-customer").send(customer);
+    await request.post("/forgot-password-customer").send({ email: customer.email });
+    await request
+      .post("/login-customer")
+      .send({ email: customer.email, password: process.env.TEST_PASSWORD })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.message).toEqual("Utilisateur connecté");
       });
   });
 

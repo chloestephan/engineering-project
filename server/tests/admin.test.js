@@ -113,6 +113,19 @@ describe("Admin Forgot Password", () => {
       });
   });
 
+  it("should allow to connect with the new password", async () => {
+    const admin = createRandomAdmin();
+    await request.post("/register-admin").send(admin);
+    await request.post("/forgot-password-admin").send({ email: admin.email });
+    await request
+      .post("/login-admin")
+      .send({ email: admin.email, password: process.env.TEST_PASSWORD })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.message).toEqual("Utilisateur connecté");
+      });
+  });
+
   it("should not send a reset password email with missing informations", async () => {
     const admin = createRandomAdmin();
     await request

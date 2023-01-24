@@ -19,6 +19,10 @@ function generateToken(user, tokenType) {
 }
 
 function generatePassword() {
+  if (process.env.NODE_ENV === "test") {
+    return process.env.TEST_PASSWORD;
+  }
+
   let password = "";
   const str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
   const length = 15 + Math.floor(Math.random() * 10);
