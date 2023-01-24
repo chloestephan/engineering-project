@@ -2,7 +2,8 @@ const { getAdminByEmail } = require("../../utils/adminsUtils");
 const { isPasswordCorrect, generateToken } = require("../../utils/usersUtils");
 
 const handleLoginAdmin = async (req, res) => {
-  const { email, password } = req.body;
+  const { password } = req.body;
+  const email = req.body.email.toLowerCase();
 
   if (!email || !password) {
     res.status(401).send("Informations manquantes");

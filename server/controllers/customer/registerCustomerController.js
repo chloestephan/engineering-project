@@ -11,7 +11,8 @@ const { sendEmail } = require("../../utils/sendEmailUtils");
 const client = db.getClient();
 
 const handleRegisterCustomer = async (req, res) => {
-  const { username, email, company } = req.body;
+  const { username, company } = req.body;
+  const email = req.body.email.toLowerCase();
 
   if (!username || !email || !company) {
     res.status(401).send({ message: "Informations manquantes" });

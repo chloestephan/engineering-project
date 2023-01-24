@@ -8,7 +8,6 @@ require("dotenv").config();
 
 describe("Customer Registration", () => {
   afterEach(async () => {
-    // TODO don't know why but it doesn't work
     await cleanUpDatabase();
   });
 

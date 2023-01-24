@@ -6,7 +6,7 @@ const db = require("../../config/dbConn");
 const client = db.getClient();
 
 const handleForgotPasswordCustomer = async (req, res) => {
-  const { email } = req.body;
+  const email = req.body.email.toLowerCase();
 
   const invalidInformation = !email || !(await isCustomerRegisteredWith(email, "email"));
 

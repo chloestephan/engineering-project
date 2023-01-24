@@ -6,7 +6,7 @@ const db = require("../../config/dbConn");
 const client = db.getClient();
 
 const handleForgotPasswordAdmin = async (req, res) => {
-  const { email } = req.body;
+  const email = req.body.email.toLowerCase();
 
   if (!email) {
     res.status(401).send("Informations manquantes");

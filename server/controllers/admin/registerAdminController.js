@@ -5,7 +5,8 @@ const { getAdminByEmail } = require("../../utils/adminsUtils");
 const client = db.getClient();
 
 const handleRegisterAdmin = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, password } = req.body;
+  const email = req.body.email.toLowerCase();
 
   if (!username || !email || !password) {
     res.status(401).send("Informations manquantes");

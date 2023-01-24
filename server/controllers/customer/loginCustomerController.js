@@ -2,7 +2,8 @@ const { isCustomerRegisteredWith, getCustomerByEmail } = require("../../utils/cu
 const { isPasswordCorrect, generateToken } = require("../../utils/usersUtils");
 
 const handleLoginCustomer = async (req, res) => {
-  const { email, password } = req.body;
+  const { password } = req.body;
+  const email = req.body.email.toLowerCase();
 
   const invalidInformation = !email || !password || !(await isCustomerRegisteredWith(email, "email"));
 
