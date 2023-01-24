@@ -7,7 +7,7 @@ const {
 
 const handleLoginCustomer = async (req, res) => {
   const { email, password } = req.body;
-
+  
   if (!email || !password) {
     res.status(401).send("Missing information");
     return;

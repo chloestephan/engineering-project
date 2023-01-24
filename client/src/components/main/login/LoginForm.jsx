@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
+import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
 
 import axios from "../../../api/axios";
 const LOGIN_URL = "/login";
 
-const Login = () => {
+const LoginForm = ({ userType = "customer"}) => {
   const { setAuth } = useAuth();
 
   const navigate = useNavigate();
@@ -30,7 +32,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(LOGIN_URL, JSON.stringify({ email, password }), {
+      const response = await axios.post(LOGIN_URL + "-" + userType, JSON.stringify({ email, password }), {
         headers: { "Content-Type": "application/json" },
       });
       const accesToken = response?.data?.accessToken;
@@ -41,11 +43,11 @@ const Login = () => {
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
+        setErrMsg("Aucune réponse du serveur");
       } else if (err.response.status === 401) {
-        setErrMsg("Invalid Credentials");
+        setErrMsg(err.response.data);
       } else {
-        setErrMsg("Login Failed");
+        setErrMsg("Une erreur est survenue");
       }
       errRef.current.focus();
     }
@@ -53,46 +55,30 @@ const Login = () => {
 
   return (
     <section>
-      <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
-        {errMsg}
-      </p>
+      <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
       <h1>Sign In</h1>
       <form onSubmit={handleSubmit}>
-        <div className="email-container">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="text"
-            id="email"
-            ref={emailRef}
-            autoComplete="off"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            required
+          <DefaultInputContainer
+            inputName="email"
+            inputLabel="Email"
+            inputRef={emailRef}
+            inputValue={email}
+            setInputValue={setEmail}
           />
-        </div>
 
-        <div className="email-container">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            required
+          <DefaultInputContainer
+            inputName="password"
+            inputLabel="Mot de passe"
+            inputType="password"
+            inputValue={password}
+            setInputValue={setPassword}
           />
-        </div>
-        <button>Sign In</button>
-      </form>
-      <p>
-        Need an Account?
-        <br />
-        <span className="line">
-        <Link to="/register"><p style={{color:"red"}}>S'inscrire</p></Link>
-        </span>
-      </p>
+
+          <button>Connexion</button>
+        </form>
     </section>
   
   );
 };
 
-export default Login;
+export default LoginForm;

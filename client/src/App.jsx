@@ -1,9 +1,9 @@
-import Register from "./components/main/register/Register";
+import RegisterForm from "./components/main/register/RegisterForm";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/main/layout/Layout";
 import RequireAuth from "./components/requireauth/RequireAuth";
 import Home from "./components/main/home/Home";
-import Login from "./components/main/login/Login";
+import LoginForm from "./components/main/login/LoginForm";
 import Private from "./components/main/private/Private";
 
 function App() {
@@ -11,8 +11,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />} >
         <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
 
         <Route element={<RequireAuth />}>
           <Route path="/private" element={<Private />} />

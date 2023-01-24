@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
+import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
+import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
 import axios from "../../../api/axios";
 import { Link } from "react-router-dom";
 
@@ -9,7 +10,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,24}
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGISTER_URL = "/register";
 
-const Register = () => {
+const RegisterForm = ({ userType = "customer"}) => {
   const usernameRef = useRef();
   const errRef = useRef();
 
@@ -28,8 +29,8 @@ const Register = () => {
   const [passwordFocus, setPasswordFocus] = useState(false);
 
   const [matchPassword, setMatchPassword] = useState("");
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
+  const [validMatchPassword, setValidMatchPassword] = useState(false);
+  const [matchPasswordFocus, setMatchPasswordFocus] = useState(false);
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState("");
@@ -54,22 +55,26 @@ const Register = () => {
     const result = PWD_REGEX.test(password);
     setValidPassword(result);
     const match = password === matchPassword;
-    setValidMatch(match);
+    setValidMatchPassword(match);
   }, [password, matchPassword]);
 
   useEffect(() => {
     setErrMsg("");
   }, [username, email, password, matchPassword]);
 
+  const validFormForCustomer = validUsername && validEmail && company !== "" && userType === "customer";
+  const validFormForAdmin =
+    validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Valid user input
-    if (!(USER_REGEX.test(username) && EMAIL_REGEX.test(email) && PWD_REGEX.test(password) && password === matchPassword)) {
-      setErrMsg("Please check your entries.");
+    if (!(validFormForCustomer || validFormForAdmin)) {
+      setErrMsg("Merci de remplir correctement tous les champs");
       return;
     }
     try {
-      const response = await axios.post(REGISTER_URL, JSON.stringify({ username, email, company, password }), {
+      const response = await axios.post(REGISTER_URL + "-" + userType, JSON.stringify({ username, email, company, password }), {
         headers: { "Content-Type": "application/json" },
       });
       console.log(response);
@@ -80,17 +85,14 @@ const Register = () => {
         setCompany("");
         setPassword("");
         setMatchPassword("");
-      } else {
-        setErrMsg("Registration Failed");
       }
     } catch (err) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        // TODO handle according to error message
-        setErrMsg("Username already exists");
+        setErrMsg("Aucune réponse du serveur");
+      } else if (err.response?.status === 409 || err.response?.status === 401) {
+        setErrMsg(err.response.data.message);
       } else {
-        setErrMsg("Registration Failed");
+        setErrMsg("Une erreur est survenue");
       }
       errRef.current.focus();
     }
@@ -99,162 +101,90 @@ const Register = () => {
   return (
     <>
       {success ? (
+        <SuccessMessageForm title="Votre compte a bien été créé" link="/" linkTitle="Retour à la connexion" />
+      ) : ( 
         <section>
-          <h1>Success!</h1>
-          <p>
-          <Link to="/login">Retour à la connexion</Link>
-          </p>
-        </section>
-      ) : (
-        <section>
-          <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
-            {errMsg}
-          </p>
+          <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
           <div class="loginFormTitle">
             <h1>Connectez-vous</h1>
             <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
           </div>
           <form onSubmit={handleSubmit}>
+            <DefaultInputContainer
+              inputName="username"
+              inputLabel="Nom d'utilisateur"
+              inputRef={usernameRef}
+              inputValue={username}
+              inputFocus={usernameFocus}
+              setInputValue={setUsername}
+              setInputFocus={setUsernameFocus}
+              validInput={validUsername}
+              noteValidInput="Doit contenir au moins 2 caractères et commencer par une majuscule."
+            />
 
-            <div className="username-container">
-              <label htmlFor="username">
-                Nom d'utilisateur
-                <span className={validUsername ? "valid" : "hide"}>
-                  <FontAwesomeIcon icon={faCheck} />
-                </span>
-                <span className={validUsername || !username ? "hide" : "invalid"}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </span>
-              </label>
-              <input
-                type="text"
-                id="username"
-                ref={usernameRef}
-                autoComplete="off"
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                aria-invalid={!validUsername}
-                aria-describedby="username-note"
-                onFocus={() => setUsernameFocus(true)}
-                onBlur={() => setUsernameFocus(false)}
+            <DefaultInputContainer
+              inputName="email"
+              inputLabel="Email"
+              inputValue={email}
+              inputFocus={emailFocus}
+              setInputValue={setEmail}
+              setInputFocus={setEmailFocus}
+              validInput={validEmail}
+              noteValidInput="Doit être au format email."
+            />
+
+            {userType === "customer" && (
+              <DefaultInputContainer
+                inputName="company"
+                inputLabel="Entreprise"
+                inputValue={company}
+                setInputValue={setCompany}
               />
-              <p id="username-note" className={usernameFocus && username && !validUsername ? "instructions" : "offscreen"}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                Doit commencer par une lettre.
-                <br />
-                Lettres, nombres, et tirets seulement.
-              </p>
-            </div>
+            )}
 
-            <div className="email-container">
-              <label htmlFor="email">
-                Email
-                <span className={validEmail ? "valid" : "hide"}>
-                  <FontAwesomeIcon icon={faCheck} />
-                </span>
-                <span className={validEmail || !email ? "hide" : "invalid"}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </span>
-              </label>
-              <input
-                type="text"
-                id="email"
-                autoComplete="off"
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                aria-invalid={!validEmail}
-                aria-describedby="email-note"
-                onFocus={() => setEmailFocus(true)}
-                onBlur={() => setEmailFocus(false)}
-              />
-              <p id="email-note" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                Merci d'indiquer une addresse mail valide.
-              </p>
-            </div>
+            {userType !== "customer" && (
+              <>
+                <DefaultInputContainer
+                  inputName="password"
+                  inputLabel="Mot de passe"
+                  inputValue={password}
+                  inputFocus={passwordFocus}
+                  setInputValue={setPassword}
+                  setInputFocus={setPasswordFocus}
+                  validInput={validPassword}
+                  inputType={showPassword ? "text" : "password"}
+                  noteValidInput="Doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
+                />
 
-            <div className="company-container">
-              <label htmlFor="company">
-                Entreprise
-              </label>
-              <input
-                type="text"
-                id="company"
-                autoComplete="off"
-                onChange={(e) => setCompany(e.target.value)}
-                required
-              />
-            </div>
+                <DefaultInputContainer
+                  inputName="confirm-password"
+                  inputLabel="Confirmation du mot de passe"
+                  inputValue={matchPassword}
+                  inputFocus={matchPasswordFocus}
+                  setInputValue={setMatchPassword}
+                  setInputFocus={setMatchPasswordFocus}
+                  validInput={validMatchPassword}
+                  inputType={showPassword ? "text" : "password"}
+                  noteValidInput="Doit correspondre au mot de passe."
+                />
 
-            <div className="password-container">
-              <label htmlFor="password">
-                Mot de passe
-                <span className={validPassword ? "valid" : "hide"}>
-                  <FontAwesomeIcon icon={faCheck} />
-                </span>
-                <span className={validPassword || !password ? "hide" : "invalid"}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </span>
-              </label>
-              <input
-                type={ showPassword ? "text" : "password" }
-                id="password"
-                autoComplete="off"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                aria-invalid={!validPassword}
-                aria-describedby="password-note"
-                onFocus={() => setPasswordFocus(true)}
-                onBlur={() => setPasswordFocus(false)}
-              />
-              <p id="password-note" className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                Merci de n'indiquer que 10 à 24 charactères.
-                <br />
-                Doit inclure des lettres majuscules et minuscules, un nombre et un charactère spécial.
-                <br />
-                Charactères spéciaux autorisés: <span aria-label="exclamation mark">!</span>{" "}
-                <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span>{" "}
-                <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-              </p>
-            </div>
-
-            <div className="confirm-password-container">
-              <label htmlFor="confirm-password">
-                Confirmer le mot de passe
-                <span className={validMatch && matchPassword ? "valid" : "hide"}>
-                  <FontAwesomeIcon icon={faCheck} />
-                </span>
-                <span className={validMatch || !matchPassword ? "hide" : "invalid"}>
-                  <FontAwesomeIcon icon={faTimes} />
-                </span>
-              </label>
-              <input
-                type={ showPassword ? "text" : "password" }
-                id="confirm-password"
-                autoComplete="off"
-                onChange={(e) => setMatchPassword(e.target.value)}
-                required
-                aria-invalid={!validMatch}
-                aria-describedby="confirm-password-note"
-                onFocus={() => setMatchFocus(true)}
-                onBlur={() => setMatchFocus(false)}
-              />
-              <p id="confirm-password-note" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                Merci d'indique le même mot de passe que le premier.
-              </p>
-            </div>
-
-            <div className="show-password-container">
-                <input type="checkbox" id="show-password" onChange={() => setShowPassword(!showPassword)} />
-                <label for="show-password">Montrer le mot de passe</label>
-            </div>
-
-            <button class="btnValider" disabled={!validUsername || !validPassword || !validMatch} type="submit">
-              Enregistrer
+                <div className="show-password-container">
+                  <label htmlFor="show-password">
+                    <input
+                      type="checkbox"
+                      id="show-password"
+                      onChange={() => setShowPassword(!showPassword)}
+                    />
+                    Afficher le mot de passe
+                  </label>
+                </div>
+              </>
+            )}
+            <button disabled={!(validFormForCustomer || validFormForAdmin)} type="submit">
+              {userType === "customer" ? "Créer un compte" : "Créer un compte administrateur"}
             </button>
-          </form>
+          </form>         
+
           <p>
             Déjà inscrit ?
             <br />
@@ -268,4 +198,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterForm;
