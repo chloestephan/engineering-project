@@ -63,8 +63,7 @@ const RegisterForm = ({ userType = "customer"}) => {
   }, [username, email, password, matchPassword]);
 
   const validFormForCustomer = validUsername && validEmail && company !== "" && userType === "customer";
-  const validFormForAdmin =
-    validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
+  const validFormForAdmin = validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -189,7 +188,7 @@ const RegisterForm = ({ userType = "customer"}) => {
             Déjà inscrit ?
             <br />
             <span className="line">
-              <Link to="/login">Se connecter</Link>
+              <Link to="/login"><p>Se connecter</p></Link>
             </span>
           </p>
         </section>
