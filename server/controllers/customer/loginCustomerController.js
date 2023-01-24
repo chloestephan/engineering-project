@@ -1,32 +1,24 @@
-const {
-  isCustomerRegisteredWith,
-  getCustomerByEmail,
-  isPasswordCorrect,
-  generateToken,
-} = require("../../utils/customersUtils");
+const { isCustomerRegisteredWith, getCustomerByEmail } = require("../../utils/customersUtils");
+const { isPasswordCorrect, generateToken } = require("../../utils/usersUtils");
 
 const handleLoginCustomer = async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
+  const invalidInformation = !email || !password || !(await isCustomerRegisteredWith(email, "email"));
+
+  if (invalidInformation) {
     res.status(401).send("Informations manquantes");
     return;
   }
 
-  if (!(await isCustomerRegisteredWith(email, "email"))) {
+  const customer = await getCustomerByEmail(email);
+  if (!(await isPasswordCorrect(password, customer.password))) {
     res.status(401).send("Informations incorrectes");
     return;
   }
 
-  const resultRequest = await getCustomerByEmail(email);
-  const user = resultRequest.rows[0];
-  if (!(await isPasswordCorrect(password, user.password))) {
-    res.status(401).send("Informations incorrectes");
-    return;
-  }
-
-  const accessToken = generateToken(user, "access");
-  const refreshToken = generateToken(user, "refresh");
+  const accessToken = generateToken(customer, "access");
+  const refreshToken = generateToken(customer, "refresh");
 
   // TODO Store refresh token in database
 

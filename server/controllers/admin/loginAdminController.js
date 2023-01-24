@@ -1,4 +1,5 @@
-const { getAdminByEmail, isPasswordCorrect, generateToken } = require("../../utils/adminsUtils");
+const { getAdminByEmail } = require("../../utils/adminsUtils");
+const { isPasswordCorrect, generateToken } = require("../../utils/usersUtils");
 
 const handleLoginAdmin = async (req, res) => {
   const { email, password } = req.body;
@@ -8,20 +9,19 @@ const handleLoginAdmin = async (req, res) => {
     return;
   }
 
-  const resultRequest = await getAdminByEmail(email);
-  if (resultRequest.rows.length === 0) {
+  const admin = await getAdminByEmail(email);
+  if (!admin) {
     res.status(401).send("Informations incorrectes");
     return;
   }
 
-  const user = resultRequest.rows[0];
-  if (!(await isPasswordCorrect(password, user.password))) {
+  if (!(await isPasswordCorrect(password, admin.password))) {
     res.status(401).send("Informations incorrectes");
     return;
   }
 
-  const accessToken = generateToken(user, "access");
-  const refreshToken = generateToken(user, "refresh");
+  const accessToken = generateToken(admin, "access");
+  const refreshToken = generateToken(admin, "refresh");
 
   // TODO Store refresh token in database
 

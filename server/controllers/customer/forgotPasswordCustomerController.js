@@ -1,4 +1,5 @@
-const { isCustomerRegisteredWith, generatePassword } = require("../../utils/customersUtils");
+const { isCustomerRegisteredWith } = require("../../utils/customersUtils");
+const { generatePassword } = require("../../utils/usersUtils");
 const { sendEmail } = require("../../utils/sendEmailUtils");
 const bcrypt = require("bcrypt");
 const db = require("../../config/dbConn");
@@ -7,13 +8,10 @@ const client = db.getClient();
 const handleForgotPasswordCustomer = async (req, res) => {
   const { email } = req.body;
 
-  if (!email) {
-    res.status(401).send("Informations manquantes");
-    return;
-  }
+  const invalidInformation = !email || !(await isCustomerRegisteredWith(email, "email"));
 
-  if (!(await isCustomerRegisteredWith(email, "email"))) {
-    res.status(401).send("Informations incorrectes");
+  if (invalidInformation) {
+    res.status(401).send("Informations manquantes");
     return;
   }
 

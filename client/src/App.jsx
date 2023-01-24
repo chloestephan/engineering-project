@@ -9,6 +9,8 @@ function App() {
     <div className="App">
       <Header />
       <RegisterForm />
+      <LoginForm />
+      <ForgotPasswordForm />
       <Footer />
     </div>
   );

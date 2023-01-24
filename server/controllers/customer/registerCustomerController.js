@@ -2,16 +2,17 @@ const bcrypt = require("bcrypt");
 const db = require("../../config/dbConn");
 const {
   isCustomerRegisteredWith,
-  generatePassword,
   generateLinkToForm,
+  getCustomerByEmail,
 } = require("../../utils/customersUtils");
+const { generatePassword } = require("../../utils/usersUtils");
 const { sendEmail } = require("../../utils/sendEmailUtils");
 
 const client = db.getClient();
 
 const handleRegisterCustomer = async (req, res) => {
   const { username, email, company } = req.body;
-
+  
   if (!username || !email || !company) {
     res.status(401).send("Informations manquantes");
     return;
@@ -27,12 +28,20 @@ const handleRegisterCustomer = async (req, res) => {
   const password = generatePassword();
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const query = {
+  let query = {
     text: "INSERT INTO customers (username, email, password, company) VALUES ($1, $2, $3, $4)",
     values: [username, email, hashedPassword, company],
   };
+  client.query(query);
 
   const linkToForm = generateLinkToForm();
+
+  const customer = await getCustomerByEmail(email);
+  query = {
+    text: "INSERT INTO linksform (url, customerId) VALUES ($1, $2)",
+    values: [linkToForm, customer.id],
+  };
+  await client.query(query);
 
   const title = "Bienvenue sur notre plateforme";
   const body =
@@ -43,7 +52,6 @@ const handleRegisterCustomer = async (req, res) => {
 
   sendEmail(email, title, body);
 
-  await client.query(query);
   res.status(200).send("Utilisateur enregistré");
 };
 

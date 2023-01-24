@@ -1,4 +1,5 @@
-const { getAdminByEmail, generatePassword } = require("../../utils/adminsUtils");
+const { getAdminByEmail } = require("../../utils/adminsUtils");
+const { generatePassword } = require("../../utils/usersUtils");
 const { sendEmail } = require("../../utils/sendEmailUtils");
 const bcrypt = require("bcrypt");
 const db = require("../../config/dbConn");
@@ -12,8 +13,8 @@ const handleForgotPasswordAdmin = async (req, res) => {
     return;
   }
 
-  const resultRequest = await getAdminByEmail(email);
-  if (resultRequest.rows.length === 0) {
+  const admin = await getAdminByEmail(email);
+  if (!admin) {
     res.status(401).send("Informations incorrectes");
     return;
   }
