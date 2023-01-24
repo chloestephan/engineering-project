@@ -81,7 +81,7 @@ describe("Customer Login", () => {
     await request.post("/register-customer").send(customer);
     await request
       .post("/login-customer")
-      .send({ email: customer.email, password: process.env.TEST_PASSWORD })
+      .send({ email: customer.email, password: process.env.USER_TEST_PASSWORD })
       .expect(200)
       .then((response) => {
         expect(response.body.message).toEqual("Utilisateur connecté");
@@ -144,7 +144,7 @@ describe("Customer Forgot Password", () => {
     await request.post("/forgot-password-customer").send({ email: customer.email });
     await request
       .post("/login-customer")
-      .send({ email: customer.email, password: process.env.TEST_PASSWORD })
+      .send({ email: customer.email, password: process.env.USER_TEST_PASSWORD })
       .expect(200)
       .then((response) => {
         expect(response.body.message).toEqual("Utilisateur connecté");

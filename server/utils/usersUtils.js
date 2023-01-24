@@ -20,7 +20,7 @@ function generateToken(user, tokenType) {
 
 function generatePassword() {
   if (process.env.NODE_ENV === "test") {
-    return process.env.TEST_PASSWORD;
+    return process.env.USER_TEST_PASSWORD;
   }
 
   let password = "";
