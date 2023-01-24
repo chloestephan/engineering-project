@@ -12,7 +12,7 @@ const handleRegisterAdmin = async (req, res) => {
 
   const admin = await getAdminByEmail(email);
   if (admin) {
-    res.status(401).send({ message: "Utilisateur déjà enregistré" });
+    res.status(409).send({ message: "Utilisateur déjà enregistré" });
     return;
   }
 

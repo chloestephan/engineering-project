@@ -1,20 +1,11 @@
 const superTest = require("supertest");
-const { app, server } = require("../server");
-const { isCustomerRegisteredWith, getCustomerByEmail } = require("../utils/customersUtils");
+const { app } = require("../server");
+const { isCustomerRegisteredWith } = require("../utils/customersUtils");
 const request = superTest(app);
-const { cleanUpDatabase } = require("./utils/database");
 const { createRandomCustomer, createCustomersWithSame } = require("./utils/fakerUser");
 require("dotenv").config();
 
 describe("Customer Registration", () => {
-  afterEach(async () => {
-    await cleanUpDatabase();
-  });
-
-  afterAll(async () => {
-    await server.close();
-  });
-
   it("should register a new customer", async () => {
     const customer = createRandomCustomer();
     await request
@@ -81,5 +72,79 @@ describe("Customer Registration", () => {
     const customer = createRandomCustomer();
     await request.post("/register-customer").send({ ...customer, email: customer.email.toUpperCase() });
     expect(isCustomerRegisteredWith(customer.email.toLowerCase(), "email")).toBeTruthy();
+  });
+});
+
+describe("Customer Login", () => {
+  it("should not login a customer with missing informations", async () => {
+    const customer = createRandomCustomer();
+    await request
+      .post("/login-customer")
+      .send({ ...customer, email: undefined })
+      .expect(401)
+      .then((response) => {
+        expect(response.body.message).toEqual("Informations manquantes");
+      });
+    await request
+      .post("/login-customer")
+      .send({ ...customer, password: undefined })
+      .expect(401)
+      .then((response) => {
+        expect(response.body.message).toEqual("Informations manquantes");
+      });
+  });
+
+  it("should not login a customer with wrong informations", async () => {
+    const customer = createRandomCustomer();
+    await request
+      .post("/login-customer")
+      .send({ ...customer, email: "wrongEmail" })
+      .expect(401)
+      .then((response) => {
+        expect(response.body.message).toEqual("Informations incorrectes");
+      });
+    await request
+      .post("/login-customer")
+      .send({ ...customer, password: "wrongPassword" })
+      .expect(401)
+      .then((response) => {
+        expect(response.body.message).toEqual("Informations incorrectes");
+      });
+  });
+});
+
+describe("Customer Forgot Password", () => {
+  it("should send a reset password email", async () => {
+    const customer = createRandomCustomer();
+    await request.post("/register-customer").send(customer);
+    await request
+      .post("/forgot-password-customer")
+      .send({ email: customer.email })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.message).toEqual("Mot de passe mis à jour");
+      });
+  });
+
+  it("should not send a reset password email with missing informations", async () => {
+    const customer = createRandomCustomer();
+    await request
+      .post("/forgot-password-customer")
+      .send({ ...customer, email: undefined })
+      .expect(401)
+      .then((response) => {
+        expect(response.body.message).toEqual("Informations manquantes");
+      });
+  });
+
+  it("should not send a reset password email with wrong informations", async () => {
+    const customer = createRandomCustomer();
+    await request
+      .post("/forgot-password-customer")
+      .send({ ...customer, email: "wrongEmail" })
+      .expect(401)
+      .then((response) => {
+        expect(response.body.message).toEqual("Informations incorrectes");
+      });
   });
 });

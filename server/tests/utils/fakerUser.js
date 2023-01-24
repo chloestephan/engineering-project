@@ -5,6 +5,7 @@ function createRandomCustomer() {
     username: faker.name.firstName(),
     email: faker.internet.email(),
     company: faker.company.name(),
+    password: faker.internet.password(),
   };
 }
 

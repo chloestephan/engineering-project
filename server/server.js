@@ -20,6 +20,10 @@ app.use("/register-admin", require("./routes/admin/registerAdmin"));
 app.use("/login-admin", require("./routes/admin/loginAdmin"));
 app.use("/forgot-password-admin", require("./routes/admin/forgotPasswordAdmin"));
 
-const server = app.listen(port, () => console.log("Server running on port 5000"));
+let server;
+
+if (process.env.NODE_ENV !== "test") {
+  server = app.listen(port, () => console.log("Server running on port 5000"));
+}
 
 module.exports = { app, server };

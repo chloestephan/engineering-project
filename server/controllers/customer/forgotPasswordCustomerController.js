@@ -3,7 +3,7 @@ const { sendNewPassword } = require("../../utils/sendEmailUtils");
 const { generatePassword } = require("../../utils/usersUtils");
 
 const handleForgotPasswordCustomer = async (req, res) => {
-  let email = req.body;
+  let email = req.body.email;
 
   if (!email) {
     res.status(401).send({ message: "Informations manquantes" });
