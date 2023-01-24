@@ -1,5 +1,6 @@
-const db = require("../config/dbConn");
+const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
+const db = require("../config/dbConn");
 const client = db.getClient();
 
 async function getCustomerByEmail(email) {
@@ -32,9 +33,39 @@ function generateLinkToForm() {
   return process.env.BASE_URL + "/fill-form/" + uuidv4();
 }
 
+async function createCustomer(username, company, email, password) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const query = {
+    text: "INSERT INTO customers (username, email, password, company) VALUES ($1, $2, $3, $4)",
+    values: [username, email, hashedPassword, company],
+  };
+  await client.query(query);
+}
+
+async function createLinkToForm(linkToForm, email) {
+  const customer = await getCustomerByEmail(email);
+  query = {
+    text: "INSERT INTO linksform (url, customerId) VALUES ($1, $2)",
+    values: [linkToForm, customer.id],
+  };
+  await client.query(query);
+}
+
+async function updateCustomerPassword(email, password) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const query = {
+    text: "UPDATE customers SET password = $1 WHERE email = $2",
+    values: [hashedPassword, email],
+  };
+  await client.query(query);
+}
+
 module.exports = {
   isCustomerRegisteredWith,
   getCustomerByEmail,
   getCustomerByCompany,
   generateLinkToForm,
+  createCustomer,
+  createLinkToForm,
+  updateCustomerPassword,
 };

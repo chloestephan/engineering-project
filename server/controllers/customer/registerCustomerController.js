@@ -1,14 +1,11 @@
-const bcrypt = require("bcrypt");
-const db = require("../../config/dbConn");
 const {
   isCustomerRegisteredWith,
   generateLinkToForm,
-  getCustomerByEmail,
+  createCustomer,
+  createLinkToForm,
 } = require("../../utils/customersUtils");
 const { generatePassword } = require("../../utils/usersUtils");
-const { sendEmail } = require("../../utils/sendEmailUtils");
-
-const client = db.getClient();
+const { sendLinkToNewCustomer } = require("../../utils/sendEmailUtils");
 
 const handleRegisterCustomer = async (req, res) => {
   const { username, company } = req.body;
@@ -27,31 +24,12 @@ const handleRegisterCustomer = async (req, res) => {
   }
 
   const password = generatePassword();
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  let query = {
-    text: "INSERT INTO customers (username, email, password, company) VALUES ($1, $2, $3, $4)",
-    values: [username, email, hashedPassword, company],
-  };
-  client.query(query);
+  await createCustomer(username, company, email, password);
 
   const linkToForm = generateLinkToForm();
+  await createLinkToForm(linkToForm, email);
 
-  const customer = await getCustomerByEmail(email);
-  query = {
-    text: "INSERT INTO linksform (url, customerId) VALUES ($1, $2)",
-    values: [linkToForm, customer.id],
-  };
-  await client.query(query);
-
-  const title = "Bienvenue sur notre plateforme";
-  const body =
-    `Bonjour Mme/M ${username},\n\n` +
-    `Bienvenue sur notre plateforme. Veuillez cliquer sur le lien suivant pour accéder à votre formulaire : ${linkToForm}\n\n` +
-    `Votre mot de passe est: ${password}\n\n` +
-    `Sincèrement, toute l'équipe de l'engineering project.`;
-
-  sendEmail(email, title, body);
+  sendLinkToNewCustomer(email, username, password, linkToForm);
 
   res.status(200).send({ message: "Utilisateur enregistré" });
 };
