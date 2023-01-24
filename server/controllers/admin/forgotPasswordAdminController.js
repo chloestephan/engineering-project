@@ -9,13 +9,13 @@ const handleForgotPasswordAdmin = async (req, res) => {
   const email = req.body.email.toLowerCase();
 
   if (!email) {
-    res.status(401).send("Informations manquantes");
+    res.status(401).send({ message: "Informations manquantes" });
     return;
   }
 
   const admin = await getAdminByEmail(email);
   if (!admin) {
-    res.status(401).send("Informations incorrectes");
+    res.status(401).send({ message: "Informations incorrectes" });
     return;
   }
 

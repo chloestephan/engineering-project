@@ -47,7 +47,7 @@ const LoginForm = ({ userType = "customer" }) => {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
       } else if (err.response.status === 401) {
-        setErrMsg(err.response.data);
+        setErrMsg(err.response.data.message);
       } else {
         setErrMsg("Une erreur est survenue");
       }

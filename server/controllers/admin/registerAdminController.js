@@ -9,14 +9,13 @@ const handleRegisterAdmin = async (req, res) => {
   const email = req.body.email.toLowerCase();
 
   if (!username || !email || !password) {
-    res.status(401).send("Informations manquantes");
+    res.status(401).send({ message: "Informations manquantes" });
     return;
   }
 
   const admin = await getAdminByEmail(email);
-  console.log(admin)
   if (admin) {
-    res.status(401).send("Utilisateur déjà enregistré");
+    res.status(401).send({ message: "Utilisateur déjà enregistré" });
     return;
   }
 
@@ -26,7 +25,7 @@ const handleRegisterAdmin = async (req, res) => {
     values: [username, email, hashedPassword],
   };
   await client.query(query);
-  res.status(200).send("Utilisateur enregistré");
+  res.status(200).send({ message: "Utilisateur enregistré" });
 };
 
 module.exports = { handleRegisterAdmin };

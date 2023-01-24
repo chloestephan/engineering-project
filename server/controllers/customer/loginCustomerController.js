@@ -5,16 +5,19 @@ const handleLoginCustomer = async (req, res) => {
   const { password } = req.body;
   const email = req.body.email.toLowerCase();
 
-  const invalidInformation = !email || !password || !(await isCustomerRegisteredWith(email, "email"));
+  if (!email || !password) {
+    res.status(401).send({ message: "Informations manquantes" });
+    return;
+  }
 
-  if (invalidInformation) {
-    res.status(401).send("Informations manquantes");
+  if (!(await isCustomerRegisteredWith(email, "email"))) {
+    res.status(401).send({ message: "Informations incorrectes" });
     return;
   }
 
   const customer = await getCustomerByEmail(email);
   if (!(await isPasswordCorrect(password, customer.password))) {
-    res.status(401).send("Informations incorrectes");
+    res.status(401).send({ message: "Informations incorrectes" });
     return;
   }
 
