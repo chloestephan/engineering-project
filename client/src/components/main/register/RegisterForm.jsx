@@ -182,11 +182,11 @@ const RegisterForm = ({ userType = "customer" }) => {
                 </div>
               </>
             )}
-            <button disabled={!(validFormForCustomer || validFormForAdmin)} type="submit">
+            <button disabled={!(validFormForCustomer || validFormForAdmin)} className="btnValider" type="submit">
               {userType === "customer" ? "Créer un compte" : "Créer un compte administrateur"}
             </button>
           </form>
-          <p>
+          <p className="redirection">
             Vous avez déjà un compte ?
             <br />
             <span className="line">
