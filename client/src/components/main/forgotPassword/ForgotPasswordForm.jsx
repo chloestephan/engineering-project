@@ -71,7 +71,7 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
         <section>
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
 
-          <h1>Forgotten password</h1>
+          <h1>Mot de passe oublié</h1>
           <form onSubmit={handleSubmit}>
             <DefaultInputContainer
               inputName="email"

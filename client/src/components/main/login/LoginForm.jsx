@@ -83,8 +83,8 @@ const LoginForm = ({ userType = "customer" }) => {
 
             <button>Connexion</button>
           </form>
-          <p>
-            Besoin d'un compte ?
+          <p className="redirection">
+            Pas encore inscrit ?
             <br />
             <span className="line">
               {/*put router link here*/}

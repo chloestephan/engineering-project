@@ -41,8 +41,8 @@ input[type="text"],
 input[type="password"],
 button,
 textarea {
-font-size: 22px;
-padding: 0.30rem;
+font-size: 18px;
+padding: 10px;
 border-radius: 0.5rem;
 border: 1px solid #CCCCCC;
 width: 100%;
@@ -113,7 +113,7 @@ padding: 0.5rem;
   margin-left: 10px;
 }
 
-.btnValider {
+button {
   background-color: #146EB4;
   color: white;
   border: none;
