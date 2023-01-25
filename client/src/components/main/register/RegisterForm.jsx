@@ -73,9 +73,10 @@ const RegisterForm = ({ userType = "customer" }) => {
       return;
     }
     try {
+      const lowerCaseEmail = email.toLowerCase();
       const response = await axios.post(
         REGISTER_URL + "-" + userType,
-        JSON.stringify({ username, email, company, password, userType }),
+        JSON.stringify({ username, email: lowerCaseEmail, company, password }),
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -92,7 +93,7 @@ const RegisterForm = ({ userType = "customer" }) => {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
       } else if (err.response?.status === 409 || err.response?.status === 401) {
-        setErrMsg(err.response.data);
+        setErrMsg(err.response.data.message);
       } else {
         setErrMsg("Une erreur est survenue");
       }

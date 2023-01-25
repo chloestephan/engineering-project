@@ -29,9 +29,10 @@ const LoginForm = ({ userType = "customer" }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const lowerCaseEmail = email.toLowerCase();
       const response = await axios.post(
         LOGIN_URL + "-" + userType,
-        JSON.stringify({ email, password, userType }),
+        JSON.stringify({ email: lowerCaseEmail, password }),
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -46,7 +47,7 @@ const LoginForm = ({ userType = "customer" }) => {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
       } else if (err.response.status === 401) {
-        setErrMsg(err.response.data);
+        setErrMsg(err.response.data.message);
       } else {
         setErrMsg("Une erreur est survenue");
       }

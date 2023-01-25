@@ -33,28 +33,28 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validEmail) {
-      try {
-        await axios.post(
-          FORGOT_PASSWORD_URL + "-" + userType,
-          { email, userType },
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        setSuccess(true);
-      } catch (err) {
-        if (!err?.response) {
-          setErrMsg("Aucune réponse du serveur");
-        } else if (err.response?.status === 401) {
-          setErrMsg(err.response.data);
-        } else {
-          setErrMsg("Une erreur est survenue");
-        }
-      }
-    } else {
+    if (!validEmail) {
       errRef.current.focus();
       setErrMsg("Merci de remplir correctement tous les champs");
+    }
+    try {
+      const lowerCaseEmail = email.toLowerCase();
+      await axios.post(
+        FORGOT_PASSWORD_URL + "-" + userType,
+        { email: lowerCaseEmail, userType },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      setSuccess(true);
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("Aucune réponse du serveur");
+      } else if (err.response?.status === 401) {
+        setErrMsg(err.response.data.message);
+      } else {
+        setErrMsg("Une erreur est survenue");
+      }
     }
   };
 
