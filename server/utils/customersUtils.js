@@ -30,7 +30,7 @@ async function isCustomerRegisteredWith(infomation, type) {
 }
 
 function generateLinkToForm() {
-  return process.env.BASE_URL + "/fill-form/" + uuidv4();
+  return process.env.BASE_URL + "/login-customer/" + uuidv4();
 }
 
 async function createCustomer(username, company, email, password) {
