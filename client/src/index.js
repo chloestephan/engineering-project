@@ -5,6 +5,7 @@ import "./components/footer/footer.css";
 import "./components/header/header.css";
 import "./components/main/register/register.css";
 import "./components/main/home/home.css";
+import "./components/main/adminhome/adminhome.css";
 import App from "./App";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from "./context/AuthProvider";

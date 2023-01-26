@@ -12,7 +12,7 @@ const LoginForm = ({ userType = "customer"}) => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state?.from || "/";
+  const from = location.state?.from?.pathname || "/";
 
   const emailRef = useRef();
   const errRef = useRef();
@@ -36,11 +36,14 @@ const LoginForm = ({ userType = "customer"}) => {
         headers: { "Content-Type": "application/json" },
       });
       const accesToken = response?.data?.accessToken;
-      const role = response?.data?.role;
-      setAuth({ email, password, accesToken, role });
+      const roles = response?.data?.roles;
+      setAuth({ email, password, roles, accesToken });
       setPassword("");
       setEmail("");
       navigate(from, { replace: true });
+      if (from !== "/adminhome") {
+        navigate("/adminhome", { replace: true });
+      }
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
