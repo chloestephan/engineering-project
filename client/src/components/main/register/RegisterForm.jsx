@@ -3,13 +3,14 @@ import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
 import axios from "../../../api/axios";
+import { Link } from "react-router-dom";
 
 const USER_REGEX = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,24})/;
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGISTER_URL = "/register";
 
-const RegisterForm = ({ userType = "customer" }) => {
+const RegisterForm = ({ userType = "customer"}) => {
   const usernameRef = useRef();
   const errRef = useRef();
 
@@ -53,7 +54,7 @@ const RegisterForm = ({ userType = "customer" }) => {
   useEffect(() => {
     const result = PWD_REGEX.test(password);
     setValidPassword(result);
-    const match = password === matchPassword && password !== "";
+    const match = password === matchPassword;
     setValidMatchPassword(match);
   }, [password, matchPassword]);
 
@@ -61,28 +62,21 @@ const RegisterForm = ({ userType = "customer" }) => {
     setErrMsg("");
   }, [username, email, password, matchPassword]);
 
+  const validFormForCustomer = validUsername && validEmail && company !== "" && userType === "customer";
+  const validFormForAdmin = validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Valid user input
-    if (
-      !(
-        USER_REGEX.test(username) &&
-        EMAIL_REGEX.test(email) &&
-        PWD_REGEX.test(password) &&
-        password === matchPassword
-      )
-    ) {
+    if (!(validFormForCustomer || validFormForAdmin)) {
       setErrMsg("Merci de remplir correctement tous les champs");
       return;
     }
     try {
-      const response = await axios.post(
-        REGISTER_URL + "-" + userType,
-        JSON.stringify({ username, email, company, password, userType }),
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      const response = await axios.post(REGISTER_URL + "-" + userType, JSON.stringify({ username, email, company, password }), {
+        headers: { "Content-Type": "application/json" },
+      });
+      console.log(response);
       if (response.status === 200) {
         setSuccess(true);
         setUsername("");
@@ -95,7 +89,7 @@ const RegisterForm = ({ userType = "customer" }) => {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
       } else if (err.response?.status === 409 || err.response?.status === 401) {
-        setErrMsg(err.response.data);
+        setErrMsg(err.response.data.message);
       } else {
         setErrMsg("Une erreur est survenue");
       }
@@ -106,13 +100,14 @@ const RegisterForm = ({ userType = "customer" }) => {
   return (
     <>
       {success ? (
-        // TODO ADD REDIRECT TO LOGIN
         <SuccessMessageForm title="Votre compte a bien été créé" link="/" linkTitle="Retour à la connexion" />
-      ) : (
+      ) : ( 
         <section>
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
-
-          <h1>Créer un compte</h1>
+          <div class="loginFormTitle">
+            <h1>Connectez-vous</h1>
+            <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
+          </div>
           <form onSubmit={handleSubmit}>
             <DefaultInputContainer
               inputName="username"
@@ -146,50 +141,54 @@ const RegisterForm = ({ userType = "customer" }) => {
               />
             )}
 
-            <DefaultInputContainer
-              inputName="password"
-              inputLabel="Mot de passe"
-              inputValue={password}
-              inputFocus={passwordFocus}
-              setInputValue={setPassword}
-              setInputFocus={setPasswordFocus}
-              validInput={validPassword}
-              inputType={showPassword ? "text" : "password"}
-              noteValidInput="Doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
-            />
+            {userType !== "customer" && (
+              <>
+                <DefaultInputContainer
+                  inputName="password"
+                  inputLabel="Mot de passe"
+                  inputValue={password}
+                  inputFocus={passwordFocus}
+                  setInputValue={setPassword}
+                  setInputFocus={setPasswordFocus}
+                  validInput={validPassword}
+                  inputType={showPassword ? "text" : "password"}
+                  noteValidInput="Doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
+                />
 
-            <DefaultInputContainer
-              inputName="confirm-password"
-              inputLabel="Confirmation du mot de passe"
-              inputValue={matchPassword}
-              inputFocus={matchPasswordFocus}
-              setInputValue={setMatchPassword}
-              setInputFocus={setMatchPasswordFocus}
-              validInput={validMatchPassword}
-              inputType={showPassword ? "text" : "password"}
-              noteValidInput="Doit correspondre au mot de passe."
-            />
+                <DefaultInputContainer
+                  inputName="confirm-password"
+                  inputLabel="Confirmation du mot de passe"
+                  inputValue={matchPassword}
+                  inputFocus={matchPasswordFocus}
+                  setInputValue={setMatchPassword}
+                  setInputFocus={setMatchPasswordFocus}
+                  validInput={validMatchPassword}
+                  inputType={showPassword ? "text" : "password"}
+                  noteValidInput="Doit correspondre au mot de passe."
+                />
 
-            <div className="show-password-container">
-              <label htmlFor="show-password">
-                <input type="checkbox" id="show-password" onChange={() => setShowPassword(!showPassword)} />
-                Afficher le mot de passe
-              </label>
-            </div>
-
-            <button
-              disabled={!validUsername || !validPassword || !validMatchPassword || !validEmail}
-              type="submit"
-            >
-              Créer un compte
+                <div className="show-password-container">
+                  <label htmlFor="show-password">
+                    <input
+                      type="checkbox"
+                      id="show-password"
+                      onChange={() => setShowPassword(!showPassword)}
+                    />
+                    Afficher le mot de passe
+                  </label>
+                </div>
+              </>
+            )}
+            <button disabled={!(validFormForCustomer || validFormForAdmin)} type="submit">
+              {userType === "customer" ? "Créer un compte" : "Créer un compte administrateur"}
             </button>
-          </form>
+          </form>         
+
           <p>
-            Vous avez déjà un compte ?
+            Déjà inscrit ?
             <br />
             <span className="line">
-              {/*put router link here*/}
-              <a href="/">Connexion</a>
+              <Link to="/login"><p>Se connecter</p></Link>
             </span>
           </p>
         </section>

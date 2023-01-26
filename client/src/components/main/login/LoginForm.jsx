@@ -1,22 +1,25 @@
-import { useState, useEffect, useRef, useContext } from "react";
-import AuthContext from "../../../context/AuthProvider";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
-import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
-import axios from "../../../api/axios";
 
+import axios from "../../../api/axios";
 const LOGIN_URL = "/login";
 
-const LoginForm = ({ userType = "customer" }) => {
-  const { setAuth } = useContext(AuthContext);
+const LoginForm = ({ userType = "customer"}) => {
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const emailRef = useRef();
   const errRef = useRef();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     emailRef.current.focus();
@@ -25,23 +28,22 @@ const LoginForm = ({ userType = "customer" }) => {
   useEffect(() => {
     setErrMsg("");
   }, [email, password]);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        LOGIN_URL + "-" + userType,
-        JSON.stringify({ email, password, userType }),
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      const response = await axios.post(LOGIN_URL + "-" + userType, JSON.stringify({ email, password }), {
+        headers: { "Content-Type": "application/json" },
+      });
       const accesToken = response?.data?.accessToken;
-      const role = response?.data?.role;
-      setAuth({ email, password, accesToken, role });
+      const roles = response?.data?.roles;
+      setAuth({ email, password, roles, accesToken });
       setPassword("");
       setEmail("");
-      setSuccess(true);
+      navigate(from, { replace: true });
+      if (from !== "/adminhome") {
+        navigate("/adminhome", { replace: true });
+      }
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
@@ -55,44 +57,30 @@ const LoginForm = ({ userType = "customer" }) => {
   };
 
   return (
-    <>
-      {success ? (
-        // TODO ADD REDIRECT TO HOME
-        <SuccessMessageForm title="Vous êtes connectés" link="/" linkTitle="Aller à l'accueil" />
-      ) : (
-        <section>
-          <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
-          <h1>Connexion</h1>
-          <form onSubmit={handleSubmit}>
-            <DefaultInputContainer
-              inputName="email"
-              inputLabel="Email"
-              inputRef={emailRef}
-              inputValue={email}
-              setInputValue={setEmail}
-            />
+    <section>
+      <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
+      <h1>Sign In</h1>
+      <form onSubmit={handleSubmit}>
+          <DefaultInputContainer
+            inputName="email"
+            inputLabel="Email"
+            inputRef={emailRef}
+            inputValue={email}
+            setInputValue={setEmail}
+          />
 
-            <DefaultInputContainer
-              inputName="password"
-              inputLabel="Mot de passe"
-              inputType="password"
-              inputValue={password}
-              setInputValue={setPassword}
-            />
+          <DefaultInputContainer
+            inputName="password"
+            inputLabel="Mot de passe"
+            inputType="password"
+            inputValue={password}
+            setInputValue={setPassword}
+          />
 
-            <button>Connexion</button>
-          </form>
-          <p>
-            Besoin d'un compte ?
-            <br />
-            <span className="line">
-              {/*put router link here*/}
-              <a href="/">Créer un compte</a>
-            </span>
-          </p>
-        </section>
-      )}
-    </>
+          <button>Connexion</button>
+        </form>
+    </section>
+  
   );
 };
 

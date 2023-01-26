@@ -7,21 +7,21 @@ const {
 
 const handleLoginCustomer = async (req, res) => {
   const { email, password } = req.body;
-
+  
   if (!email || !password) {
-    res.status(401).send("Missing information");
+    res.status(401).send("Informations manquantes");
     return;
   }
 
   if (!(await isCustomerRegisteredWith(email, "email"))) {
-    res.status(401).send("Invalid credentials");
+    res.status(401).send("Informations incorrectes");
     return;
   }
 
   const resultRequest = await getCustomerByEmail(email);
   const user = resultRequest.rows[0];
   if (!(await isPasswordCorrect(password, user.password))) {
-    res.status(401).send("Invalid credentials");
+    res.status(401).send("Informations incorrectes");
     return;
   }
 
@@ -32,7 +32,7 @@ const handleLoginCustomer = async (req, res) => {
 
   res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "none" });
   // TODO Add a role to the user (Admin, User, etc.)
-  res.status(200).send({ message: "User logged in", accessToken: accessToken });
+  res.status(200).send({ message: "Utilisateur connecté", accessToken: accessToken });
 };
 
 module.exports = { handleLoginCustomer };
