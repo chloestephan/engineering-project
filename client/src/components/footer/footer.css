@@ -2,25 +2,42 @@
     overflow: hidden;
     background-color: #232F3E;
     padding: 20px 30px;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .footer-left {
     float: left;
+    width: 20%;
+    padding-top: 10px;
 }
 
 .footer-right {
     float: right;
+    width: 20%;
 }
 
 .footer-center {
+    width: 60%;
     padding: auto;
     text-align: center;
 }
 
-img {
-    width: 100%;
-    height: auto;
+.footer-center img {
+    height: 50px;
 }
+
+.footer-center p {
+    text-align: center;
+    font-size: 14px; 
+    color: #FFFFFF;
+  }
 
 .footer a {
     text-decoration: none;

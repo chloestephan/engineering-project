@@ -1,15 +1,16 @@
-const db = require("../config/dbConn");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
+const db = require("../config/dbConn");
 const client = db.getClient();
-const { v4: uuidv4 } = require('uuid');
 
 async function getCustomerByEmail(email) {
   const query = {
     text: "SELECT * FROM customers WHERE email = $1",
     values: [email],
   };
-  return await client.query(query);
+  const result = await client.query(query);
+  if (result.rowCount === 0) return undefined;
+  return result.rows[0];
 }
 
 async function getCustomerByCompany(company) {
@@ -17,54 +18,54 @@ async function getCustomerByCompany(company) {
     text: "SELECT * FROM customers WHERE company = $1",
     values: [company],
   };
-  return await client.query(query);
+  const result = await client.query(query);
+  if (result.rowCount === 0) return undefined;
+  return result.rows[0];
 }
 
 async function isCustomerRegisteredWith(infomation, type) {
-  const row =
+  const customer =
     type === "email" ? await getCustomerByEmail(infomation) : await getCustomerByCompany(infomation);
-  return row.rowCount > 0;
-}
-
-async function isPasswordCorrect(password, hash) {
-  return await bcrypt.compare(password, hash);
-}
-
-function generateToken(user, tokenType) {
-  return jwt.sign(
-    {
-      email: user.email,
-      username: user.username,
-      company: user.company,
-    },
-    tokenType === "access" ? process.env.ACCESS_TOKEN_SECRET : process.env.REFRESH_TOKEN_SECRET,
-    {
-      expiresIn: tokenType === "access" ? "1h" : "24h",
-    }
-  );
-}
-
-function generatePassword() {
-  let password = "";
-  const str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-  const length = 15 + Math.floor(Math.random() * 10);
-  for (i = 1; i <= length; i++) {
-    const char = Math.floor(Math.random() * str.length + 1);
-    password += str.charAt(char);
-  }
-  return password;
+  return customer ? true : false;
 }
 
 function generateLinkToForm() {
-  return process.env.BASE_URL + "/fill-form/" + uuidv4();
+  return process.env.BASE_URL + "/login-customer/" + uuidv4();
+}
+
+async function createCustomer(username, company, email, password) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const query = {
+    text: "INSERT INTO customers (username, email, password, company) VALUES ($1, $2, $3, $4)",
+    values: [username, email, hashedPassword, company],
+  };
+  await client.query(query);
+}
+
+async function createLinkToForm(linkToForm, email) {
+  const customer = await getCustomerByEmail(email);
+  query = {
+    text: "INSERT INTO linksform (url, customerId) VALUES ($1, $2)",
+    values: [linkToForm, customer.id],
+  };
+  await client.query(query);
+}
+
+async function updateCustomerPassword(email, password) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const query = {
+    text: "UPDATE customers SET password = $1 WHERE email = $2",
+    values: [hashedPassword, email],
+  };
+  await client.query(query);
 }
 
 module.exports = {
   isCustomerRegisteredWith,
   getCustomerByEmail,
   getCustomerByCompany,
-  isPasswordCorrect,
-  generateToken,
-  generatePassword,
-  generateLinkToForm
+  generateLinkToForm,
+  createCustomer,
+  createLinkToForm,
+  updateCustomerPassword,
 };

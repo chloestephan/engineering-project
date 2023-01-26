@@ -1,6 +1,5 @@
 const db = require("../config/dbConn");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const client = db.getClient();
 
 async function getAdminByEmail(email) {
@@ -8,28 +7,31 @@ async function getAdminByEmail(email) {
     text: "SELECT * FROM admins WHERE email = $1",
     values: [email],
   };
-  return await client.query(query);
+  const result = await client.query(query);
+  if (result.rowCount === 0) return undefined;
+  return result.rows[0];
 }
 
-async function isPasswordCorrect(password, hash) {
-  return await bcrypt.compare(password, hash);
+async function createAdmin(username, email, password) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const query = {
+    text: "INSERT INTO admins (username, email, password) VALUES ($1, $2, $3)",
+    values: [username, email, hashedPassword],
+  };
+  await client.query(query);
 }
 
-function generateToken(user, tokenType) {
-  return jwt.sign(
-    {
-      email: user.email,
-      username: user.username,
-    },
-    tokenType === "access" ? process.env.ACCESS_TOKEN_SECRET : process.env.REFRESH_TOKEN_SECRET,
-    {
-      expiresIn: tokenType === "access" ? "1h" : "24h",
-    }
-  );
+async function updateAdminpassword(email, password) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const query = {
+    text: "UPDATE admins SET password = $1 WHERE email = $2",
+    values: [hashedPassword, email],
+  };
+  await client.query(query);
 }
 
 module.exports = {
   getAdminByEmail,
-  isPasswordCorrect,
-  generateToken,
+  createAdmin,
+  updateAdminpassword,
 };

@@ -1,3 +1,5 @@
+import efreiLogo from './LOGO_EFREI-WEB_blanc.png';
+
 const Footer = () => {
     return (
         <footer className="footer">
@@ -5,7 +7,8 @@ const Footer = () => {
                 <a href="#connexion">Connexion</a>
             </div>
             <div className="footer-center">
-                <img src="LOGO_EFREI-WEB_blanc.png"/>
+                <img className="efreiLogo" src={efreiLogo}/>
+                <p>© 2022 - Projet EFREI - 30-32 Avenue de la République, 94800, Villejuif - Tous droits réservés </p>
             </div>
             <div className="footer-right">
             </div>
