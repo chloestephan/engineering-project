@@ -66,35 +66,33 @@ const LoginForm = ({ userType = "customer"}) => {
       <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
       <h1>Sign In</h1>
       <form onSubmit={handleSubmit}>
-          <DefaultInputContainer
-            inputName="email"
-            inputLabel="Email"
-            inputRef={emailRef}
-            inputValue={email}
-            setInputValue={setEmail}
-          />
+        <DefaultInputContainer
+          inputName="email"
+          inputLabel="Email"
+          inputRef={emailRef}
+          inputValue={email}
+          setInputValue={setEmail}
+        />
 
-          <DefaultInputContainer
-            inputName="password"
-            inputLabel="Mot de passe"
-            inputType="password"
-            inputValue={password}
-            setInputValue={setPassword}
-          />
+        <DefaultInputContainer
+          inputName="password"
+          inputLabel="Mot de passe"
+          inputType="password"
+          inputValue={password}
+          setInputValue={setPassword}
+        />
 
-            <button>Connexion</button>
-          </form>
-          <p className="redirection">
-            Pas encore inscrit ?
-            <br />
-            <span className="line">
-              {/*put router link here*/}
-              <a href="/">Créer un compte</a>
-            </span>
-          </p>
-        </section>
-      )}
-    </>
+          <button>Connexion</button>
+      </form>
+      <p className="redirection">
+        Pas encore inscrit ?
+        <br />
+        <span className="line">
+          {/*put router link here*/}
+          <a href="/">Créer un compte</a>
+        </span>
+      </p>
+    </section>
   );
 };
 
