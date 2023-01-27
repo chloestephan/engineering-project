@@ -30,6 +30,9 @@ async function isCustomerRegisteredWith(infomation, type) {
 }
 
 function generateLinkToForm() {
+  if (process.env.NODE_ENV === "test") {
+    return process.env.CUSTOMER_TEST_LINK_FORM;
+  }
   return process.env.BASE_URL + "/login-customer/" + uuidv4();
 }
 
@@ -60,6 +63,15 @@ async function updateCustomerPassword(email, password) {
   await client.query(query);
 }
 
+async function isCustomerLinkToUrl(linkToForm, customerId) {
+  const query = {
+    text: "SELECT * FROM linksform WHERE url = $1 AND customerId = $2",
+    values: [linkToForm, customerId],
+  };
+  const result = await client.query(query);
+  return result.rowCount === 0 ? false : true;
+}
+
 module.exports = {
   isCustomerRegisteredWith,
   getCustomerByEmail,
@@ -68,4 +80,5 @@ module.exports = {
   createCustomer,
   createLinkToForm,
   updateCustomerPassword,
+  isCustomerLinkToUrl,
 };

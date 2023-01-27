@@ -1,8 +1,12 @@
-const { isCustomerRegisteredWith, getCustomerByEmail } = require("../../utils/customersUtils");
+const {
+  isCustomerRegisteredWith,
+  getCustomerByEmail,
+  isCustomerLinkToUrl,
+} = require("../../utils/customersUtils");
 const { isPasswordCorrect, generateToken } = require("../../utils/usersUtils");
 
 const handleLoginCustomer = async (req, res) => {
-  const { password } = req.body;
+  const { password, loginLink } = req.body;
   let email = req.body.email;
 
   if (!email || !password) {
@@ -11,12 +15,17 @@ const handleLoginCustomer = async (req, res) => {
   }
   email = email.toLowerCase();
 
-  if (!(await isCustomerRegisteredWith(email, "email"))) {
+  const customer = await getCustomerByEmail(email);
+  if (!customer) {
     res.status(401).send({ message: "Informations incorrectes" });
     return;
   }
 
-  const customer = await getCustomerByEmail(email);
+  if (!(await isCustomerLinkToUrl(loginLink, customer.id))) {
+    res.status(401).send({ message: "Informations incorrectes" });
+    return;
+  }
+
   if (!(await isPasswordCorrect(password, customer.password))) {
     res.status(401).send({ message: "Informations incorrectes" });
     return;

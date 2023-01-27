@@ -1,6 +1,6 @@
 const superTest = require("supertest");
 const { app } = require("../server");
-const { isCustomerRegisteredWith } = require("../utils/customersUtils");
+const { isCustomerRegisteredWith, isCustomerLinkToUrl } = require("../utils/customersUtils");
 const request = superTest(app);
 const { createRandomCustomer, createCustomersWithSame } = require("./utils/fakerUser");
 require("dotenv").config();
@@ -81,7 +81,7 @@ describe("Customer Login", () => {
     await request.post("/register-customer").send(customer);
     await request
       .post("/login-customer")
-      .send({ email: customer.email, password: process.env.USER_TEST_PASSWORD })
+      .send(customer)
       .expect(200)
       .then((response) => {
         expect(response.body.message).toEqual("Utilisateur connecté");
@@ -131,7 +131,7 @@ describe("Customer Forgot Password", () => {
     await request.post("/register-customer").send(customer);
     await request
       .post("/forgot-password-customer")
-      .send({ email: customer.email })
+      .send(customer)
       .expect(200)
       .then((response) => {
         expect(response.body.message).toEqual("Mot de passe mis à jour");
@@ -144,7 +144,7 @@ describe("Customer Forgot Password", () => {
     await request.post("/forgot-password-customer").send({ email: customer.email });
     await request
       .post("/login-customer")
-      .send({ email: customer.email, password: process.env.USER_TEST_PASSWORD })
+      .send(customer)
       .expect(200)
       .then((response) => {
         expect(response.body.message).toEqual("Utilisateur connecté");
