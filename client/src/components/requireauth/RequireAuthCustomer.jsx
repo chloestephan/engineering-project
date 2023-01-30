@@ -5,12 +5,7 @@ const RequireAuthCustomer = () => {
   const { auth } = useAuth();
   const location = useLocation();
 
-    return (
-        auth?.email
-          ? <Outlet />
-          : <Navigate to="/customer-login" state={{ from: location }} replace />
-    );
-
-}
+  return auth?.email ? <Outlet /> : <Navigate to="/customer-login" state={{ from: location }} replace />;
+};
 
 export default RequireAuthCustomer;

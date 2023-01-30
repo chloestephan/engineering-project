@@ -7,7 +7,7 @@ import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContaine
 import axios from "../../../api/axios";
 const LOGIN_URL = "/login";
 
-const LoginForm = ({ userType = "customer"}) => {
+const LoginForm = ({ userType = "customer" }) => {
   const { setAuth } = useAuth();
 
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const LoginForm = ({ userType = "customer"}) => {
   useEffect(() => {
     setErrMsg("");
   }, [email, password]);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -79,7 +79,7 @@ const LoginForm = ({ userType = "customer"}) => {
           setInputValue={setPassword}
         />
 
-          <button>Connexion</button>
+        <button>Connexion</button>
       </form>
       <p className="redirection">
         Pas encore inscrit ?

@@ -8,14 +8,12 @@ import Unauthorized from "./components/main/unauthorized/Unauthorized";
 import RequireAuthCustomer from "./components/requireauth/RequireAuthCustomer";
 import FillForm from "./components/main/fillform/FillForm";
 
-
-
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Layout />} >
-        <Route path="/admin-login" element={<LoginForm userType="admin"/>} />
-        <Route path="/customer-login" element={<LoginForm userType="customer"/>} />
+      <Route path="/" element={<Layout />}>
+        <Route path="/admin-login" element={<LoginForm userType="admin" />} />
+        <Route path="/customer-login" element={<LoginForm userType="customer" />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
         <Route element={<RequireAuthAdmin />}>
@@ -26,7 +24,6 @@ function App() {
         <Route element={<RequireAuthCustomer />}>
           <Route path="/fill-form/:formid" element={<FillForm />} />
         </Route>
-
       </Route>
     </Routes>
   );
