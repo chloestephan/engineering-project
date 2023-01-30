@@ -105,18 +105,11 @@ const RegisterForm = ({ userType = "customer" }) => {
       <section>
         <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
         <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
-        <div className="loginFormTitle">
-          {userType === "customer" && (
-            <>
-              <h1>Connectez-vous</h1>
-              <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
-            </>
-          )}
-          {userType !== "customer" && (
-            <>
-              <h1>Connectez-vous</h1>
-              <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
-            </>
+        <div>
+          {userType === "customer" ? (
+            <h1>Créer un nouveau compte client</h1>
+          ) : (
+            <h1>Créer un nouveau compte administrateur</h1>
           )}
         </div>
         <form onSubmit={handleSubmit}>

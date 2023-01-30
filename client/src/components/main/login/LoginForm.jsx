@@ -61,7 +61,7 @@ const LoginForm = ({ userType = "customer" }) => {
   return (
     <section>
       <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
-      <h1>Sign In</h1>
+      <h1>Connectez-vous</h1>
       <form onSubmit={handleSubmit}>
         <DefaultInputContainer
           inputName="email"
@@ -81,14 +81,6 @@ const LoginForm = ({ userType = "customer" }) => {
 
         <button>Connexion</button>
       </form>
-      <p className="redirection">
-        Pas encore inscrit ?
-        <br />
-        <span className="line">
-          {/*put router link here*/}
-          <a href="/">Créer un compte</a>
-        </span>
-      </p>
     </section>
   );
 };
