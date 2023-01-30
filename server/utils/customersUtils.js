@@ -33,7 +33,7 @@ function generateLinkToForm() {
   if (process.env.NODE_ENV === "test") {
     return process.env.CUSTOMER_TEST_LINK_FORM;
   }
-  return process.env.BASE_URL + "/login-customer/" + uuidv4();
+  return process.env.BASE_URL + "/fill-form/" + uuidv4();
 }
 
 async function createCustomer(username, company, email, password) {
