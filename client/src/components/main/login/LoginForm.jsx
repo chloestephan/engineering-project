@@ -32,9 +32,14 @@ const LoginForm = ({ userType = "customer"}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(LOGIN_URL + "-" + userType, JSON.stringify({ email, password }), {
-        headers: { "Content-Type": "application/json" },
-      });
+      const lowerCaseEmail = email.toLowerCase();
+      const response = await axios.post(
+        LOGIN_URL + "-" + userType,
+        JSON.stringify({ email: lowerCaseEmail, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       const accesToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, accesToken });
@@ -45,7 +50,7 @@ const LoginForm = ({ userType = "customer"}) => {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
       } else if (err.response.status === 401) {
-        setErrMsg(err.response.data);
+        setErrMsg(err.response.data.message);
       } else {
         setErrMsg("Une erreur est survenue");
       }
@@ -58,26 +63,33 @@ const LoginForm = ({ userType = "customer"}) => {
       <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
       <h1>Sign In</h1>
       <form onSubmit={handleSubmit}>
-          <DefaultInputContainer
-            inputName="email"
-            inputLabel="Email"
-            inputRef={emailRef}
-            inputValue={email}
-            setInputValue={setEmail}
-          />
+        <DefaultInputContainer
+          inputName="email"
+          inputLabel="Email"
+          inputRef={emailRef}
+          inputValue={email}
+          setInputValue={setEmail}
+        />
 
-          <DefaultInputContainer
-            inputName="password"
-            inputLabel="Mot de passe"
-            inputType="password"
-            inputValue={password}
-            setInputValue={setPassword}
-          />
+        <DefaultInputContainer
+          inputName="password"
+          inputLabel="Mot de passe"
+          inputType="password"
+          inputValue={password}
+          setInputValue={setPassword}
+        />
 
           <button>Connexion</button>
-        </form>
+      </form>
+      <p className="redirection">
+        Pas encore inscrit ?
+        <br />
+        <span className="line">
+          {/*put router link here*/}
+          <a href="/">Créer un compte</a>
+        </span>
+      </p>
     </section>
-  
   );
 };
 

@@ -73,10 +73,14 @@ const RegisterForm = ({ userType = "customer"}) => {
       return;
     }
     try {
-      const response = await axios.post(REGISTER_URL + "-" + userType, JSON.stringify({ username, email, company, password }), {
-        headers: { "Content-Type": "application/json" },
-      });
-      console.log(response);
+      const lowerCaseEmail = email.toLowerCase();
+      const response = await axios.post(
+        REGISTER_URL + "-" + userType,
+        JSON.stringify({ username, email: lowerCaseEmail, company, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       if (response.status === 200) {
         setSuccess(true);
         setUsername("");
@@ -189,7 +193,7 @@ const RegisterForm = ({ userType = "customer"}) => {
                 </div>
               </>
             )}
-            <button disabled={!(validFormForCustomer || validFormForAdmin)} type="submit">
+            <button disabled={!(validFormForCustomer || validFormForAdmin)} className="btnValider" type="submit">
               {userType === "customer" ? "Créer un compte" : "Créer un compte administrateur"}
             </button>
           </form>

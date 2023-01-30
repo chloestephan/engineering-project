@@ -1,38 +1,25 @@
-const { isCustomerRegisteredWith, generatePassword } = require("../../utils/customersUtils");
-const { sendEmail } = require("../../utils/sendEmailUtils");
-const bcrypt = require("bcrypt");
-const db = require("../../config/dbConn");
-const client = db.getClient();
+const { isCustomerRegisteredWith, updateCustomerPassword } = require("../../utils/customersUtils");
+const { sendNewPassword } = require("../../utils/sendEmailUtils");
+const { generatePassword } = require("../../utils/usersUtils");
 
 const handleForgotPasswordCustomer = async (req, res) => {
-  const { email } = req.body;
+  let email = req.body.email;
 
   if (!email) {
-    res.status(401).send("Informations manquantes");
+    res.status(401).send({ message: "Informations manquantes" });
     return;
   }
+  email = email.toLowerCase();
 
   if (!(await isCustomerRegisteredWith(email, "email"))) {
-    res.status(401).send("Informations incorrectes");
+    res.status(401).send({ message: "Informations incorrectes" });
     return;
   }
 
   const newPassword = generatePassword();
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await updateCustomerPassword(email, newPassword);
 
-  const query = {
-    text: "UPDATE customers SET password = $1 WHERE email = $2",
-    values: [hashedPassword, email],
-  };
-  await client.query(query);
-
-  const title = "Nouveau mot de passe généré";
-  const body =
-    `Bonjour Mme/M,\n\n` +
-    `Suite à votre demande de mot de passe oublié, nous avons généré ce nouveau mot de passe pour votre compte : ${newPassword}\n\n` +
-    `Sincèrement, toute l'équipe de l'engineering project.`;
-
-  sendEmail(email, title, body);
+  sendNewPassword(email, newPassword);
 
   res.status(200).send({ message: "Mot de passe mis à jour" });
 };
