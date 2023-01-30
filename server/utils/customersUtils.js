@@ -47,9 +47,10 @@ async function createCustomer(username, company, email, password) {
 
 async function createLinkToForm(linkToForm, email) {
   const customer = await getCustomerByEmail(email);
+  const idOfPath = linkToForm.indexOf("/fill-form")
   query = {
     text: "INSERT INTO linksform (url, customerId) VALUES ($1, $2)",
-    values: [linkToForm, customer.id],
+    values: [linkToForm.slice(idOfPath), customer.id],
   };
   await client.query(query);
 }
@@ -65,7 +66,7 @@ async function updateCustomerPassword(email, password) {
 
 async function isCustomerLinkToUrl(linkToForm, customerId) {
   const query = {
-    text: "SELECT * FROM linksform WHERE url = $1 AND customerId = $2",
+    text: "SELECT * FROM linksform WHERE url like $1 AND customerId = $2",
     values: [linkToForm, customerId],
   };
   const result = await client.query(query);
