@@ -3,14 +3,13 @@ import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
 import axios from "../../../api/axios";
-import { Link } from "react-router-dom";
 
 const USER_REGEX = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,24})/;
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGISTER_URL = "/register";
 
-const RegisterForm = ({ userType = "customer"}) => {
+const RegisterForm = ({ userType = "customer" }) => {
   const usernameRef = useRef();
   const errRef = useRef();
 
@@ -63,7 +62,8 @@ const RegisterForm = ({ userType = "customer"}) => {
   }, [username, email, password, matchPassword]);
 
   const validFormForCustomer = validUsername && validEmail && company !== "" && userType === "customer";
-  const validFormForAdmin = validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
+  const validFormForAdmin =
+    validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,7 +105,7 @@ const RegisterForm = ({ userType = "customer"}) => {
     <>
       {success ? (
         <SuccessMessageForm title="Votre compte a bien été créé" link="/" linkTitle="Retour à la connexion" />
-      ) : ( 
+      ) : (
         <section>
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
           <div class="loginFormTitle">
@@ -113,13 +113,13 @@ const RegisterForm = ({ userType = "customer"}) => {
               <>
                 <h1>Connectez-vous</h1>
                 <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
-                </>
+              </>
             )}
             {userType !== "customer" && (
               <>
                 <h1>Connectez-vous</h1>
                 <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
-                </>
+              </>
             )}
           </div>
           <form onSubmit={handleSubmit}>
@@ -193,7 +193,11 @@ const RegisterForm = ({ userType = "customer"}) => {
                 </div>
               </>
             )}
-            <button disabled={!(validFormForCustomer || validFormForAdmin)} className="btnValider" type="submit">
+            <button
+              disabled={!(validFormForCustomer || validFormForAdmin)}
+              className="btnValider"
+              type="submit"
+            >
               {userType === "customer" ? "Créer un compte" : "Créer un compte administrateur"}
             </button>
           </form>
