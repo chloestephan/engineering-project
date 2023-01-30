@@ -46,9 +46,6 @@ const LoginForm = ({ userType = "customer"}) => {
       setPassword("");
       setEmail("");
       navigate(from, { replace: true });
-      if (from !== "/adminhome") {
-        navigate("/adminhome", { replace: true });
-      }
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
