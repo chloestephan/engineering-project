@@ -105,8 +105,18 @@ const RegisterForm = ({ userType = "customer"}) => {
         <section>
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
           <div class="loginFormTitle">
-            <h1>Connectez-vous</h1>
-            <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
+            {userType === "customer" && (
+              <>
+                <h1>Connectez-vous</h1>
+                <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
+                </>
+            )}
+            {userType !== "customer" && (
+              <>
+                <h1>Connectez-vous</h1>
+                <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
+                </>
+            )}
           </div>
           <form onSubmit={handleSubmit}>
             <DefaultInputContainer
@@ -182,15 +192,7 @@ const RegisterForm = ({ userType = "customer"}) => {
             <button disabled={!(validFormForCustomer || validFormForAdmin)} type="submit">
               {userType === "customer" ? "Créer un compte" : "Créer un compte administrateur"}
             </button>
-          </form>         
-
-          <p>
-            Déjà inscrit ?
-            <br />
-            <span className="line">
-              <Link to="/login"><p>Se connecter</p></Link>
-            </span>
-          </p>
+          </form>
         </section>
       )}
     </>
