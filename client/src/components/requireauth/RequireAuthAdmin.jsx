@@ -5,7 +5,12 @@ const RequireAuthAdmin = () => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  return auth?.email ? <Outlet /> : <Navigate to="/admin-login" state={{ from: location }} replace />;
-};
+    return (
+        auth?.email
+          ? <Outlet />
+          : <Navigate to="/admin-login" state={{ from: location }} replace />
+    );
+
+}
 
 export default RequireAuthAdmin;
