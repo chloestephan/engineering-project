@@ -1,4 +1,4 @@
-const DefaultInputField = ({ inputName, validInput, inputRef, setInputFocus, setInputValue, inputType }) => {
+const DefaultInputField = ({ inputName, validInput, inputRef, setInputFocus, setInputValue, inputType, inputValue }) => {
   return (
     <>
       <input
@@ -12,6 +12,7 @@ const DefaultInputField = ({ inputName, validInput, inputRef, setInputFocus, set
         aria-describedby={inputName + "-note"}
         onFocus={setInputFocus && (() => setInputFocus(true))}
         onBlur={setInputFocus && (() => setInputFocus(false))}
+        value={inputValue}
       />
     </>
   );
