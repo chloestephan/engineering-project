@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
+import { Link } from "react-router-dom";
 
 import axios from "../../../api/axios";
 const LOGIN_URL = "/login";
@@ -81,6 +82,9 @@ const LoginForm = ({ userType = "customer" }) => {
 
         <button>Connexion</button>
       </form>
+      <Link to="/forgot-password-customer">
+        <p>Mot de passe oublié ?</p>
+      </Link>
     </section>
   );
 };
