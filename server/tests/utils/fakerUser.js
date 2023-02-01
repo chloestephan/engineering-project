@@ -21,7 +21,7 @@ function createCustomersWithSame(type) {
 function createRandomAdmin() {
   return {
     username: faker.name.firstName(),
-    email: faker.internet.email(),
+    email: faker.internet.email("Jeanne", "Doe", "example.fakerjs.dev", { allowSpecialCharacters: true }),
     password: process.env.USER_TEST_PASSWORD,
   };
 }
