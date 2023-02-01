@@ -60,7 +60,8 @@ const RegisterForm = ({ userType = "customer" }) => {
 
   useEffect(() => {
     setErrMsg("");
-    setSuccessMsg("");
+    if (username !== "" || email !== "" || password !== "" || matchPassword !== "" || company !== "")
+      setSuccessMsg("");
   }, [username, email, password, matchPassword, company]);
 
   const validFormForCustomer = validUsername && validEmail && company !== "" && userType === "customer";
@@ -84,6 +85,7 @@ const RegisterForm = ({ userType = "customer" }) => {
         }
       );
       if (response.status === 200) {
+        resetForm();
         // Set success message
         setSuccessMsg(response.data.message);
         successRef.current.focus();
@@ -100,8 +102,17 @@ const RegisterForm = ({ userType = "customer" }) => {
     }
   };
 
+  const resetForm = () => {
+    setUsername("");
+    setEmail("");
+    setCompany("");
+    setPassword("");
+    setMatchPassword("");
+  };
+
   return (
     <>
+      {company}
       <section>
         <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
         <ErrorMessageForm errMsg={errMsg} errRef={errRef} />

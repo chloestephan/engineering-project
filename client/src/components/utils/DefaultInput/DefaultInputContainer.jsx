@@ -30,6 +30,7 @@ const DefaultInputContainer = ({
         setInputFocus={setInputFocus}
         setInputValue={setInputValue}
         inputType={inputType}
+        inputValue={inputValue}
       />
 
       {noteValidInput && (
