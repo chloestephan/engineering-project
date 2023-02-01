@@ -64,7 +64,7 @@ async function updateCustomerPassword(email, password) {
   await client.query(query);
 }
 
-async function isCustomerLinkToUrl(linkToForm, customerId) {
+async function isCustomerLinkToUrl(customerId, linkToForm) {
   const query = {
     text: "SELECT * FROM linksform WHERE url like $1 AND customerId = $2",
     values: [linkToForm, customerId],

@@ -35,7 +35,7 @@ const LoginForm = ({ userType = "customer" }) => {
       const lowerCaseEmail = email.toLowerCase();
       const response = await axios.post(
         LOGIN_URL + "-" + userType,
-        JSON.stringify({ email: lowerCaseEmail, password }),
+        JSON.stringify({ email: lowerCaseEmail, password, loginLink: from }),
         {
           headers: { "Content-Type": "application/json" },
         }
