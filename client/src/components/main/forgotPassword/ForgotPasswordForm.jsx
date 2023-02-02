@@ -3,6 +3,7 @@ import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
 import axios from "../../../api/axios";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const FORGOT_PASSWORD_URL = "/forgot-password";
@@ -10,6 +11,10 @@ const FORGOT_PASSWORD_URL = "/forgot-password";
 const ForgotPasswordForm = ({ userType = "customer" }) => {
   const emailRef = useRef();
   const errRef = useRef();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.state?.from?.pathname || "/";
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
@@ -46,7 +51,7 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      setSuccess(true);
+      navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
@@ -59,36 +64,25 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
   };
 
   return (
-    <>
-      {success ? (
-        // TODO ADD REDIRECT TO LOGIN
-        <SuccessMessageForm
-          title="Votre nouveau mot de passe a été envoyé"
-          link="/"
-          linkTitle="Retour à la connexion"
-        />
-      ) : (
-        <section>
-          <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
+    <section>
+      <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
 
-          <h1>Mot de passe oublié</h1>
-          <form onSubmit={handleSubmit}>
-            <DefaultInputContainer
-              inputName="email"
-              inputLabel="Email"
-              inputRef={emailRef}
-              inputValue={email}
-              inputFocus={emailFocus}
-              setInputValue={setEmail}
-              setInputFocus={setEmailFocus}
-              validInput={validEmail}
-              noteValidInput="Doit être au format email."
-            />
-            <button>Envoyer un nouveau mot de passe</button>
-          </form>
-        </section>
-      )}
-    </>
+      <h1>Mot de passe oublié</h1>
+      <form onSubmit={handleSubmit}>
+        <DefaultInputContainer
+          inputName="email"
+          inputLabel="Email"
+          inputRef={emailRef}
+          inputValue={email}
+          inputFocus={emailFocus}
+          setInputValue={setEmail}
+          setInputFocus={setEmailFocus}
+          validInput={validEmail}
+          noteValidInput="Doit être au format email."
+        />
+        <button>Envoyer un nouveau mot de passe</button>
+      </form>
+    </section>
   );
 };
 
