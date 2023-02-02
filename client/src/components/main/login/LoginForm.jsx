@@ -3,11 +3,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
+import { Link } from "react-router-dom";
 
 import axios from "../../../api/axios";
 const LOGIN_URL = "/login";
 
-const LoginForm = ({ userType = "customer"}) => {
+const LoginForm = ({ userType = "customer" }) => {
   const { setAuth } = useAuth();
 
   const navigate = useNavigate();
@@ -28,14 +29,14 @@ const LoginForm = ({ userType = "customer"}) => {
   useEffect(() => {
     setErrMsg("");
   }, [email, password]);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const lowerCaseEmail = email.toLowerCase();
       const response = await axios.post(
         LOGIN_URL + "-" + userType,
-        JSON.stringify({ email: lowerCaseEmail, password }),
+        JSON.stringify({ email: lowerCaseEmail, password, loginLink: from }),
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -46,9 +47,6 @@ const LoginForm = ({ userType = "customer"}) => {
       setPassword("");
       setEmail("");
       navigate(from, { replace: true });
-      if (from !== "/adminhome") {
-        navigate("/adminhome", { replace: true });
-      }
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
@@ -64,7 +62,7 @@ const LoginForm = ({ userType = "customer"}) => {
   return (
     <section>
       <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
-      <h1>Sign In</h1>
+      <h1>Connectez-vous</h1>
       <form onSubmit={handleSubmit}>
         <DefaultInputContainer
           inputName="email"
@@ -82,16 +80,11 @@ const LoginForm = ({ userType = "customer"}) => {
           setInputValue={setPassword}
         />
 
-          <button>Connexion</button>
+        <button>Connexion</button>
       </form>
-      <p className="redirection">
-        Pas encore inscrit ?
-        <br />
-        <span className="line">
-          {/*put router link here*/}
-          <a href="/">Créer un compte</a>
-        </span>
-      </p>
+      <Link to="/forgot-password-customer">
+        <p>Mot de passe oublié ?</p>
+      </Link>
     </section>
   );
 };

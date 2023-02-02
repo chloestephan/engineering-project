@@ -3,16 +3,16 @@ import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
 import axios from "../../../api/axios";
-import { Link } from "react-router-dom";
 
 const USER_REGEX = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,24})/;
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const REGISTER_URL = "/register";
 
-const RegisterForm = ({ userType = "customer"}) => {
+const RegisterForm = ({ userType = "customer" }) => {
   const usernameRef = useRef();
   const errRef = useRef();
+  const successRef = useRef();
 
   const [username, setUsername] = useState("");
   const [validUsername, setValidUsername] = useState(false);
@@ -33,7 +33,7 @@ const RegisterForm = ({ userType = "customer"}) => {
   const [matchPasswordFocus, setMatchPasswordFocus] = useState(false);
 
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -60,10 +60,13 @@ const RegisterForm = ({ userType = "customer"}) => {
 
   useEffect(() => {
     setErrMsg("");
-  }, [username, email, password, matchPassword]);
+    if (username !== "" || email !== "" || password !== "" || matchPassword !== "" || company !== "")
+      setSuccessMsg("");
+  }, [username, email, password, matchPassword, company]);
 
   const validFormForCustomer = validUsername && validEmail && company !== "" && userType === "customer";
-  const validFormForAdmin = validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
+  const validFormForAdmin =
+    validUsername && validEmail && validPassword && validMatchPassword && userType === "admin";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,12 +85,10 @@ const RegisterForm = ({ userType = "customer"}) => {
         }
       );
       if (response.status === 200) {
-        setSuccess(true);
-        setUsername("");
-        setEmail("");
-        setCompany("");
-        setPassword("");
-        setMatchPassword("");
+        resetForm();
+        // Set success message
+        setSuccessMsg(response.data.message);
+        successRef.current.focus();
       }
     } catch (err) {
       if (!err?.response) {
@@ -101,101 +102,103 @@ const RegisterForm = ({ userType = "customer"}) => {
     }
   };
 
+  const resetForm = () => {
+    setUsername("");
+    setEmail("");
+    setCompany("");
+    setPassword("");
+    setMatchPassword("");
+  };
+
   return (
     <>
-      {success ? (
-        <SuccessMessageForm title="Votre compte a bien été créé" link="/" linkTitle="Retour à la connexion" />
-      ) : ( 
-        <section>
-          <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
-          <div class="loginFormTitle">
-            <h1>Connectez-vous</h1>
-            <p id="sousTitre">Veillez vous connecter afin de pouvoir accéder à votre espace.</p>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <DefaultInputContainer
-              inputName="username"
-              inputLabel="Nom d'utilisateur"
-              inputRef={usernameRef}
-              inputValue={username}
-              inputFocus={usernameFocus}
-              setInputValue={setUsername}
-              setInputFocus={setUsernameFocus}
-              validInput={validUsername}
-              noteValidInput="Doit contenir au moins 2 caractères et commencer par une majuscule."
-            />
+      {company}
+      <section>
+        <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
+        <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
+        <div>
+          {userType === "customer" ? (
+            <h1>Créer un nouveau compte client</h1>
+          ) : (
+            <h1>Créer un nouveau compte administrateur</h1>
+          )}
+        </div>
+        <form onSubmit={handleSubmit}>
+          <DefaultInputContainer
+            inputName="username"
+            inputLabel="Nom d'utilisateur"
+            inputRef={usernameRef}
+            inputValue={username}
+            inputFocus={usernameFocus}
+            setInputValue={setUsername}
+            setInputFocus={setUsernameFocus}
+            validInput={validUsername}
+            noteValidInput="Doit contenir au moins 2 caractères et commencer par une majuscule."
+          />
 
-            <DefaultInputContainer
-              inputName="email"
-              inputLabel="Email"
-              inputValue={email}
-              inputFocus={emailFocus}
-              setInputValue={setEmail}
-              setInputFocus={setEmailFocus}
-              validInput={validEmail}
-              noteValidInput="Doit être au format email."
-            />
+          <DefaultInputContainer
+            inputName="email"
+            inputLabel="Email"
+            inputValue={email}
+            inputFocus={emailFocus}
+            setInputValue={setEmail}
+            setInputFocus={setEmailFocus}
+            validInput={validEmail}
+            noteValidInput="Doit être au format email."
+          />
 
-            {userType === "customer" && (
+          {userType === "customer" && (
+            <DefaultInputContainer
+              inputName="company"
+              inputLabel="Entreprise"
+              inputValue={company}
+              setInputValue={setCompany}
+            />
+          )}
+
+          {userType !== "customer" && (
+            <>
               <DefaultInputContainer
-                inputName="company"
-                inputLabel="Entreprise"
-                inputValue={company}
-                setInputValue={setCompany}
+                inputName="password"
+                inputLabel="Mot de passe"
+                inputValue={password}
+                inputFocus={passwordFocus}
+                setInputValue={setPassword}
+                setInputFocus={setPasswordFocus}
+                validInput={validPassword}
+                inputType={showPassword ? "text" : "password"}
+                noteValidInput="Doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
               />
-            )}
 
-            {userType !== "customer" && (
-              <>
-                <DefaultInputContainer
-                  inputName="password"
-                  inputLabel="Mot de passe"
-                  inputValue={password}
-                  inputFocus={passwordFocus}
-                  setInputValue={setPassword}
-                  setInputFocus={setPasswordFocus}
-                  validInput={validPassword}
-                  inputType={showPassword ? "text" : "password"}
-                  noteValidInput="Doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial."
-                />
+              <DefaultInputContainer
+                inputName="confirm-password"
+                inputLabel="Confirmation du mot de passe"
+                inputValue={matchPassword}
+                inputFocus={matchPasswordFocus}
+                setInputValue={setMatchPassword}
+                setInputFocus={setMatchPasswordFocus}
+                validInput={validMatchPassword}
+                inputType={showPassword ? "text" : "password"}
+                noteValidInput="Doit correspondre au mot de passe."
+              />
 
-                <DefaultInputContainer
-                  inputName="confirm-password"
-                  inputLabel="Confirmation du mot de passe"
-                  inputValue={matchPassword}
-                  inputFocus={matchPasswordFocus}
-                  setInputValue={setMatchPassword}
-                  setInputFocus={setMatchPasswordFocus}
-                  validInput={validMatchPassword}
-                  inputType={showPassword ? "text" : "password"}
-                  noteValidInput="Doit correspondre au mot de passe."
-                />
-
-                <div className="show-password-container">
-                  <label htmlFor="show-password">
-                    <input
-                      type="checkbox"
-                      id="show-password"
-                      onChange={() => setShowPassword(!showPassword)}
-                    />
-                    Afficher le mot de passe
-                  </label>
-                </div>
-              </>
-            )}
-            <button disabled={!(validFormForCustomer || validFormForAdmin)} className="btnValider" type="submit">
-              {userType === "customer" ? "Créer un compte" : "Créer un compte administrateur"}
-            </button>
-          </form>
-          <p className="redirection">
-            Vous avez déjà un compte ?
-            <br />
-            <span className="line">
-              <Link to="/login"><p>Se connecter</p></Link>
-            </span>
-          </p>
-        </section>
-      )}
+              <div className="show-password-container">
+                <label htmlFor="show-password">
+                  <input type="checkbox" id="show-password" onChange={() => setShowPassword(!showPassword)} />
+                  Afficher le mot de passe
+                </label>
+              </div>
+            </>
+          )}
+          <button
+            disabled={!(validFormForCustomer || validFormForAdmin)}
+            className="btnValider"
+            type="submit"
+          >
+            {userType === "customer" ? "Créer un compte" : "Créer un compte administrateur"}
+          </button>
+        </form>
+      </section>
     </>
   );
 };
