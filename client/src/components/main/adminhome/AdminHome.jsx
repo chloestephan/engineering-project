@@ -3,31 +3,31 @@ import { Link } from "react-router-dom";
 const AdminHome = () => {
   return (
     <section>
-      <h1>Admin Home</h1>
+      <h1>Accueil administrateur</h1>
       <br />
       
       <Link to="/register-customer">
-        <p>Create a user</p>
+        <p>Créer un nouveau client</p>
       </Link>
       <br />
 
       <Link to="/send-link">
-        <p>Send the link to an user</p>
+        <p>Envoyer un nouveau lien à un client</p>
       </Link>
       <br />
 
       <Link to="/manage-form">
-        <p>Manage the form</p>
+        <p>Modification du formulaire d'audit</p>
       </Link>
       <br />
 
       <Link to="/manage-role">
-        <p>Manage roles</p>
+        <p>Modification des rôles administrateur</p>
       </Link>
       <br />
 
       <Link to="/create-admin">
-        <p>Create new admin</p>
+        <p>Créer un nouvel administrateur</p>
       </Link>
     </section>
   );
