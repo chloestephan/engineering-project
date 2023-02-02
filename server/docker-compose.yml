@@ -10,7 +10,7 @@ services:
       # so this ensures our database is loaded first
       - postgres
     ports:
-      - "5000:5000"
+      - "8080:8080"
     volumes:
       # Maps our current project directory `.` to
       # our working directory in the container
@@ -47,7 +47,7 @@ services:
     networks:
       - myNetwork
 
-  # PostgreSQL pgAdmin panel accessible at http://localhost:16543/
+  # PostgreSQL pgAdmin panel accessible at http://localhost:16540/
   pgadmin-compose:
     image: dpage/pgadmin4
     environment:
