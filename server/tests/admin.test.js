@@ -106,7 +106,7 @@ describe("Admin Forgot Password", () => {
     await request.post("/register-admin").send(admin);
     await request
       .post("/forgot-password-admin")
-      .send({ email: admin.email })
+      .send(admin)
       .expect(200)
       .then((response) => {
         expect(response.body.message).toEqual("Mot de passe mis à jour");
@@ -119,7 +119,7 @@ describe("Admin Forgot Password", () => {
     await request.post("/forgot-password-admin").send({ email: admin.email });
     await request
       .post("/login-admin")
-      .send({ email: admin.email, password: process.env.USER_TEST_PASSWORD })
+      .send(admin)
       .expect(200)
       .then((response) => {
         expect(response.body.message).toEqual("Utilisateur connecté");

@@ -1,11 +1,8 @@
-const SuccessMessageForm = ({ title, link, linkTitle }) => {
+const SuccessMessageForm = ({ successMsg, successRef }) => {
   return (
-    <section>
-      <h1>{title}</h1>
-      <p>
-        <a href={link}>{linkTitle}</a>
-      </p>
-    </section>
+    <p ref={successRef} className={successMsg ? "successmsg" : "offscreen"} aria-live="assertive">
+      {successMsg}
+    </p>
   );
 };
 
