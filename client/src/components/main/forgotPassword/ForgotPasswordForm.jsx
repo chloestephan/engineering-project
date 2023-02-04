@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
@@ -10,13 +11,18 @@ const FORGOT_PASSWORD_URL = "/forgot-password";
 const ForgotPasswordForm = ({ userType = "customer" }) => {
   const emailRef = useRef();
   const errRef = useRef();
+  const successRef = useRef();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.state?.from?.pathname || "/";
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
 
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
     emailRef.current.focus();
@@ -39,14 +45,14 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
     }
     try {
       const lowerCaseEmail = email.toLowerCase();
-      await axios.post(
+      const response = await axios.post(
         FORGOT_PASSWORD_URL + "-" + userType,
         { email: lowerCaseEmail, userType },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
-      setSuccess(true);
+      setSuccessMsg(response.data.message);
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
@@ -59,16 +65,14 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
   };
 
   return (
-    <>
-      {success ? (
-        // TODO ADD REDIRECT TO LOGIN
-        <SuccessMessageForm
-          title="Votre nouveau mot de passe a été envoyé"
-          link="/"
-          linkTitle="Retour à la connexion"
-        />
+    <section>
+      {successMsg ? (
+        <>
+          <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
+          <button onClick={() => navigate(from)}>Retour à la connexion</button>
+        </>
       ) : (
-        <section>
+        <>
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
 
           <h1>Mot de passe oublié</h1>
@@ -86,9 +90,9 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
             />
             <button>Envoyer un nouveau mot de passe</button>
           </form>
-        </section>
+        </>
       )}
-    </>
+    </section>
   );
 };
 
