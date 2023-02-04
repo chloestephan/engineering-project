@@ -22,6 +22,7 @@ function App() {
         <Route element={<RequireAuthAdmin />}>
           <Route path="/admin-home" element={<AdminHome />} />
           <Route path="/register-customer" element={<RegisterForm />} />
+          <Route path="/register-admin" element={<RegisterForm userType="admin"/>} />
         </Route>
 
         <Route element={<RequireAuthCustomer />}>
