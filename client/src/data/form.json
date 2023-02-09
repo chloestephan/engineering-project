@@ -1,0 +1,76 @@
+[
+  {
+    "id": 1,
+    "label": "Input Text Label",
+    "type": "text",
+    "value": "",
+    "required": true,
+    "placeholder": "Input Text Placeholder"
+  },
+  {
+    "id": 2,
+    "label": "Input CheckBox Label",
+    "type": "checkbox",
+    "value": "",
+    "required": true
+  },
+  {
+    "id": 3,
+    "label": "Input Radio Label",
+    "type": "radio",
+    "value": "",
+    "required": true
+  },
+  {
+    "id": 4,
+    "label": "Input Select Label Simple",
+    "type": "select",
+    "value": "",
+    "required": true,
+    "options": [
+      {
+        "id": 1,
+        "label": "Option 1"
+      },
+      {
+        "id": 2,
+        "label": "Option 2"
+      },
+      {
+        "id": 3,
+        "label": "Option 3"
+      }
+    ],
+    "multiple": false
+  },
+  {
+    "id": 5,
+    "label": "Input TextArea Label",
+    "type": "textarea",
+    "value": "",
+    "required": false,
+    "placeholder": "Input TextArea Placeholder"
+  },
+  {
+    "id": 6,
+    "label": "Input Select Label Multiple",
+    "type": "select",
+    "value": "",
+    "required": true,
+    "options": [
+      {
+        "id": 1,
+        "label": "Option 1"
+      },
+      {
+        "id": 2,
+        "label": "Option 2"
+      },
+      {
+        "id": 3,
+        "label": "Option 3"
+      }
+    ],
+    "multiple": true
+  }
+]
