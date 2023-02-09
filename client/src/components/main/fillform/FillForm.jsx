@@ -18,7 +18,7 @@ const FillForm = () => {
   const handleChange = (id, event) => {
     const newFields = [...fields];
     const fieldsToUpdate = newFields.find((field) => field.id === id);
-    if (fieldsToUpdate.type === "checkbox") {
+    if (fieldsToUpdate.type === "checkbox" || fieldsToUpdate.type === "radio") {
       fieldsToUpdate.value = event.target.checked;
     } else {
       fieldsToUpdate.value = event.target.value;
