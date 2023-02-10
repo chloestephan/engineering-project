@@ -8,6 +8,7 @@ import Unauthorized from "./components/main/unauthorized/Unauthorized";
 import RequireAuthCustomer from "./components/requireauth/RequireAuthCustomer";
 import FillForm from "./components/main/fillform/FillForm";
 import ForgotPasswordForm from "./components/main/forgotPassword/ForgotPasswordForm";
+import Missing from "./components/main/missing/Missing";
 
 function App() {
   return (
@@ -18,16 +19,20 @@ function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/forgot-password-customer" element={<ForgotPasswordForm />} />
 
-
+        {/* Routes réservées à l'admin */}
         <Route element={<RequireAuthAdmin />}>
           <Route path="/admin-home" element={<AdminHome />} />
           <Route path="/register-customer" element={<RegisterForm />} />
           <Route path="/register-admin" element={<RegisterForm userType="admin"/>} />
         </Route>
 
+        {/* Routes réservées au customer */}
         <Route element={<RequireAuthCustomer />}>
           <Route path="/fill-form/:formid" element={<FillForm />} />
         </Route>
+
+        {/* Catch all */}
+        <Route path="*" element={<Missing />} />
       </Route>
     </Routes>
   );
