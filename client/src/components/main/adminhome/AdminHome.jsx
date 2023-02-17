@@ -26,8 +26,8 @@ const AdminHome = () => {
       </Link>
       <br />
 
-      <Link to="/register-admin">
-        <p>Create new admin</p>
+      <Link to="/create-admin">
+        <p>Créer un nouvel administrateur</p>
       </Link>
     </section>
   );
