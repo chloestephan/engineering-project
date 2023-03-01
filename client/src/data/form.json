@@ -1,76 +1,230 @@
 [
   {
-    "id": 1,
-    "label": "Input Text Label",
-    "type": "text",
-    "value": "",
-    "required": true,
-    "placeholder": "Input Text Placeholder"
-  },
-  {
-    "id": 2,
-    "label": "Input CheckBox Label",
-    "type": "checkbox",
-    "value": "",
-    "required": true
-  },
-  {
-    "id": 3,
-    "label": "Input Radio Label",
-    "type": "radio",
-    "value": "",
-    "required": true
-  },
-  {
-    "id": 4,
-    "label": "Input Select Label Simple",
-    "type": "select",
-    "value": "",
-    "required": true,
+    "id": "b9aa22deba98b3b20c7ac8aca2",
+    "title": "Do you have a Mainframe?",
     "options": [
       {
-        "id": 1,
-        "label": "Option 1"
+        "id": "42785524-00e8-4f29-a4c4-b57d4599a168",
+        "title": "Yes",
+        "next": "917ad6ff-647a-4c13-b52b-b1747af9879c",
+        "end": ""
       },
       {
-        "id": 2,
-        "label": "Option 2"
-      },
-      {
-        "id": 3,
-        "label": "Option 3"
+        "id": "b58888b5ceebbf0e68dada0656",
+        "title": "No",
+        "next": "",
+        "end": "You are not eligible to the questionnaire"
       }
-    ],
-    "multiple": false
+    ]
   },
   {
-    "id": 5,
-    "label": "Input TextArea Label",
-    "type": "textarea",
-    "value": "",
-    "required": false,
-    "placeholder": "Input TextArea Placeholder"
-  },
-  {
-    "id": 6,
-    "label": "Input Select Label Multiple",
-    "type": "select",
-    "value": "",
-    "required": true,
+    "id": "917ad6ff-647a-4c13-b52b-b1747af9879c",
+    "title": "Do you own the Intellectual Property of your application? i.e. you own the application source code.",
     "options": [
       {
-        "id": 1,
-        "label": "Option 1"
+        "id": "4a966164-821d-4888-9823-fdab37d1ee26",
+        "title": "Yes",
+        "next": "8e9edd0e-9a95-4e06-91f6-9ff6c64c329b",
+        "end": ""
       },
       {
-        "id": 2,
-        "label": "Option 2"
-      },
-      {
-        "id": 3,
-        "label": "Option 3"
+        "id": "6afb6328-2c8c-4e17-99e4-78c36c85cf15",
+        "title": "No",
+        "next": "b8746e49-b8a5-4c45-b139-e3d97ac0100b",
+        "end": ""
       }
-    ],
-    "multiple": true
+    ]
+  },
+  {
+    "id": "8e9edd0e-9a95-4e06-91f6-9ff6c64c329b",
+    "title": "Is your application implemented with one of the following technologies: COBOL, generated COBOL, PL/1, NATURAL, RPG/400, COBOL/400 with a persistence in this list DB2, DB2/400, VSAM, ISAM, GDG, CODASYL, etc. or using CICS TS & TD queues, etc.?",
+    "options": [
+      {
+        "id": "4067ecc8-499e-4c44-a815-b4f66b072655",
+        "title": "Yes",
+        "next": "1a0cfd04-04a7-46ac-ae96-8b95482d2e0d",
+        "end": ""
+      },
+      {
+        "id": "73b59e48-aad2-4e39-a8ae-5fcdac364ed6",
+        "title": "No",
+        "next": "",
+        "end": "Go for a manual rewrite of your application"
+      }
+    ]
+  },
+  {
+    "id": "1a0cfd04-04a7-46ac-ae96-8b95482d2e0d",
+    "title": "Do you want to stay As-Is?",
+    "options": [
+      {
+        "id": "4b722c51-9c2b-4440-b5b0-d33c513f789a",
+        "title": "Yes",
+        "next": "c530d14c-24b1-45f2-a9b2-5ccdeda75dd3",
+        "end": ""
+      },
+      {
+        "id": "c21de2b4-b35e-4ca1-9743-049eebf62e82",
+        "title": "No",
+        "next": "a48f9f3b-4eb4-422d-a2e7-c708bde93136",
+        "end": ""
+      }
+    ]
+  },
+  {
+    "id": "a48f9f3b-4eb4-422d-a2e7-c708bde93136",
+    "title": "Do you want to go for a tactical move (short term and low changes) or a strategical move (medium term and valued change)?",
+    "options": [
+      {
+        "id": "a1a9cbd7-6284-4aec-a31c-e3d8327a8aaf",
+        "title": "Tactical",
+        "next": "2a576d5b-df1a-4735-9993-65c3305fb4c3",
+        "end": ""
+      },
+      {
+        "id": "dd4787ee-c480-4e42-8058-d625f5c19ad3",
+        "title": "Strategical",
+        "next": "7eca7566-eb3b-4f42-9c10-a97b53ad79c3",
+        "end": ""
+      }
+    ]
+  },
+  {
+    "id": "2a576d5b-df1a-4735-9993-65c3305fb4c3",
+    "title": "Do you want to go for a re-interface of your existing application (keeping the legacy technology and exposing it with modern interfaces) i.e. keeping your technical debt?",
+    "options": [
+      {
+        "id": "2bbdd8e7-3790-40b2-993c-174e3ba4c2e3",
+        "title": "Yes",
+        "next": "",
+        "end": "Re-interface"
+      },
+      {
+        "id": "8b814e3a-ba20-4422-b4c4-59653c1457ba",
+        "title": "No",
+        "next": "7eca7566-eb3b-4f42-9c10-a97b53ad79c3",
+        "end": ""
+      }
+    ]
+  },
+  {
+    "id": "7eca7566-eb3b-4f42-9c10-a97b53ad79c3",
+    "title": "Do you want to: 1) Replace or purchase an equivalent application from the market and therefore accept the vendor lock-in going with their annual support fee and evolution roadmap, or 2) Move to the cloud, or 3) None of them?",
+    "options": [
+      {
+        "id": "a0941042-7f77-401e-aa09-fe39c848f8c3",
+        "title": "1)",
+        "next": "c04795d2-648c-4336-8255-dc6125373234",
+        "end": ""
+      },
+      {
+        "id": "ecb7ea50-4be7-4187-86b8-ae2c5795a443",
+        "title": "2)",
+        "next": "686339c7-81b7-453f-bc14-e106bc6d6247",
+        "end": ""
+      },
+      {
+        "id": "38b2de0a-e41e-411f-a4fb-33b1786acd44",
+        "title": "3)",
+        "next": "2a576d5b-df1a-4735-9993-65c3305fb4c3",
+        "end": ""
+      }
+    ]
+  },
+  {
+    "id": "c04795d2-648c-4336-8255-dc6125373234",
+    "title": "Do you want to purchase the product then adapt or bespoke it to your critical business process?",
+    "options": [
+      {
+        "id": "5c3149c5-484a-429b-840a-282b73d5e289",
+        "title": "Yes",
+        "next": "d625c0c1-678b-4124-bb19-d6fdc26cce38",
+        "end": ""
+      },
+      {
+        "id": "799ec029-7afe-495b-b8b6-2539b18c524a",
+        "title": "No",
+        "next": "2a576d5b-df1a-4735-9993-65c3305fb4c3",
+        "end": ""
+      }
+    ]
+  },
+  {
+    "id": "686339c7-81b7-453f-bc14-e106bc6d6247",
+    "title": "Do you want to go for: 1) a modern application or 2) Recompile it on an emulator?",
+    "options": [
+      {
+        "id": "191b4fd5-c4ca-4616-8913-6d12ed5846b0",
+        "title": "1)",
+        "next": "",
+        "end": "Refactor"
+      },
+      {
+        "id": "86c4a1da-5372-46f4-b8c2-409a7734c1bb",
+        "title": "2)",
+        "next": "",
+        "end": "Replatform"
+      }
+    ]
+  },
+  {
+    "id": "c530d14c-24b1-45f2-a9b2-5ccdeda75dd3",
+    "title": "Evaluate the cost of doing nothing (keep spending high level of money) then revisite the question and say if you still want to do nothing?",
+    "options": [
+      {
+        "id": "718a56eb-a881-42d1-a516-a939125391b2",
+        "title": "Yes",
+        "next": "",
+        "end": "Do nothing crétin!"
+      },
+      {
+        "id": "6746c745-f27d-4510-a9ad-826d1b502dd2",
+        "title": "No",
+        "next": "a48f9f3b-4eb4-422d-a2e7-c708bde93136",
+        "end": ""
+      }
+    ]
+  },
+  {
+    "id": "b8746e49-b8a5-4c45-b139-e3d97ac0100b",
+    "title": "Can you contact the editor company then buy the source code?",
+    "options": [
+      {
+        "id": "b6acf002-8096-4d8d-bf45-d0be523d1597",
+        "title": "Yes",
+        "next": "8e9edd0e-9a95-4e06-91f6-9ff6c64c329b",
+        "end": ""
+      },
+      {
+        "id": "6fb2ced8-7871-455a-a663-db5cc8a65079",
+        "title": "No",
+        "next": "d625c0c1-678b-4124-bb19-d6fdc26cce38",
+        "end": ""
+      }
+    ]
+  },
+  {
+    "id": "d625c0c1-678b-4124-bb19-d6fdc26cce38",
+    "title": "Choose between:",
+    "options": [
+      {
+        "id": "fe4d1f98-621b-4f6f-8735-4e7ce4b69381",
+        "title": "Go for a Saas version of the software (provided by the editor)",
+        "next": "",
+        "end": "Replace by Saas software"
+      },
+      {
+        "id": "aef2c713-fa16-41f6-96a0-ac35a8fb6794",
+        "title": "Go for a on-premise version of the software running on x86 platform",
+        "next": "",
+        "end": "Replace by on-premise software"
+      },
+      {
+        "id": "d58c5af6-8321-402c-9060-cbab3d28a1",
+        "title": "Go for a Manual Rewrite of your application",
+        "next": "",
+        "end": "Manual Rewrite"
+      }
+    ]
   }
 ]
