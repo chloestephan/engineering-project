@@ -8,6 +8,7 @@ import Unauthorized from "./components/main/unauthorized/Unauthorized";
 import RequireAuthCustomer from "./components/requireauth/RequireAuthCustomer";
 import FillForm from "./components/main/fillform/FillForm";
 import ForgotPasswordForm from "./components/main/forgotPassword/ForgotPasswordForm";
+import SendLinkForm from "./components/main/sendLink/sendLinkForm";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/admin-home" element={<AdminHome />} />
           <Route path="/register-customer" element={<RegisterForm />} />
           <Route path="/register-admin" element={<RegisterForm userType="admin"/>} />
+          <Route path="/send-link" element={<SendLinkForm />} />
         </Route>
 
         <Route element={<RequireAuthCustomer />}>

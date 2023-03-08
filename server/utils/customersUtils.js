@@ -47,9 +47,19 @@ async function createCustomer(username, company, email, password) {
 
 async function createLinkToForm(linkToForm, email) {
   const customer = await getCustomerByEmail(email);
-  const idOfPath = linkToForm.indexOf("/fill-form")
+  const idOfPath = linkToForm.indexOf("/fill-form");
   query = {
     text: "INSERT INTO linksform (url, customerId) VALUES ($1, $2)",
+    values: [linkToForm.slice(idOfPath), customer.id],
+  };
+  await client.query(query);
+}
+
+async function updateLinkToForm(linkToForm, email) {
+  const customer = await getCustomerByEmail(email);
+  const idOfPath = linkToForm.indexOf("/fill-form");
+  query = {
+    text: "UPDATE linksform SET url = $1 WHERE customerId = $2",
     values: [linkToForm.slice(idOfPath), customer.id],
   };
   await client.query(query);
@@ -82,4 +92,5 @@ module.exports = {
   createLinkToForm,
   updateCustomerPassword,
   isCustomerLinkToUrl,
+  updateLinkToForm,
 };

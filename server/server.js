@@ -15,6 +15,7 @@ app.use(express.json());
 app.use("/register-customer", require("./routes/customer/registerCustomer"));
 app.use("/login-customer", require("./routes/customer/loginCustomer"));
 app.use("/forgot-password-customer", require("./routes/customer/forgotPasswordCustomer"));
+app.use("/send-link", require("./routes/customer/sendLink"));
 
 app.use("/register-admin", require("./routes/admin/registerAdmin"));
 app.use("/login-admin", require("./routes/admin/loginAdmin"));
