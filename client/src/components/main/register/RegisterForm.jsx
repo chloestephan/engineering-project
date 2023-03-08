@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
+import AdminHomeNavBar from "../../utils/NavBar/AdminHomeNavBar";
 import axios from "../../../api/axios";
 
 const USER_REGEX = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/;
@@ -112,7 +113,11 @@ const RegisterForm = ({ userType = "customer" }) => {
 
   return (
     <>
-      {company}
+      {userType === "customer" ? (
+        <AdminHomeNavBar isRegisterCustomerSelected={true} />
+      ) : (
+        <AdminHomeNavBar isRegisterAdminSelected={true} />
+      )}
       <section>
         <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
         <ErrorMessageForm errMsg={errMsg} errRef={errRef} />

@@ -1,35 +1,15 @@
-import { Link } from "react-router-dom";
+import AdminHomeNavBar from "../../utils/NavBar/AdminHomeNavBar";
 
 const AdminHome = () => {
   return (
-    <section>
-      <h1>Accueil administrateur</h1>
-      <br />
-      
-      <Link to="/register-customer">
-        <p>Créer un nouveau client</p>
-      </Link>
-      <br />
-
-      <Link to="/send-link">
-        <p>Envoyer un nouveau lien à un client</p>
-      </Link>
-      <br />
-
-      <Link to="/manage-form">
-        <p>Modification du formulaire d'audit</p>
-      </Link>
-      <br />
-
-      <Link to="/manage-role">
-        <p>Modification des rôles administrateur</p>
-      </Link>
-      <br />
-
-      <Link to="/create-admin">
-        <p>Créer un nouvel administrateur</p>
-      </Link>
-    </section>
+    <>
+      <AdminHomeNavBar />
+      <section>
+        <h1>Accueil administrateur</h1>
+        <br />
+        Je sais pas quoi mettre comme texte de remplissage
+      </section>
+    </>
   );
 };
 
