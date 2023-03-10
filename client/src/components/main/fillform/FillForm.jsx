@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { Timeline, Text } from "@mantine/core";
 import formJSON from "../../../data/form.json";
 
 const FillForm = () => {
   const [currentQuestion, setCurrentQuestion] = useState(formJSON[0]);
   const [endPoint, setEndPoint] = useState("");
-  const [lastQuestion] = useState([]);
+  const [answeredQuestions] = useState([]);
+  const [answeredOptions] = useState([]);
 
   const handleAnswerQuestion = (option) => {
-    lastQuestion.push(currentQuestion);
+    answeredQuestions.push(currentQuestion);
+    answeredOptions.push(option);
     if (option.next === "") {
       setEndPoint(option.end);
       setCurrentQuestion(null);
@@ -18,13 +21,21 @@ const FillForm = () => {
   };
 
   const handlePreviousQuestion = () => {
-    setCurrentQuestion(lastQuestion.pop());
+    setCurrentQuestion(answeredQuestions.pop());
+    answeredOptions.pop();
     setEndPoint("");
+  };
+
+  const handleResetForm = () => {
+    setCurrentQuestion(formJSON[0]);
+    setEndPoint("");
+    answeredQuestions.length = 0;
+    answeredOptions.length = 0;
   };
 
   return (
     <section>
-      <h1>Bienvenue dans le formulaire !</h1>
+      {endPoint === "" ? <h1>Bienvenue dans le formulaire !</h1> : <h1>Solution proposée</h1>}
       <br />
       <h3>{currentQuestion?.title}</h3>
       <br />
@@ -33,10 +44,27 @@ const FillForm = () => {
           {option.title}
         </button>
       ))}
-      {endPoint && <h3>{endPoint}</h3>}
-      {lastQuestion.length !== 0 && (
+
+      {endPoint && (
+        <>
+          <h2>{endPoint}</h2>
+          <br />
+          <Timeline color="indigo" active={answeredQuestions.length}>
+            {answeredQuestions.map((question) => (
+              <Timeline.Item key={question.id} title={question.title}>
+                <Text color="dimmed" size="sm">
+                  Réponse : {answeredOptions[answeredQuestions.indexOf(question)].title}
+                </Text>
+              </Timeline.Item>
+            ))}
+          </Timeline>
+        </>
+      )}
+
+      {answeredQuestions.length !== 0 && (
         <button onClick={() => handlePreviousQuestion()}>Question précédente</button>
       )}
+      {endPoint && <button onClick={() => handleResetForm()}>Recommencer le formulaire</button>}
     </section>
   );
 };
