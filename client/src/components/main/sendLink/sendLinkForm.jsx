@@ -1,21 +1,17 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
+import AdminHomeNavBar from "../../utils/NavBar/AdminHomeNavBar";
 import axios from "../../../api/axios";
 
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const FORGOT_PASSWORD_URL = "/forgot-password";
+const FORGOT_PASSWORD_URL = "/send-link";
 
-const ForgotPasswordForm = ({ userType = "customer" }) => {
+const SendLinkForm = () => {
   const emailRef = useRef();
   const errRef = useRef();
   const successRef = useRef();
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.state?.from?.pathname || "/";
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
@@ -47,8 +43,8 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
       try {
         const lowerCaseEmail = email.toLowerCase();
         const response = await axios.post(
-          FORGOT_PASSWORD_URL + "-" + userType,
-          { email: lowerCaseEmail, userType },
+          FORGOT_PASSWORD_URL,
+          { email: lowerCaseEmail },
           {
             headers: { "Content-Type": "application/json" },
           }
@@ -67,35 +63,34 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
   };
 
   return (
-    <section>
-      {successMsg ? (
-        <>
-          <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
-          <button onClick={() => navigate(from)}>Retour à la connexion</button>
-        </>
-      ) : (
-        <>
+    <>
+      <AdminHomeNavBar isSendLinkSelected={true} />
+      <section>
+        {successMsg ? (
+          <>
+            <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
+          </>
+        ) : (
           <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
-
-          <h1>Mot de passe oublié</h1>
-          <form onSubmit={handleSubmit}>
-            <DefaultInputContainer
-              inputName="email"
-              inputLabel="Email"
-              inputRef={emailRef}
-              inputValue={email}
-              inputFocus={emailFocus}
-              setInputValue={setEmail}
-              setInputFocus={setEmailFocus}
-              validInput={validEmail}
-              noteValidInput="Doit être au format email."
-            />
-            <button>Envoyer un nouveau mot de passe</button>
-          </form>
-        </>
-      )}
-    </section>
+        )}
+        <h1>Renvoyer un lien à un client</h1>
+        <form onSubmit={handleSubmit}>
+          <DefaultInputContainer
+            inputName="email"
+            inputLabel="Email"
+            inputRef={emailRef}
+            inputValue={email}
+            inputFocus={emailFocus}
+            setInputValue={setEmail}
+            setInputFocus={setEmailFocus}
+            validInput={validEmail}
+            noteValidInput="Doit être au format email."
+          />
+          <button>Envoyer un nouveau lien</button>
+        </form>
+      </section>
+    </>
   );
 };
 
-export default ForgotPasswordForm;
+export default SendLinkForm;
