@@ -82,7 +82,7 @@ const LoginForm = ({ userType = "customer" }) => {
 
         <button>Connexion</button>
       </form>
-      <Link to="/forgot-password-customer" state={{ from: location }} replace>
+      <Link className="mdpOublie" to="/forgot-password-customer" state={{ from: location }} replace>
         <p>Mot de passe oublié ?</p>
       </Link>
     </section>

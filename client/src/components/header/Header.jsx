@@ -7,7 +7,7 @@ const Header = () => {
         <img src={companyLogo} className="companyLogo" alt="Powered By AWS" />
       </a>
       <div className="header-right">
-        <a href="#connexion">Mon compte</a>
+        <a href="">Me déconnecter</a>
       </div>
     </div>
   );
