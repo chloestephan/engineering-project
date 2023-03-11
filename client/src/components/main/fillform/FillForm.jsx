@@ -35,9 +35,9 @@ const FillForm = () => {
 
   return (
     <section>
-      {endPoint === "" ? <h1>Bienvenue dans le formulaire !</h1> : <h1>Solution proposée</h1>}
+      {endPoint === "" ? <h1>Merci de répondre aux questions suivantes</h1> : <h1>Solution proposée</h1>}
       <br />
-      <h3>{currentQuestion?.title}</h3>
+      <p>{currentQuestion?.title}</p>
       <br />
       {currentQuestion?.options.map((option) => (
         <button key={option.id} onClick={() => handleAnswerQuestion(option)}>
