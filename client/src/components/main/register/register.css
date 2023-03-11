@@ -3,6 +3,7 @@ section {
   max-width: 500px;
   display: flex;
   flex-direction: column;
+  flex: 1;
   justify-content: flex-start;
   padding: 40px;
   background-color: white;

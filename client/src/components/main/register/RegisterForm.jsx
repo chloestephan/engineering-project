@@ -132,7 +132,7 @@ const RegisterForm = ({ userType = "customer" }) => {
         <form onSubmit={handleSubmit}>
           <DefaultInputContainer
             inputName="username"
-            inputLabel="Nom d'utilisateur"
+            inputLabel="Prénom et nom de l'utilisateur"
             inputRef={usernameRef}
             inputValue={username}
             inputFocus={usernameFocus}
