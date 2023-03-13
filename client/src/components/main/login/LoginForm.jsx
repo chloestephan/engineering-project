@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
 import { Link } from "react-router-dom";
+import { accountService } from "../../../services/account.service";
 
 import axios from "../../../api/axios";
 const LOGIN_URL = "/login";
@@ -42,6 +43,7 @@ const LoginForm = ({ userType = "customer" }) => {
         }
       );
       const accesToken = response?.data?.accessToken;
+      accountService.saveToken(accesToken);
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, accesToken });
       setPassword("");
