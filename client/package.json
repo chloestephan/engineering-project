@@ -4,9 +4,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.6",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mantine/core": "^6.0.1",
+    "@mantine/hooks": "^6.0.1",
     "axios": "^1.2.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",

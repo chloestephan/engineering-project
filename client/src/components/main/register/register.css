@@ -1,9 +1,9 @@
-
 section {
   width: 100%;
   max-width: 500px;
   display: flex;
   flex-direction: column;
+  flex: 1;
   justify-content: flex-start;
   padding: 40px;
   background-color: white;
@@ -151,4 +151,16 @@ button {
   text-decoration: none;
   color:#146EB4;
 
+}
+
+.mdpOublie {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.mdpOublie p {
+  color: #146EB4;
+  font-style: italic;
 }

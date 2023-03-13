@@ -12,6 +12,6 @@ Front:
 - Use the `npm start` command to launch the frontend project
 
 Back : 
-- Go to the `cd .\server` client folder
+- Go to the server folder `cd .\server\`.
 - Use the `npm install` command to install the dependencies
-- Use the `npm run dev` command to run the back project
+- Use the `npm run dev` command to run the backend project

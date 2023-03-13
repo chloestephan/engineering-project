@@ -1,0 +1,32 @@
+.admin-nav-bar {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  background: #ffffff;
+  border-bottom: 1px solid #232F3E;
+}
+
+.admin-nav-bar > ul {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  min-width: 100%;
+}
+
+li {
+  list-style: none;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+
+li > a {
+  text-decoration: none;
+  color: #232F3E;
+}
+
+.selected {
+  background: #eeeeee;
+}
