@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Timeline, Text } from "@mantine/core";
+import EndpointRedaction from "../../utils/EndpointRedaction/EndpointRedaction";
 import formJSON from "../../../data/form.json";
 
 const FillForm = () => {
@@ -46,8 +47,8 @@ const FillForm = () => {
       ))}
 
       {endPoint && (
-        <>
-          <h2>{endPoint}</h2>
+        <div>
+          <EndpointRedaction endpointTitle={endPoint} />
           <br />
           <Timeline color="indigo" active={answeredQuestions.length}>
             {answeredQuestions.map((question) => (
@@ -58,7 +59,7 @@ const FillForm = () => {
               </Timeline.Item>
             ))}
           </Timeline>
-        </>
+        </div>
       )}
 
       {answeredQuestions.length !== 0 && (
