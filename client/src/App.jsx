@@ -10,12 +10,16 @@ import FillForm from "./components/main/fillform/FillForm";
 import ForgotPasswordForm from "./components/main/forgotPassword/ForgotPasswordForm";
 import SendLinkForm from "./components/main/sendLink/sendLinkForm";
 import Missing from "./components/main/missing/Missing";
+import { accountService } from "./services/account.service";
+import { Navigate } from "react-router-dom";
 
 function App() {
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="/admin-login" element={<LoginForm userType="admin" />} />
+        <Route path="/admin-login" element={ accountService.isAdminLogged() ? (<Navigate to="/admin-home" />) : (<LoginForm userType="admin" />)}/>
+
         <Route path="/customer-login" element={<LoginForm userType="customer" />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/forgot-password-customer" element={<ForgotPasswordForm />} />

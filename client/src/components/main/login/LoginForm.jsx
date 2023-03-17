@@ -43,12 +43,20 @@ const LoginForm = ({ userType = "customer" }) => {
         }
       );
       const accesToken = response?.data?.accessToken;
-      accountService.saveToken(accesToken);
+      accountService.saveTokenAdmin(accesToken);
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, accesToken });
       setPassword("");
       setEmail("");
-      navigate(from, { replace: true });
+      if (from === "/"){
+        if (userType === "admin"){
+          navigate("/admin-home", { replace: true });
+        } else {
+          navigate("/*", { replace: true });
+        }
+      } else {
+        navigate(from, { replace: true });
+      }
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
