@@ -50,7 +50,7 @@ const LoginForm = ({ userType = "customer" }) => {
       setEmail("");
       if (from === "/"){
         if (userType === "admin"){
-          navigate("/admin-home", { replace: true });
+          navigate("/register-customer", { replace: true });
         } else {
           navigate("/*", { replace: true });
         }

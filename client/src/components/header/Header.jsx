@@ -4,17 +4,17 @@ import { accountService } from "../../services/account.service";
 
 const Header = () => {
 
-  const logout = () => {
+  const handleLogout = async () => {
     accountService.logoutAdmin();
-  }
+  };
 
   return (
     <div className="header">
-      <a href="">
-        <img src={companyLogo} className="companyLogo" alt="Powered By AWS" />
-      </a>
+ 
+      <img src={companyLogo} className="companyLogo" alt="Powered By AWS" />
+    
       <div className="header-right">
-        <Link to="/admin-login"  onClick={logout} >
+        <Link to="/admin-login"  onClick={handleLogout} >
           Me déconnecter
         </Link>
       </div>
