@@ -43,7 +43,11 @@ const LoginForm = ({ userType = "customer" }) => {
         }
       );
       const accesToken = response?.data?.accessToken;
-      accountService.saveTokenAdmin(accesToken);
+      if (userType === "admin"){
+        accountService.saveTokenAdmin(accesToken);
+      } else {
+        accountService.saveTokenCustomer(accesToken);
+      }
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, accesToken });
       setPassword("");

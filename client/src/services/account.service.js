@@ -25,8 +25,32 @@ let isAdminLogged = () => {
     return !!token
 }
 
+/**
+ * Sauvegarde du token dans le localStorage
+ * @param {string} token 
+ */
+
+let saveTokenCustomer = (token) => {
+    localStorage.setItem('tokenCustomer', token)
+}
+
+/**
+ * Suppression du token du localStorage
+ */
+let logoutCustomer = () => {
+    localStorage.removeItem('tokenCustomer')
+}
+
+/**
+ * Etat de la présence d'un token en localStorage
+ * @returns {boolean}
+ */
+let isCustomerLogged = () => {
+    let token = localStorage.getItem('tokenCustomer')
+    return !!token
+}
 
 // Déclaration des serivces pour import
 export const accountService = {
-    saveTokenAdmin, logoutAdmin, isAdminLogged
+    saveTokenAdmin, logoutAdmin, isAdminLogged, saveTokenCustomer, logoutCustomer, isCustomerLogged
 }

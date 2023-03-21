@@ -1,23 +1,40 @@
 import companyLogo from "./logo.png";
-import { Link } from "react-router-dom";
 import { accountService } from "../../services/account.service";
 
 const Header = () => {
 
+
   const handleLogout = async () => {
-    accountService.logoutAdmin();
+    if (accountService.isAdminLogged()) {
+      accountService.logoutAdmin();
+      window.location.replace('/admin-login');
+    } else {
+      accountService.logoutCustomer();
+      window.location.replace('/customer-login');
+    }
+    
   };
 
   return (
     <div className="header">
  
       <img src={companyLogo} className="companyLogo" alt="Powered By AWS" />
-    
-      <div className="header-right">
-        <Link to="/admin-login"  onClick={handleLogout} >
-          Me déconnecter
-        </Link>
-      </div>
+
+      { 
+      accountService.isAdminLogged() || accountService.isCustomerLogged() ? 
+
+        <div className="header-right">
+
+          <button  onClick={handleLogout} >
+            Me déconnecter
+          </button>
+
+        </div>
+      : 
+        null 
+      }
+
+      
     </div>
   );
 };

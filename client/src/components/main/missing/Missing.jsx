@@ -1,11 +1,18 @@
 import { useNavigate } from "react-router-dom";
+import { accountService } from "../../../services/account.service";
 
 const Missing = () => {
 
     const navigate = useNavigate();
 
     const goBackToHome = () => {
-        navigate("/admin-home", { replace: true })
+        if (accountService.isAdminLogged()) {
+            navigate("/admin-home", { replace: true })
+        } else if (accountService.isCustomerLogged()) {
+            navigate("/customer-home", { replace: true })
+        } else {
+            navigate("/admin-login", { replace: true })
+        }
     }
 
     return (

@@ -10,6 +10,7 @@ import FillForm from "./components/main/fillform/FillForm";
 import ForgotPasswordForm from "./components/main/forgotPassword/ForgotPasswordForm";
 import SendLinkForm from "./components/main/sendLink/sendLinkForm";
 import Missing from "./components/main/missing/Missing";
+import MissingCustomer from "./components/main/missing/MissingCustomer";
 import { accountService } from "./services/account.service";
 
 function App() {
@@ -27,7 +28,16 @@ function App() {
             )
           }
         />
-        <Route path="/customer-login" element={<LoginForm userType="customer" />} />
+        <Route
+          path="/customer-login"
+          element={
+            accountService.isCustomerLogged() ? (
+              <Navigate to="/fill-form" replace />
+            ) : (
+              <LoginForm userType="customer" />
+            )
+          }
+        />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/forgot-password-customer" element={<ForgotPasswordForm />} />
 
@@ -45,7 +55,13 @@ function App() {
         </Route>
 
         {/* Catch all */}
-        <Route path="/*" element={<Missing />} />
+        <Route path="/*" element={
+          accountService.isCustomerLogged() ? (
+            <MissingCustomer />
+          ) : (
+            <Missing />
+          )
+        } />
       </Route>
     </Routes>
   );
