@@ -61,6 +61,7 @@ const LoginForm = ({ userType = "customer" }) => {
       } else {
         navigate(from, { replace: true });
       }
+      window.location.reload();
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");

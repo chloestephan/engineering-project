@@ -1,9 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import { accountService } from "../../../services/account.service";
 
 const MissingCustomer = () => {
-
-    const navigate = useNavigate();
 
     const goBackToHome = () => {
 
