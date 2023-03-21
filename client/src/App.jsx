@@ -1,5 +1,5 @@
 import RegisterForm from "./components/main/register/RegisterForm";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/main/layout/Layout";
 import RequireAuthAdmin from "./components/requireauth/RequireAuthAdmin";
 import LoginForm from "./components/main/login/LoginForm";
@@ -10,13 +10,34 @@ import FillForm from "./components/main/fillform/FillForm";
 import ForgotPasswordForm from "./components/main/forgotPassword/ForgotPasswordForm";
 import SendLinkForm from "./components/main/sendLink/sendLinkForm";
 import Missing from "./components/main/missing/Missing";
+import MissingCustomer from "./components/main/missing/MissingCustomer";
+import { accountService } from "./services/account.service";
 
 function App() {
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route path="/admin-login" element={<LoginForm userType="admin" />} />
-        <Route path="/customer-login" element={<LoginForm userType="customer" />} />
+        <Route
+          path="/admin-login"
+          element={
+            accountService.isAdminLogged() ? (
+              <Navigate to="/register-customer" replace />
+            ) : (
+              <LoginForm userType="admin" />
+            )
+          }
+        />
+        <Route
+          path="/customer-login"
+          element={
+            accountService.isCustomerLogged() ? (
+              <Navigate to="/fill-form" replace />
+            ) : (
+              <LoginForm userType="customer" />
+            )
+          }
+        />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/forgot-password-customer" element={<ForgotPasswordForm />} />
 
@@ -24,7 +45,7 @@ function App() {
         <Route element={<RequireAuthAdmin />}>
           <Route path="/admin-home" element={<AdminHome />} />
           <Route path="/register-customer" element={<RegisterForm />} />
-          <Route path="/register-admin" element={<RegisterForm userType="admin"/>} />
+          <Route path="/register-admin" element={<RegisterForm userType="admin" />} />
           <Route path="/send-link" element={<SendLinkForm />} />
         </Route>
 
@@ -34,7 +55,13 @@ function App() {
         </Route>
 
         {/* Catch all */}
-        <Route path="*" element={<Missing />} />
+        <Route path="/*" element={
+          accountService.isCustomerLogged() ? (
+            <MissingCustomer />
+          ) : (
+            <Missing />
+          )
+        } />
       </Route>
     </Routes>
   );

@@ -1,11 +1,15 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import { accountService } from "../../services/account.service";
 
 const RequireAuthAdmin = () => {
-  const { auth } = useAuth();
+
   const location = useLocation();
 
-  return auth?.email ? <Outlet /> : <Navigate to="/admin-login" state={{ from: location }} replace />;
+  if (!accountService.isAdminLogged()){
+    return <Navigate to="/admin-login" state={{ from: location }} replace />
+  } else {
+    return <Outlet />
+  }
 };
 
 export default RequireAuthAdmin;

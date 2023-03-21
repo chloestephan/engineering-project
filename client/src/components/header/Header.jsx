@@ -1,14 +1,40 @@
 import companyLogo from "./logo.png";
+import { accountService } from "../../services/account.service";
 
 const Header = () => {
+
+
+  const handleLogout = async () => {
+    if (accountService.isAdminLogged()) {
+      accountService.logoutAdmin();
+      window.location.replace('/admin-login');
+    } else {
+      accountService.logoutCustomer();
+      window.location.replace('/customer-login');
+    }
+    
+  };
+
   return (
     <div className="header">
-      <a href="">
-        <img src={companyLogo} className="companyLogo" alt="Powered By AWS" />
-      </a>
-      <div className="header-right">
-        <a href="">Me déconnecter</a>
-      </div>
+ 
+      <img src={companyLogo} className="companyLogo" alt="Powered By AWS" />
+
+      { 
+      accountService.isAdminLogged() || accountService.isCustomerLogged() ? 
+
+        <div className="header-right">
+
+          <button  onClick={handleLogout} >
+            Me déconnecter
+          </button>
+
+        </div>
+      : 
+        null 
+      }
+
+      
     </div>
   );
 };
