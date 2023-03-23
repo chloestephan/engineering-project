@@ -67,19 +67,3 @@ CREATE TABLE linksForm
 );
 
 INSERT INTO admins(username, email, password) VALUES ('admin', 'admin', '$2a$06$izwfhJ56u9WKlyZRI1utT.Sx1M7.cC0J2fQ22IKPV/7aLQEbfBJ46');
-
--- INSERT INTO customers (username, email, password, company) VALUES
--- ('jsmith', 'vnjzrbvjizbei@gmail.com', 'adcd', 'Chaos Corp.');
-
--- INSERT INTO admins (username, email, password) VALUES
--- ('jsmith','vnjzrbvjizbei.admin@gmail.com', '123');
-
--- INSERT INTO formBuilder (ordre, questionType, answer) VALUES
--- ('1', 'User input long', 'Ceci est un input utilisateur long');
-
-
--- INSERT INTO formAnswers (customerID, questionId, answer) VALUES
--- ((SELECT id from customers where username='jsmith'), (SELECT id from formBuilder where ordre=1), 'Ceci est une réponse');
-
--- INSERT INTO formCompleted (customerID, urlPDF) VALUES
--- ((SELECT id from customers where username='jsmith'),'https://aws');
