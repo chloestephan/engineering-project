@@ -2,7 +2,7 @@
 
 ## AWS Project
 
-Notre projet propose une solution d’aide à la transformation digitale pour aider les clients d’AWS à effectuer leur audit de transformation digitale. AWS a constaté que de nombreux clients ont des difficultés à mettre à jour leurs systèmes et à choisir les solutions les plus adaptées à leurs besoins. Ils nous ont donc proposé de développer une application web qui permet aux clients de remplir un formulaire et d'obtenir automatiquement un rapport détaillé sur les actions à entreprendre pour optimiser leur transformation digitale.
+Our project provides a digital transformation assistance solution to help AWS customers conduct their digital transformation audit. AWS has found that many customers are struggling to upgrade their systems and choose the most appropriate solutions for their needs. So they asked us to develop a web application that allows customers to fill out a form and automatically get a detailed report on what they need to do to optimise their digital transformation.
 
 ## Installation
 
