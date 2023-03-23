@@ -51,7 +51,7 @@ It is strongly recommended that you change the above values as you want.
 
 You can use our `docker-compose.yml` file inside the server folder, if you want, with this command: 
 ```shell
-docker-compose up -d
+docker compose up --build -d
 ```
 
 - __Init BDD__:
