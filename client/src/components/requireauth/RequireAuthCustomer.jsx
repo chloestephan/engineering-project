@@ -1,11 +1,15 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import { accountService } from "../../services/account.service";
 
 const RequireAuthCustomer = () => {
-  const { auth } = useAuth();
+
   const location = useLocation();
 
-  return auth?.email ? <Outlet /> : <Navigate to="/customer-login" state={{ from: location }} replace />;
+  if (!accountService.isCustomerLogged()){
+    return <Navigate to="/customer-login" state={{ from: location }} replace />
+  } else {
+    return <Outlet />
+  }
 };
 
 export default RequireAuthCustomer;

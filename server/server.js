@@ -15,13 +15,14 @@ app.use(express.json());
 app.use("/register-customer", require("./routes/customer/registerCustomer"));
 app.use("/login-customer", require("./routes/customer/loginCustomer"));
 app.use("/forgot-password-customer", require("./routes/customer/forgotPasswordCustomer"));
+app.use("/send-link", require("./routes/customer/sendLink"));
 
 app.use("/register-admin", require("./routes/admin/registerAdmin"));
 app.use("/login-admin", require("./routes/admin/loginAdmin"));
 app.use("/forgot-password-admin", require("./routes/admin/forgotPasswordAdmin"));
 
 if (process.env.NODE_ENV !== "test") {
-  app.listen(port, () => console.log("Server running on port 5000"));
+  app.listen(port, () => console.log(`Server running on port ${port}`));
 }
 
 module.exports = { app };

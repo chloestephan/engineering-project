@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import SuccessMessageForm from "../../utils/MessageForm/SuccessMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
+import AdminHomeNavBar from "../../utils/NavBar/AdminHomeNavBar";
 import axios from "../../../api/axios";
 
 const USER_REGEX = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/;
@@ -74,31 +75,32 @@ const RegisterForm = ({ userType = "customer" }) => {
     if (!(validFormForCustomer || validFormForAdmin)) {
       setErrMsg("Merci de remplir correctement tous les champs");
       return;
-    }
-    try {
-      const lowerCaseEmail = email.toLowerCase();
-      const response = await axios.post(
-        REGISTER_URL + "-" + userType,
-        JSON.stringify({ username, email: lowerCaseEmail, company, password }),
-        {
-          headers: { "Content-Type": "application/json" },
+    } else {
+      try {
+        const lowerCaseEmail = email.toLowerCase();
+        const response = await axios.post(
+          REGISTER_URL + "-" + userType,
+          JSON.stringify({ username, email: lowerCaseEmail, company, password }),
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        if (response.status === 200) {
+          resetForm();
+          // Set success message
+          setSuccessMsg(response.data.message);
+          successRef.current.focus();
         }
-      );
-      if (response.status === 200) {
-        resetForm();
-        // Set success message
-        setSuccessMsg(response.data.message);
-        successRef.current.focus();
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("Aucune réponse du serveur");
+        } else if (err.response?.status === 409 || err.response?.status === 401) {
+          setErrMsg(err.response.data.message);
+        } else {
+          setErrMsg("Une erreur est survenue");
+        }
+        errRef.current.focus();
       }
-    } catch (err) {
-      if (!err?.response) {
-        setErrMsg("Aucune réponse du serveur");
-      } else if (err.response?.status === 409 || err.response?.status === 401) {
-        setErrMsg(err.response.data.message);
-      } else {
-        setErrMsg("Une erreur est survenue");
-      }
-      errRef.current.focus();
     }
   };
 
@@ -112,7 +114,11 @@ const RegisterForm = ({ userType = "customer" }) => {
 
   return (
     <>
-      {company}
+      {userType === "customer" ? (
+        <AdminHomeNavBar isRegisterCustomerSelected={true} />
+      ) : (
+        <AdminHomeNavBar isRegisterAdminSelected={true} />
+      )}
       <section>
         <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
         <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
@@ -126,7 +132,7 @@ const RegisterForm = ({ userType = "customer" }) => {
         <form onSubmit={handleSubmit}>
           <DefaultInputContainer
             inputName="username"
-            inputLabel="Nom d'utilisateur"
+            inputLabel="Prénom et nom de l'utilisateur"
             inputRef={usernameRef}
             inputValue={username}
             inputFocus={usernameFocus}

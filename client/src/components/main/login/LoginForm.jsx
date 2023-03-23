@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import ErrorMessageForm from "../../utils/MessageForm/ErrorMessageForm";
 import DefaultInputContainer from "../../utils/DefaultInput/DefaultInputContainer";
 import { Link } from "react-router-dom";
+import { accountService } from "../../../services/account.service";
 
 import axios from "../../../api/axios";
 const LOGIN_URL = "/login";
@@ -42,11 +43,25 @@ const LoginForm = ({ userType = "customer" }) => {
         }
       );
       const accesToken = response?.data?.accessToken;
+      if (userType === "admin"){
+        accountService.saveTokenAdmin(accesToken);
+      } else {
+        accountService.saveTokenCustomer(accesToken);
+      }
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, accesToken });
       setPassword("");
       setEmail("");
-      navigate(from, { replace: true });
+      if (from === "/"){
+        if (userType === "admin"){
+          navigate("/register-customer", { replace: true });
+        } else {
+          navigate("/*", { replace: true });
+        }
+      } else {
+        navigate(from, { replace: true });
+      }
+      window.location.reload();
     } catch (err) {
       if (!err?.response) {
         setErrMsg("Aucune réponse du serveur");
@@ -82,7 +97,7 @@ const LoginForm = ({ userType = "customer" }) => {
 
         <button>Connexion</button>
       </form>
-      <Link to="/forgot-password-customer">
+      <Link className="mdpOublie" to="/forgot-password-customer" state={{ from: location }} replace>
         <p>Mot de passe oublié ?</p>
       </Link>
     </section>
