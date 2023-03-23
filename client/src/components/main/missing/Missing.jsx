@@ -11,7 +11,7 @@ const Missing = () => {
         } else if (accountService.isCustomerLogged()) {
             navigate("/customer-home", { replace: true })
         } else {
-            navigate("/admin-login", { replace: true })
+            navigate("/register-customer", { replace: true })
         }
     }
 
