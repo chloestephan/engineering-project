@@ -66,6 +66,10 @@ If you don't want to use Docker, you can also run the backend part by your own w
 npm run dev
 ```
 
+When the application is running you can connect to the admin part with the default admin:
+email: admin
+password: admin
+
 ## Test the application
 
 There are some backend test that you can run by using this command:
