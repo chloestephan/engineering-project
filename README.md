@@ -54,10 +54,6 @@ You can use our `docker-compose.yml` file inside the server folder, if you want,
 docker compose up --build -d
 ```
 
-- __Init BDD__:
-
-To initialise the BDD you have to use the `database-seed.sql` file inside the server folder. Just run the script inside pgAdmin after you launched it with the `docker-compose.yml`.
-
 ## Run the application
 
 To run the application you just have to run the frontend part, if you are using Docker, with this command:
