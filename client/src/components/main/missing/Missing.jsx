@@ -7,11 +7,11 @@ const Missing = () => {
 
     const goBackToHome = () => {
         if (accountService.isAdminLogged()) {
-            navigate("/admin-home", { replace: true })
+            navigate("/register-customer", { replace: true })
         } else if (accountService.isCustomerLogged()) {
             navigate("/customer-home", { replace: true })
         } else {
-            navigate("/register-customer", { replace: true })
+            navigate("/admin-login", { replace: true })
         }
     }
 
