@@ -67,7 +67,9 @@ npm run dev
 ```
 
 When the application is running you can connect to the admin part with the default admin:
+
 email: admin
+
 password: admin
 
 ## Test the application
