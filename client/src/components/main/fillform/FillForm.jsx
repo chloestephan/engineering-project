@@ -35,7 +35,8 @@ const FillForm = () => {
   };
 
   return (
-    <section>
+    <body>
+      <section>
       {endPoint === "" ? <h1>Merci de répondre aux questions suivantes</h1> : <h1>Solution proposée</h1>}
       <br />
       <p>{currentQuestion?.title}</p>
@@ -67,6 +68,7 @@ const FillForm = () => {
       )}
       {endPoint && <button onClick={() => handleResetForm()}>Recommencer le formulaire</button>}
     </section>
+    </body>
   );
 };
 

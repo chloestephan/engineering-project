@@ -24,11 +24,7 @@ const Header = () => {
       accountService.isAdminLogged() || accountService.isCustomerLogged() ? 
 
         <div className="header-right">
-
-          <button  onClick={handleLogout} >
-            Me déconnecter
-          </button>
-
+          <button className="btnConnexion" onClick={handleLogout}>Deconnexion</button>
         </div>
       : 
         null 
