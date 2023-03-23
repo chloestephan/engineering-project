@@ -75,7 +75,8 @@ const LoginForm = ({ userType = "customer" }) => {
   };
 
   return (
-    <section>
+    <body>
+      <section>
       <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
       <h1>Connectez-vous</h1>
       <form onSubmit={handleSubmit}>
@@ -101,6 +102,7 @@ const LoginForm = ({ userType = "customer" }) => {
         <p>Mot de passe oublié ?</p>
       </Link>
     </section>
+    </body>
   );
 };
 

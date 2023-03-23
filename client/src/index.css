@@ -4,8 +4,6 @@
   box-sizing: border-box;
 }
 
-* {box-sizing: border-box;}
-
 html {
   font-family: 'Arial', 'sans-serif';
   font-size: 22px;
@@ -13,14 +11,12 @@ html {
 }
 
 body {
-  min-height: 100vh;
   background-color: white;
-  margin: 0;
+  flex-grow: 1;
 }
 
 .App {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
