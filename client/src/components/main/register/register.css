@@ -114,16 +114,14 @@ padding: 0.5rem;
   display: inline-block;
 }
 
-.show-password-container {
+.show-password-container label {
   display: flex;
-  flex-direction: row;
-  margin-top: 20px;
+  align-items: center;
+}
+.show-password-container label input {
+  margin-right: 8px;
 }
 
-.show-password-container > label {
-  margin-top: 0;
-  margin-left: 10px;
-}
 
 button {
   background-color: #146EB4;

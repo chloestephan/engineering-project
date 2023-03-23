@@ -67,34 +67,37 @@ const ForgotPasswordForm = ({ userType = "customer" }) => {
   };
 
   return (
-    <section>
-      {successMsg ? (
-        <>
-          <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
-          <button onClick={() => navigate(from)}>Retour à la connexion</button>
-        </>
-      ) : (
-        <>
-          <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
+    <body>
+      <section>
+        {successMsg ? (
+          <>
+            <SuccessMessageForm successMsg={successMsg} successRef={successRef} />
+            <button onClick={() => navigate(from)}>Retour à la connexion</button>
+          </>
+        ) : (
+          <>
+            <ErrorMessageForm errMsg={errMsg} errRef={errRef} />
 
-          <h1>Mot de passe oublié</h1>
-          <form onSubmit={handleSubmit}>
-            <DefaultInputContainer
-              inputName="email"
-              inputLabel="Email"
-              inputRef={emailRef}
-              inputValue={email}
-              inputFocus={emailFocus}
-              setInputValue={setEmail}
-              setInputFocus={setEmailFocus}
-              validInput={validEmail}
-              noteValidInput="Doit être au format email."
-            />
-            <button>Envoyer un nouveau mot de passe</button>
-          </form>
-        </>
-      )}
-    </section>
+            <h1>Mot de passe oublié</h1>
+            <form onSubmit={handleSubmit}>
+              <DefaultInputContainer
+                inputName="email"
+                inputLabel="Email"
+                inputRef={emailRef}
+                inputValue={email}
+                inputFocus={emailFocus}
+                setInputValue={setEmail}
+                setInputFocus={setEmailFocus}
+                validInput={validEmail}
+                noteValidInput="Doit être au format email."
+              />
+              <button>Envoyer un nouveau mot de passe</button>
+            </form>
+          </>
+        )}
+      </section>
+    </body>
+
   );
 };
 
