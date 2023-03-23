@@ -24,11 +24,8 @@ const handleLoginAdmin = async (req, res) => {
 
   const accessToken = generateToken(admin, "access");
   const refreshToken = generateToken(admin, "refresh");
-
-  // TODO Store refresh token in database
-
+  
   res.cookie("jwt", refreshToken, { httpOnly: true, secure: true, sameSite: "none" });
-  // TODO Add a role to the user (Admin, User, etc.)
   res.status(200).send({ message: "Utilisateur connecté", accessToken: accessToken });
 };
 
