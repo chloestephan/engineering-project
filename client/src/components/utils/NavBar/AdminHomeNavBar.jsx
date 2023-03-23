@@ -20,11 +20,11 @@ const AdminHomeNavBar = ({
             <p className="title-link">Renvoyer lien</p>
           </Link>
         </li>
-        <li className={`${isManageRoleSelected ? "selected" : ""}`}>
+        {/* <li className={`${isManageRoleSelected ? "selected" : ""}`}>
           <Link to="/manage-role">
             <p className="title-link">Modification rôles</p>
           </Link>
-        </li>
+        </li> */}
         <li className={`${isRegisterAdminSelected ? "selected" : ""}`}>
           <Link to="/register-admin">
             <p className="title-link">Nouvel administrateur</p>

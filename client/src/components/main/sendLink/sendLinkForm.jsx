@@ -65,6 +65,7 @@ const SendLinkForm = () => {
   return (
     <>
       <AdminHomeNavBar isSendLinkSelected={true} />
+      <body>
       <section>
         {successMsg ? (
           <>
@@ -89,6 +90,7 @@ const SendLinkForm = () => {
           <button>Envoyer un nouveau lien</button>
         </form>
       </section>
+      </body>
     </>
   );
 };
