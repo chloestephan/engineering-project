@@ -6,10 +6,20 @@
 
 .header-right {
   float: right;
+  height: 100%;
+  padding-right: 30px;
 }
 
 .header-right .btnConnexion {
-  padding: 10px;
+  background-color: #232F3E;
+  border: 1px solid #fff;
+  width: 100%;
+  padding: 15px;
+}
+
+.header-right .btnConnexion:hover {
+  background-color: #fff;
+  color: #232F3E;
 }
 
 .companyLogo {
