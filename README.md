@@ -27,7 +27,7 @@ Inside the server folder, create a .env file with the following content:
 ACCESS_TOKEN_SECRET=ACCESSTOKENSECRET
 REFRESH_TOKEN_SECRET=REFRESHTOKENSECRET
 
-POSTGRES_HOST=localhost
+POSTGRES_HOST=postgres
 POSTGRES_DB=aws_db
 POSTGRES_DB_TEST=aws_db_test
 POSTGRES_USER=user
