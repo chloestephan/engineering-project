@@ -4,7 +4,6 @@ const EndpointRedaction = ({ endpointTitle }) => {
   return (
     <>
       <h2>{endpointTitle}</h2>
-      <br />
       {endpoint
         .filter((endpoint) => endpoint.title === endpointTitle)
         .map((endpoint) =>

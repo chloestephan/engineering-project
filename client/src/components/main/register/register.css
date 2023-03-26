@@ -162,3 +162,40 @@ button {
   color: #146EB4;
   font-style: italic;
 }
+
+.formulaire {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  padding: 40px;
+  background-color: white;
+  color: #666666;
+  border-radius: 8px;
+  margin: 40px auto;
+}
+
+.formulaire h1 {
+  color: #FF9900;
+  text-align: center;
+  font-size: 26px;
+}
+
+.formulaire p {
+  text-align: justify;
+}
+
+.formulaire h2 {
+  text-align: center;
+}
+
+hr {
+  border: 1px solid #146EB4;
+  margin: 20px 0;
+}
+
+.timeline {
+  margin: 20px 0;
+}
