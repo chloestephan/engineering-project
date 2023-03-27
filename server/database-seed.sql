@@ -67,3 +67,5 @@ CREATE TABLE linksForm
 );
 
 INSERT INTO admins(username, email, password) VALUES ('admin', 'admin', '$2a$06$izwfhJ56u9WKlyZRI1utT.Sx1M7.cC0J2fQ22IKPV/7aLQEbfBJ46');
+INSERT INTO customers(username, email, password, company) VALUES ('admin', 'admin', '$2a$06$izwfhJ56u9WKlyZRI1utT.Sx1M7.cC0J2fQ22IKPV/7aLQEbfBJ46', 'admin');
+INSERT INTO linksForm(url, customerId) SELECT '/fill-form/test', id FROM customers WHERE username = 'admin';
